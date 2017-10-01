@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -59,6 +60,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Player.cs" />
+    <Compile Include="TempVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,6 +102,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\dorm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\enroll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\examInspect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\megajanlott.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NoRoll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\noRoll2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\RollAgain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\rollAgain2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\uv.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nik_babu.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

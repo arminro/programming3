@@ -11,19 +11,28 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Drawing;
 
 namespace Beadando
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    
     public partial class MainWindow : Window
     {
+
+        public TempVM VM { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-            
+            VM = new TempVM();
+            this.DataContext = VM;
         }
+
+       
+
+     
     }
 }
