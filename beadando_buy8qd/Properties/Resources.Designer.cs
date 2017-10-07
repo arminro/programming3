@@ -22,7 +22,7 @@ namespace Beadando.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Beadando.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Beadando.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Beadando.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _event {
+        public static System.Drawing.Bitmap _event {
             get {
                 object obj = ResourceManager.GetObject("_event", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dorm {
+        public static System.Drawing.Bitmap dorm {
             get {
                 object obj = ResourceManager.GetObject("dorm", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap enroll {
+        public static System.Drawing.Bitmap enroll {
             get {
                 object obj = ResourceManager.GetObject("enroll", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap examInspect {
+        public static System.Drawing.Bitmap examInspect {
             get {
                 object obj = ResourceManager.GetObject("examInspect", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap go {
+        public static System.Drawing.Bitmap go {
             get {
                 object obj = ResourceManager.GetObject("go", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +113,17 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap megajanlott {
+        public static System.Drawing.Bitmap kando {
+            get {
+                object obj = ResourceManager.GetObject("kando", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap megajanlott {
             get {
                 object obj = ResourceManager.GetObject("megajanlott", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,9 +133,9 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap nik_babu {
+        public static System.Drawing.Bitmap nik {
             get {
-                object obj = ResourceManager.GetObject("nik_babu", resourceCulture);
+                object obj = ResourceManager.GetObject("nik", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,7 +143,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap NoRoll {
+        public static System.Drawing.Bitmap NoRoll {
             get {
                 object obj = ResourceManager.GetObject("NoRoll", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +153,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap noRoll2 {
+        public static System.Drawing.Bitmap noRoll2 {
             get {
                 object obj = ResourceManager.GetObject("noRoll2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +163,17 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap RollAgain {
+        public static System.Drawing.Bitmap rejto {
+            get {
+                object obj = ResourceManager.GetObject("rejto", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RollAgain {
             get {
                 object obj = ResourceManager.GetObject("RollAgain", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +183,17 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap rollAgain2 {
+        public static System.Drawing.Bitmap rollAgain_vert_left {
+            get {
+                object obj = ResourceManager.GetObject("rollAgain_vert_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap rollAgain2 {
             get {
                 object obj = ResourceManager.GetObject("rollAgain2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +203,7 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap start {
+        public static System.Drawing.Bitmap start {
             get {
                 object obj = ResourceManager.GetObject("start", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +213,17 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap uv {
+        public static System.Drawing.Bitmap table {
+            get {
+                object obj = ResourceManager.GetObject("table", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap uv {
             get {
                 object obj = ResourceManager.GetObject("uv", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

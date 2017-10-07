@@ -145,8 +145,14 @@
   <data name="rollAgain2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rollAgain2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="rollAgain_vert_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rollAgain_vert_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="start" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="table" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\table.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="uv" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\uv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -154,7 +160,13 @@
   <data name="_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="nik_babu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\nik_babu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="kando" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kando.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nik" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nik.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rejto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rejto.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

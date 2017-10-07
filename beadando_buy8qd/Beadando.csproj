@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="TempVM.cs" />
     <Page Include="MainWindow.xaml">
@@ -90,7 +91,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="oenik.ruleset" />
@@ -105,6 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nik_babu.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\dorm.png" />
@@ -134,6 +138,9 @@
     <Resource Include="Resources\RollAgain.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\rollAgain_vert_left.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\rollAgain2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +150,16 @@
     <Resource Include="Resources\uv.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="nik_babu.png" />
+    <Resource Include="Resources\table.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kando.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nik.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rejto.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
