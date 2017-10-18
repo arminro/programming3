@@ -6,22 +6,29 @@
         xmlns:local="clr-namespace:Beadando"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
-        Background="Transparent">
+        Background="Transparent" WindowStyle="None" WindowState="Maximized" PreviewMouseWheel="Window_PreviewMouseWheel">
     <Window.Resources>
         <!--Puppets-->
-        <ImageBrush x:Key="nik" ImageSource="pack://siteoforigin:,,,/Resources/nik.png"  />
+        <ImageBrush x:Key="nik" ImageSource="pack://siteoforigin:,,,/Resources/nik.png"   />
         <ImageBrush x:Key="rejto" ImageSource="pack://siteoforigin:,,,/Resources/rejto.png"  />
         <ImageBrush x:Key="kando" ImageSource="pack://siteoforigin:,,,/Resources/kando.png"  />
         
         <ImageBrush x:Key="go" ImageSource="pack://siteoforigin:,,,/Resources/go.png"  />
         <ImageBrush x:Key="event" ImageSource="pack://siteoforigin:,,,/Resources/event.png" />
+        <ImageBrush x:Key="wood" ImageSource="wood.jpg" />
         <ImageBrush x:Key="table" ImageSource="pack://siteoforigin:,,,/Resources/table.jpg" />
         <ImageBrush x:Key="start" ImageSource="pack://siteoforigin:,,,/Resources/start.png"  />
         <ImageBrush x:Key="roll" ImageSource="pack://siteoforigin:,,,/Resources/rollAgain2.png"  />
-        <ImageBrush x:Key="uv" ImageSource="pack://siteoforigin:,,,/Resources/uv.png"  />
+        <ImageBrush x:Key="uv" ImageSource="Resources/uv.png"  />
         <ImageBrush x:Key="megajanlott" ImageSource="pack://siteoforigin:,,,/Resources/megajanlott.png"  />
         <ImageBrush x:Key="enroll" ImageSource="pack://siteoforigin:,,,/Resources/enroll.png"  />
-        
+
+        <ImageBrush x:Key="randi" ImageSource="pack://siteoforigin:,,,/Resources/randi.png"  />
+        <ImageBrush x:Key="neptun" ImageSource="pack://siteoforigin:,,,/Resources/neptun.png"  />
+        <ImageBrush x:Key="lead" ImageSource="lead.png"   />
+        <ImageBrush x:Key="einstein" ImageSource="einstein.png"  />
+         
+
     </Window.Resources>
 
     <Grid x:Name="MainGrid">

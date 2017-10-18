@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>oenik.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -60,9 +61,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="TempVM.cs" />
+    <Compile Include="Model\Bindable.cs" />
+    <Compile Include="Model\BoardField.cs" />
+    <Compile Include="Model\CircularDictionary.cs" />
+    <Compile Include="Model\Collections.cs" />
+    <Compile Include="Model\Constants.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="ViewModel\BL.cs" />
+    <Compile Include="ViewModel\CardEventArgs.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,10 +111,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="go.png" />
+    <Resource Include="go.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="nik_babu.png" />
+    <Resource Include="nik_babu.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\dorm.png" />
@@ -160,6 +166,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\rejto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="uv.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="felvesz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="neptun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="randi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="einstein.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="kereszt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="kimarad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="lead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="wood.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
