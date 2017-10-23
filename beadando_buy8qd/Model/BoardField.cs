@@ -47,9 +47,9 @@ namespace Beadando
             }
         }
 
-        public BoardField(int number, string imageKey)
+        public BoardField(string imageKey)
         {
-            //this.number = number;
+            
             this.ImageKey = imageKey;
             positions = new Player[3];
         }

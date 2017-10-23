@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -303,7 +304,12 @@ namespace Beadando
             // myRect = new Rect(Constants.startPosition - 7 * Constants.NormalCard.width-60, Constants.lowerHorizontalposition, Constants.SquareCard.widthHeight, Constants.SquareCard.widthHeight);
             // dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
 
+            //PLAYER UI
+            Size playerUiSize = new Size(550, 450);
+            Rect mainPlayerScreen = new Rect(new Point(((ActualWidth/2) - (playerUiSize.Width/2)+bl.OffsetHorizontal), ((ActualHeight/2) - (playerUiSize.Height/2))+bl.OffsetVertical), playerUiSize);
             
+            dc.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
+            DrawPlayerUI(dc);
         }
 
         private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -312,5 +318,26 @@ namespace Beadando
             InvalidateVisual();
         }
 
+        private void DrawPlayerUI(DrawingContext drawingContext)
+        {
+            Brush brush = bl.Player.PuppetKey == "nik" ? Brushes.DodgerBlue : bl.Player.PuppetKey == "kando" ? Brushes.Gold : Brushes.LimeGreen;
+            FormattedText playerName = new FormattedText(
+               bl.Player.Name,
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Impact"),
+                18, brush);
+
+            drawingContext.DrawText(playerName, new Point(510, 380));
+
+            FormattedText playerMoney = new FormattedText(
+               bl.Player.Money.ToString(),
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Impact"),
+                70, brush);
+
+            drawingContext.DrawText(playerMoney, new Point(600, 430));
+        }
     }
 }

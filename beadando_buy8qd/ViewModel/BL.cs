@@ -20,7 +20,8 @@ namespace Beadando.ViewModel
             MovementSpeed = 10;
             PuppetDiameter = 30;
             IncrementAtMovement = 1;
-
+            OffsetHorizontal = 0;
+            OffsetVertical = 0;
             resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
             GameBoard = new CircularDictionary<BoardField>();
@@ -34,13 +35,13 @@ namespace Beadando.ViewModel
             GenerateOrderOfCards();
             //P.Currentposition = GameBoard[0].Rect;
             Players = new CircularList<Player>(); //the max number of players is 3
-            Players.Add(new Player("nik", GameBoard[0].Rect, 0));
+            Players.Add(new Player("nik", GameBoard[0].Rect, 0, "Nikes kocka"));
             GameBoard[0].ArriveAtPosition(Players[0]);
 
-            Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1));
+            Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1, "Részeg Kandós"));
             GameBoard[0].ArriveAtPosition(Players[1]);
 
-            Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2));
+            Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2, "Cuki rejtős lány <3 <3"));
             GameBoard[0].ArriveAtPosition(Players[2]);
 
             NextRound();
@@ -249,8 +250,11 @@ namespace Beadando.ViewModel
                 players= value;
             }
         }
+        //the values responsible for moving the phone 
+        public int OffsetHorizontal { get;  set; }
+        public int OffsetVertical { get;  set; }
 
-       
+
 
         //public Player P { get => p; private set => p = value; }
         //public int LeftVerticalAlign { get => LeftVerticalAlign1; set => LeftVerticalAlign1 = value; }
@@ -306,7 +310,7 @@ namespace Beadando.ViewModel
 
             //refreshing the position of the puppet so that it moves with the board (the changing board would move away from it)
             Player.Currentposition = GameBoard[Player.CurrentCard].Rect;
-
+           
             SetMetrics();
         }
 
@@ -314,18 +318,22 @@ namespace Beadando.ViewModel
         {
             StartPosition += offset;
             //megcsinálni az összes bábura
-            Player.Currentposition = Point.Add(Player.Currentposition, new Vector(offset, 0));
-            
+            foreach (Player player in Players)
+            {
+                player.Currentposition = Point.Add(player.Currentposition, new Vector(offset, 0));
+            }
+            OffsetHorizontal += offset;
             SetMetrics();
         }
 
         public void MoveVertically(int offset)
         {
             LowerHorizontalAlign += offset;
-            //összes bábura!!!
-            Player.Currentposition = Point.Add(Player.Currentposition, new Vector(0, offset));
-
-            
+            foreach (Player player in Players)
+            {
+                player.Currentposition = Point.Add(player.Currentposition, new Vector(0, offset));
+            }
+            OffsetVertical += offset;
             SetMetrics();
         }
         /// <summary>

@@ -17,12 +17,13 @@ namespace Beadando
         int currentCard; //storing the card the player sits on
         string name;
         int order;
+        int money;
 
         public Player(string puppetKey, string name = "Player")
         {
             this.puppetKey = puppetKey;
             this.currentCard = 0;
-            
+            this.money = 20000;
             subjects = new bool[5]; //there are 5 subs
             for (int i = 0; i < subjects.Length; i++)
             {
@@ -34,8 +35,8 @@ namespace Beadando
         {
             this.puppetKey = puppetKey;
             this.currentposition = currentposition;
-
-            subjects = new bool[5]; //there are 5 subs
+            this.money = 20000;
+            subjects = new bool[3]; //there are 3 subs
             for (int i = 0; i < subjects.Length; i++)
             {
                 subjects[i] = false;
@@ -116,6 +117,19 @@ namespace Beadando
            
         }
 
+        public int Money
+        {
+            get
+            {
+                return money;
+            }
+
+            set
+            {
+                money = value;
+            }
+        }
+
         public void AddSubject(int subjectNumber)
         {
             subjects[subjectNumber] = true;
@@ -126,6 +140,10 @@ namespace Beadando
         {
             Player other = obj as Player;
             return other.Name == name && other.Order == order;
+        }
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode() ^ this.Order.GetHashCode();
         }
 
         public override string ToString()

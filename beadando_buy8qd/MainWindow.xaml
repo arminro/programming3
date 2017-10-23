@@ -27,7 +27,8 @@
         <ImageBrush x:Key="neptun" ImageSource="pack://siteoforigin:,,,/Resources/neptun.png"  />
         <ImageBrush x:Key="lead" ImageSource="lead.png"   />
         <ImageBrush x:Key="einstein" ImageSource="einstein.png"  />
-         
+        <ImageBrush x:Key="phone" ImageSource="pack://siteoforigin:,,,/Resources/stats.png" />
+
 
     </Window.Resources>
 
