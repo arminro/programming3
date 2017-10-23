@@ -54,6 +54,7 @@ namespace Beadando
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            
             base.OnKeyUp(e);
             if (e.Key == Key.Tab)
             {
@@ -240,7 +241,10 @@ namespace Beadando
             //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));
             //System.Windows.Point center = System.Windows.Point.Add(gameBoard[6].Rect, new Vector(50, NormalCard.height/2));
 
-            dc.DrawEllipse((ImageBrush)this.Resources[bl.P.PuppetKey], null, bl.P.Currentposition, bl.PuppetDiameter, bl.PuppetDiameter);
+            foreach (Player p in bl.Players)
+            {
+                dc.DrawEllipse((ImageBrush)this.Resources[p.PuppetKey], null, p.Currentposition, bl.PuppetDiameter, bl.PuppetDiameter); 
+            }
 
             //center = new System.Windows.Point((startPosition + (SquareCard.widthHeight / 2)) - NormalCard.width, 
             //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));

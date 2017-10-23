@@ -63,6 +63,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\Bindable.cs" />
     <Compile Include="Model\BoardField.cs" />
+    <Compile Include="Model\CircularList.cs" />
     <Compile Include="Model\CircularDictionary.cs" />
     <Compile Include="Model\Collections.cs" />
     <Compile Include="Model\Constants.cs" />

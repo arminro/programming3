@@ -24,21 +24,34 @@ namespace Beadando.ViewModel
             resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
             GameBoard = new CircularDictionary<BoardField>();
-            rand = new Random();
-            P = new Player("nik");
-            //millis = new List<long>();
+            
 
+            rand = new Random();
+           
+            //millis = new List<long>();
+            
             SetMetrics();
             GenerateOrderOfCards();
-            P.Currentposition = GameBoard[0].Rect;
-            
+            //P.Currentposition = GameBoard[0].Rect;
+            Players = new CircularList<Player>(); //the max number of players is 3
+            Players.Add(new Player("nik", GameBoard[0].Rect, 0));
+            GameBoard[0].ArriveAtPosition(Players[0]);
+
+            Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1));
+            GameBoard[0].ArriveAtPosition(Players[1]);
+
+            Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2));
+            GameBoard[0].ArriveAtPosition(Players[2]);
+
+            NextRound();
 
         }
 
 
         CircularDictionary<BoardField> gameBoard; //dict to hold the cards of the board
+        
         Random rand;
-
+        CircularList<Player> players;
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
         public event EventHandler<CardEventArgs> GetCardKey;
 
@@ -57,7 +70,7 @@ namespace Beadando.ViewModel
 
         #endregion
 
-        Player p;
+        Player p; //reference to the actual player
         int leftVerticalAlign;
         int incrementAtMovement;
         int upperVerticalAlign;
@@ -65,9 +78,9 @@ namespace Beadando.ViewModel
         int startPosition;
         int lowerHorizontalAlign;
 
-        float puppetDiameter;
-        float puppetDiameterChangeConstant;
-
+        float puppetDiameter; //the diameter of the player puppet
+        float puppetDiameterChangeConstant; //the constant to which the diameter of the puppet changes
+        int roundIncrementor; //this var is incremented to change players
 
 
 
@@ -79,16 +92,16 @@ namespace Beadando.ViewModel
         string[] resourceNamesNormalRight;
 
         int movementSpeed;
-        //List<long> millis; //used to calc the average of the 
+        //List<long> millis; 
 
-        internal Player P
+        public Player Player
         {
             get
             {
                 return p;
             }
 
-            private set
+            set
             {
                 p = value;
             }
@@ -224,6 +237,21 @@ namespace Beadando.ViewModel
             }
         }
 
+        public  CircularList<Player> Players
+        {
+            get
+            {
+                return players;
+            }
+
+            private set
+            {
+                players= value;
+            }
+        }
+
+       
+
         //public Player P { get => p; private set => p = value; }
         //public int LeftVerticalAlign { get => LeftVerticalAlign1; set => LeftVerticalAlign1 = value; }
         //public int IncrementAtMovement { get => IncrementAtMovement1; set => IncrementAtMovement1 = value; }
@@ -267,13 +295,18 @@ namespace Beadando.ViewModel
             NormalCard.height += (offset * 5 / 3);
             NormalCard.width += offset;
             SquareCard.widthHeight += (offset * 5 / 3);
-            LowerHorizontalAlign += offset;
+            //LowerHorizontalAlign -= offset; 
+            //StartPosition -= offset; 
             
-
+            
 
 
             float temp = ((float)(NormalCard.width + offset) / (float)NormalCard.width);
             PuppetDiameter *= temp;
+
+            //refreshing the position of the puppet so that it moves with the board (the changing board would move away from it)
+            Player.Currentposition = GameBoard[Player.CurrentCard].Rect;
+
             SetMetrics();
         }
 
@@ -281,7 +314,7 @@ namespace Beadando.ViewModel
         {
             StartPosition += offset;
             //megcsinálni az összes bábura
-            P.Currentposition = Point.Add(P.Currentposition, new Vector(offset, 0));
+            Player.Currentposition = Point.Add(Player.Currentposition, new Vector(offset, 0));
             
             SetMetrics();
         }
@@ -290,7 +323,7 @@ namespace Beadando.ViewModel
         {
             LowerHorizontalAlign += offset;
             //összes bábura!!!
-            P.Currentposition = Point.Add(P.Currentposition, new Vector(0, offset));
+            Player.Currentposition = Point.Add(Player.Currentposition, new Vector(0, offset));
 
             
             SetMetrics();
@@ -302,59 +335,124 @@ namespace Beadando.ViewModel
         public void GoToPosition(int position)
         {
             /*We have to keep stepping from the current position, but the number of steps has to start from 0*/
-            int positionHolder = p.CurrentCard; //we start off from the current position of the player
-            int startingPosition = p.CurrentCard;
+            int positionHolder = Player.CurrentCard; //we start off from the current position of the player
+            int startingPosition = Player.CurrentCard;
             DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Send);
-            int incr = 0; 
+            int incr = 0;
+            //if the goal position is in the same round (eg. from 9 to 12) we only have to take just as many steps as is there difference
+            //if the goal position is in another round (eg. from 25 to 1)
+            //we have to take as many steps as it takes to get to the start + the number of steps taking us to the goal card
+            int boundary = position > Player.CurrentCard ? position - Player.CurrentCard : (GameBoard.Count - Player.CurrentCard) + position;
             timer.Interval = TimeSpan.FromMilliseconds(422); //422 //kókány: 328.10526
             timer.Start();
             timer.Tick += (o, args) => {
            
                 //we get the number of cards between the player and the destination card
                 
-                if (incr <= Math.Abs(position-startingPosition))
+                //we check the next free position available on the destination
+                if (incr <= boundary)
                 {
-                    Step(positionHolder++);
+                    //we do not calculate the next free position for the card the player stands on
+                    Step(positionHolder,
+                         positionHolder != startingPosition ?  gameBoard[positionHolder].GetNextFreePosition() : 0);
+                    positionHolder++;
                     incr++;
                 }
                 else
                 {
                     timer.Stop();
-                    p.CurrentCard = GetPlayerCardNumber(p);
-                    MessageBox.Show($"Now I stand on card{p.CurrentCard}");
+                    //the --positionHolder means that we have to consider that at the end of the last iteration of the Tick...
+                    //...the positionHOlder will point to the card AFTER the one the player stands on
+                    Player.CurrentCard = GetPlayerCardNumber(Player, gameBoard[--positionHolder].GetNextFreePosition());
+                    MessageBox.Show($"Now I stand on card{Player.CurrentCard}");
                     //MessageBox.Show($"Average run stat: {millis.Average().ToString()}");
+                    GameBoard[Player.CurrentCard].ArriveAtPosition(Player);
+                    NextRound();
+
                 }
             };
             //Step(31);
-
             
 
 
         }
 
-        int GetPlayerCardNumber(Player p)
+        int GetPlayerCardNumber(Player p, int positionOrder)
         {
             return GameBoard.Where(g => 
-            IsThePlayerInTheVicinity(g.Value.Rect, p.Currentposition) == true)
+            IsThePlayerInTheVicinity(GetOrderRect(g.Value.Rect, positionOrder), p.Currentposition) == true)
             .FirstOrDefault().Key;
+        }
+
+        /// <summary>
+        /// Based on the order, calculates which position the player stands on
+        /// </summary>
+        /// <param name="originalRect">The positon 0 (center) of the cards</param>
+        /// <param name="order">The order of the player on the card</param>
+        /// <returns></returns>
+        Point GetOrderRect(Point originalRect, int order)
+        {
+            switch (order)
+            {
+                case 0:
+                    return originalRect;
+                case 1:
+                    return CalculateSecondaryPosition(originalRect);
+                case 2:
+                    return CalculateTertialPosition(originalRect);
+                default:
+                    return originalRect;
+                    
+            }
         }
 
         bool IsThePlayerInTheVicinity(Point cardRect, Point playerCurrentPosition)
         {
             //the player stands on the card if it is witin a diameter of 10 units
             int vicinity = 10;
-            return Math.Abs(Point.Subtract(cardRect, playerCurrentPosition).Length) <= vicinity;
+            double temp = Math.Abs(Point.Subtract(cardRect, playerCurrentPosition).Length);
+            return  temp<= vicinity;
         }
 
-        public void Step(int positionNumber)
+        public void Step(int positionNumber, int orderOnTheCard)
         {
+            //we tell the card on which the player priviously stood that s/he is leaving
+            if (Player.CurrentCard == positionNumber)
+            {
+                GameBoard[Player.CurrentCard].DepartFromposition(Player); 
+            }
+            //else
+            //{
+            //    Player.CurrentCard = positionNumber;
+            //   
+            //}
+
+            Point goalPosition;
+
+            
+
+            switch (orderOnTheCard)
+            {
+                //if the player is the 1st to stand on the card
+                case 0:
+                    goalPosition = GameBoard[positionNumber].Rect;
+                    break;
+                    //if the player is 2nd on the card
+                case 1:
+                    goalPosition = CalculateSecondaryPosition(GameBoard[positionNumber].Rect);
+                    break;
+                    //otherwise, which is if the player is 3rd on the card
+                default:
+                    goalPosition = CalculateTertialPosition(GameBoard[positionNumber].Rect);
+                    break;
+            }
 
             //RegisterName("player", p.Currentposition);
 
             //Stopwatch watch = new Stopwatch();
             //update the current position
-            Point goalPosition = new Point(GameBoard[positionNumber].Rect.X, GameBoard[positionNumber].Rect.Y);
-            Vector v = new Vector(goalPosition.X - P.Currentposition.X, goalPosition.Y - P.Currentposition.Y);
+            
+            Vector v = new Vector(goalPosition.X - Player.Currentposition.X, goalPosition.Y - Player.Currentposition.Y);
             //PointAnimation move = new PointAnimation(goalPosition, TimeSpan.FromSeconds(2));
             //re-render the scene
             //move.From = p.Currentposition;
@@ -391,9 +489,8 @@ namespace Beadando.ViewModel
                 }
                 else
                 {
-                    P.Currentposition = Point.Add(P.Currentposition, v / divide);
+                    Player.Currentposition = Point.Add(Player.Currentposition, v / divide);
                     Invalidate?.Invoke(null, null); //we just need a way to convey the invalidate visual from here
-
                 }
                 c++;
 
@@ -430,6 +527,12 @@ namespace Beadando.ViewModel
             //sb.Begin();
             //watch.Stop();
             //Debug.WriteLine(watch.ElapsedTicks);
+            
+        }
+
+        public void NextRound()
+        {
+            Player = Players.GetNextElement();
         }
 
         public Point CalculatePrimaryPosition(Point cornerRect, int widthOfCurrentCard, int heightOfCUrrentCard)
