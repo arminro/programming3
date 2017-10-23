@@ -328,7 +328,7 @@ namespace Beadando
                 new Typeface("Impact"),
                 18, brush);
 
-            drawingContext.DrawText(playerName, new Point(510, 380));
+            drawingContext.DrawText(playerName, new Point(510+bl.OffsetHorizontal, 380+bl.OffsetVertical));
 
             FormattedText playerMoney = new FormattedText(
                bl.Player.Money.ToString(),
@@ -337,7 +337,7 @@ namespace Beadando
                 new Typeface("Impact"),
                 70, brush);
 
-            drawingContext.DrawText(playerMoney, new Point(600, 430));
+            drawingContext.DrawText(playerMoney, new Point(600+bl.OffsetHorizontal, 430+bl.OffsetVertical));
         }
     }
 }
