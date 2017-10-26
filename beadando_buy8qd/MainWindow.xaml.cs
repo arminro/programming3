@@ -1,4 +1,5 @@
-﻿using Beadando.ViewModel;
+﻿using Beadando.View;
+using Beadando.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,11 +27,6 @@ namespace Beadando
     public partial class MainWindow : Window
     {
 
-
-
-
-
-
         BL bl;
         Random r;
 
@@ -45,10 +41,15 @@ namespace Beadando
 
             r = new Random();
             //how many elements the row is designed to hold
-            
+
             //resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun"};
             //resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
-           
+            bl.EventCard += (object s, CardEventArgs eventArgs) =>
+            {
+                EventViewer ev = new EventViewer(eventArgs.CardTypeKey);
+                //TODO ebállítani, h csak ez legyen aktív
+                ev.ShowDialog();
+            };
             
         }
 
@@ -60,6 +61,7 @@ namespace Beadando
             if (e.Key == Key.Tab)
             {
                 bl.GoToPosition(r.Next(0, bl.GameBoard.Count));
+                //bl.GoToPosition(2);
             }
         }
         protected override void OnKeyDown(KeyEventArgs e)
@@ -117,6 +119,8 @@ namespace Beadando
 
             myRect = new Rect(bl.StartPosition, bl.LowerHorizontalAlign, BL.SquareCard.widthHeight, BL.SquareCard.widthHeight);
             dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
+
+           
 
             //lower horizontal part
             int changingWidth = BL.NormalCard.width;
@@ -232,9 +236,15 @@ namespace Beadando
                 dc.DrawRectangle(brush, myPen, myRect);
 
             }
+            Rect backgroundRect = new Rect(bl.LowerHorizontalAlign
+                + Constants.numberOfElementsInAHorizontalRow_start * BL.NormalCard.width,
+                Constants.numberOfElementsInAVerticalRow_start
+                * BL.NormalCard.width, Constants.numberOfElementsInAVerticalRow_start
+                * BL.NormalCard.width, bl.LowerHorizontalAlign
+                + Constants.numberOfElementsInAHorizontalRow_start * BL.NormalCard.width);
 
-
-
+            //TODO background of the gameboard
+            dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
 
             //PUPPETS --> RENDERED AFTER THE TRACK
             //myRect = new Rect(Constants.startPosition, Constants.lowerHorizontalAlign, 50, 50);
@@ -306,10 +316,11 @@ namespace Beadando
 
             //PLAYER UI
             Size playerUiSize = new Size(550, 450);
-            Rect mainPlayerScreen = new Rect(new Point(((ActualWidth/2) - (playerUiSize.Width/2)+bl.OffsetHorizontal), ((ActualHeight/2) - (playerUiSize.Height/2))+bl.OffsetVertical), playerUiSize);
+            Point startPoint = new Point(((ActualWidth / 2) - (playerUiSize.Width / 2) + bl.OffsetHorizontal), ((ActualHeight / 2) - (playerUiSize.Height / 2)) + bl.OffsetVertical);
+            Rect mainPlayerScreen = new Rect(startPoint, playerUiSize);
             
             dc.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
-            DrawPlayerUI(dc);
+            DrawPlayerUI(dc, startPoint);
         }
 
         private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -318,7 +329,7 @@ namespace Beadando
             InvalidateVisual();
         }
 
-        private void DrawPlayerUI(DrawingContext drawingContext)
+        private void DrawPlayerUI(DrawingContext drawingContext, Point uiRect)
         {
             Brush brush = bl.Player.PuppetKey == "nik" ? Brushes.DodgerBlue : bl.Player.PuppetKey == "kando" ? Brushes.Gold : Brushes.LimeGreen;
             FormattedText playerName = new FormattedText(
@@ -328,7 +339,7 @@ namespace Beadando
                 new Typeface("Impact"),
                 18, brush);
 
-            drawingContext.DrawText(playerName, new Point(510+bl.OffsetHorizontal, 380+bl.OffsetVertical));
+            drawingContext.DrawText(playerName, new Point((uiRect.X + 100), (uiRect.Y + 210)));
 
             FormattedText playerMoney = new FormattedText(
                bl.Player.Money.ToString(),
@@ -337,7 +348,7 @@ namespace Beadando
                 new Typeface("Impact"),
                 70, brush);
 
-            drawingContext.DrawText(playerMoney, new Point(600+bl.OffsetHorizontal, 430+bl.OffsetVertical));
+            drawingContext.DrawText(playerMoney, new Point((uiRect.X + 250), (uiRect.Y + 260)));
         }
     }
 }

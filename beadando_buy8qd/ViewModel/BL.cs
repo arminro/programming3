@@ -24,6 +24,12 @@ namespace Beadando.ViewModel
             OffsetVertical = 0;
             resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
+
+            greens = new string[] { "go", "start", "roll", "einstein" };
+            blacks = new string[] { "uv", "randi", };
+            yellows = new string[] { "event" };
+            blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
+
             GameBoard = new CircularDictionary<BoardField>();
             
 
@@ -54,7 +60,7 @@ namespace Beadando.ViewModel
         Random rand;
         CircularList<Player> players;
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
-        public event EventHandler<CardEventArgs> GetCardKey;
+        public event EventHandler<CardEventArgs> EventCard;
 
         #region CardMetrics
         public class NormalCard
@@ -90,9 +96,22 @@ namespace Beadando.ViewModel
 
 
         string[] resourceNamesNormalLeft;
+
+       
+
         string[] resourceNamesNormalRight;
 
         int movementSpeed;
+
+
+        #region EventViewer
+        string[] greens;
+        string[] blacks;
+        string[] yellows;
+        string[] blues;
+
+        #endregion
+
         //List<long> millis; 
 
         public Player Player
@@ -372,9 +391,12 @@ namespace Beadando.ViewModel
                     //the --positionHolder means that we have to consider that at the end of the last iteration of the Tick...
                     //...the positionHOlder will point to the card AFTER the one the player stands on
                     Player.CurrentCard = GetPlayerCardNumber(Player, gameBoard[--positionHolder].GetNextFreePosition());
-                    MessageBox.Show($"Now I stand on card{Player.CurrentCard}");
+                    //MessageBox.Show($"Now I stand on card{Player.CurrentCard}");
                     //MessageBox.Show($"Average run stat: {millis.Average().ToString()}");
                     GameBoard[Player.CurrentCard].ArriveAtPosition(Player);
+
+                    //we signal that an event has to happen here that a view can handle anyway s/he wants (MVVM <3)
+                    EventCard?.Invoke(this, new CardEventArgs(GameBoard[Player.CurrentCard].ImageKey));
                     NextRound();
 
                 }
@@ -694,9 +716,25 @@ namespace Beadando.ViewModel
             //    i++;
             //}
 
-
+        }
+        /// <summary>
+        /// Decides on which category the card with the given key belongs to
+        /// </summary>
+        /// <param name="cardKey">The key of the card</param>
+        /// <returns></returns>
+        public string EventCategroySelector(string cardKey)
+        {
+            if (greens.Contains(cardKey))
+                return "green";
+            else if (blues.Contains(cardKey))
+                return "blue";
+            else if (yellows.Contains(cardKey))
+                return "yellow";
+            else
+                return "black";
         }
 
+        
 
 
     }

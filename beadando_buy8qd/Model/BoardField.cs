@@ -59,7 +59,7 @@ namespace Beadando
             positions = new Player[3];
         }
 
-        //TODO sometimes this doesnt work
+        
         public int ArriveAtPosition(Player p)
             {
             //insert the player stepping on the card on the 1st empty place
