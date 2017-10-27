@@ -47,7 +47,6 @@ namespace Beadando
             bl.EventCard += (object s, CardEventArgs eventArgs) =>
             {
                 EventViewer ev = new EventViewer(eventArgs.CardTypeKey);
-                //TODO ebállítani, h csak ez legyen aktív
                 ev.ShowDialog();
             };
             

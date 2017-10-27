@@ -203,12 +203,53 @@
   <ItemGroup>
     <Resource Include="wood.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\enroll_event.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\smartphone.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\stats.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\event_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kvk_out.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lead_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\megajanlott_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\neptun_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nik_out.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\randi_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rkk_out.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\uv_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\einstein_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\roll_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\go_event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\oe.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

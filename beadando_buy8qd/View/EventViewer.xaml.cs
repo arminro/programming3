@@ -2,6 +2,7 @@
 using Beadando.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,9 @@ namespace Beadando.View
         RenderedButton rbutton;
         string keyOfCurrentCard;
         Brush background;
+        int fontSize;
+        string textToBeDisplayed;
+
         public EventViewer(string cardKey)
         {
             InitializeComponent();
@@ -41,14 +45,14 @@ namespace Beadando.View
             textBoxWidth = 350;
             textBoxHeight = 120;
             keyOfCurrentCard = cardKey;
-            
             bl = new BL();
+           
 
             //determine the background of the window based on the type of card the player stands
             switch (bl.EventCategroySelector(keyOfCurrentCard))
             {
                 case "green":
-                    background = new SolidColorBrush(Colors.LawnGreen);
+                    background = new SolidColorBrush(Colors.ForestGreen);
                     break;
                 case "blue":
                     background = new SolidColorBrush(Colors.RoyalBlue);
@@ -60,8 +64,9 @@ namespace Beadando.View
                     background = new SolidColorBrush(Colors.Yellow);
                     break;
             }
-
-          
+            Tuple<string, int> tempTup = bl.GetTextToDisplay(keyOfCurrentCard);
+            textToBeDisplayed = tempTup.Item1;
+            fontSize = tempTup.Item2;
            
 
         }
@@ -73,21 +78,25 @@ namespace Beadando.View
         
             //draws the eventcard
             Rect drawingRect = new Rect(offset, offset, ActualWidth-(offset*2), ActualHeight-200);
-            dc.DrawRoundedRectangle(Brushes.Blue, null, drawingRect, 5, 5);
+
+            //used the same keys, becuase it is a different window
+            //if the start triggered the event, we show the oe image
+            dc.DrawRoundedRectangle((ImageBrush)Resources[keyOfCurrentCard == "start" ? 
+               "oe" : keyOfCurrentCard], null, drawingRect, 5, 5);
         
             //draw textbox
             Rect textboxRect = new Rect(ActualWidth/2 - textBoxWidth/2, (ActualHeight - 200) + textBoxHeight/6, textBoxWidth, textBoxHeight);
             dc.DrawRoundedRectangle(Brushes.White, null, textboxRect, 5, 5);
         
         
-            //FormattedText eventText = new FormattedText(
-            //   bl.Player.Name,
-            //    CultureInfo.CurrentUICulture,
-            //    FlowDirection.LeftToRight,
-            //    new Typeface("Impact"),
-            //    18, Brush);
-            //
-            //dc.DrawText(eventText, new Point((uiRect.X + 100), (uiRect.Y + 210)));
+            FormattedText eventText = new FormattedText(
+              textToBeDisplayed,
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Impact"),
+                fontSize, Brushes.Black);
+            
+            dc.DrawText(eventText, new Point(textboxRect.X+5, textboxRect.Y+5));
             rbutton = new RenderedButton(dc, new Rect(ActualWidth / 2 - 50, ActualHeight - 50, 100, 30), "Rendben",
                 Brushes.White, Brushes.Black);
             rbutton.Click += (object sender, EventArgs e) =>

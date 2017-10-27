@@ -31,7 +31,22 @@ namespace Beadando.ViewModel
             blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
 
             GameBoard = new CircularDictionary<BoardField>();
-            
+
+            //adding the texts of the events from the data in MODEL
+            EventCardTexts = new Dictionary<string, object>
+            {
+                { "go", Constants.go },
+                { "megajanlott", Constants.megajanlott},
+                { "start", Constants.start },
+                { "roll", Constants.roll},
+                { "randi", Constants.randi },
+                { "enroll", Constants.enroll },
+                { "einstein", Constants.einstein },
+                { "uv", Constants.uv },
+                { "lead", Constants.lead },
+                { "event", Constants.hallgatoevents },
+                { "neptun", Constants.neptunMessages }
+            };
 
             rand = new Random();
            
@@ -56,7 +71,7 @@ namespace Beadando.ViewModel
 
 
         CircularDictionary<BoardField> gameBoard; //dict to hold the cards of the board
-        
+        Dictionary<string, object> eventCardTexts;
         Random rand;
         CircularList<Player> players;
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
@@ -272,6 +287,19 @@ namespace Beadando.ViewModel
         //the values responsible for moving the phone 
         public int OffsetHorizontal { get;  set; }
         public int OffsetVertical { get;  set; }
+
+        public Dictionary<string, object> EventCardTexts
+        {
+            get
+            {
+                return eventCardTexts;
+            }
+
+            set
+            {
+                eventCardTexts = value;
+            }
+        }
 
 
 
@@ -701,6 +729,15 @@ namespace Beadando.ViewModel
                 }
                 GameBoard.Add(indexer++, b);
             }
+            //to make sure that the game can be won, 3 of the cards are switched to a win card randomly
+            for (int i = 0; i < 3; i++)
+            {
+                //we start form 1 bc the start cannot be switched
+                GameBoard[rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
+                
+            }
+            //GameBoard[2].ImageKey = "megajanlott"; //USED FOR TESTING!!!
+
             //while (i < temp.Length && i <= Constants.numberOfElementsInAVerticalRow)
             //{
             //    if (i % Constants.numberOfElementsInAVerticalRow == 0)
@@ -734,7 +771,93 @@ namespace Beadando.ViewModel
                 return "black";
         }
 
-        
+        /// <summary>
+        /// Gets out the a pre-specified values from the dictionary that containts event texts and formats it to be displayed. I used Tuples instead of obj[] bc they are cool AF.
+        /// </summary>
+        /// <param name="cardKey">The key of the card that triggered the event</param>
+        /// <returns></returns>
+        public Tuple<string, int> GetTextToDisplay(string cardKey)
+        {
+
+            
+            StringBuilder builder = new StringBuilder();
+            object temp = EventCardTexts[cardKey];
+            int boundary = 0; //the number of characters allowed in 1 line  
+
+            if(temp is string)
+            {
+                builder = new StringBuilder(temp as string);
+            }
+            else if(temp is string[])
+            {
+                string[] tempArray = temp as string[];
+                builder = new StringBuilder(tempArray[rand.Next(0, tempArray.Length)]);
+            }
+            else if(temp is int[])
+            {
+                int[] tempArray = temp as int[];
+                builder = new StringBuilder($"Lépj előre: {tempArray[rand.Next(0, tempArray.Length)]}");
+            }
+
+
+            //based on the number of characters, we assign a fontsize as well
+            int fontsize = 16;
+
+            if (builder.Length < 50)
+            {
+                fontsize = 30;
+            }
+            else if (builder.Length >= 50 && builder.Length < 100)
+            {
+                fontsize = 20;
+            }
+
+            //based on the fontsize, we determine how many characters should be in a line (in a not so mathematical manner)
+            switch (fontsize)
+            {
+                case 16:
+                    boundary = 40;
+                    break;
+                case 20:
+                    boundary = 30;
+                    break;
+                
+                default:
+                    boundary = 25;
+                    break;
+            }
+
+            //we append the string with \n in the proper places so they appear to be formatted
+            int buffer = 0; //this is used to track the length of the line
+            for (int i = 0; i < builder.Length; i++)
+            {
+                buffer++; 
+                if(builder[i] == '\n')
+                {
+                    buffer = 0; //if we arrived at a new line, we reset the buffer
+                }
+                if (buffer % boundary == 0 && buffer != 0)
+                {
+                    //we look for the first space character and append the text there
+                    //this will be found before the last character to be displayed, so we will count backwards
+                    //this way the words will appear to be correct
+                    int j = i;
+                    while(j > 0 && builder[j] != ' ')
+                    {
+                        j--;
+                    }
+                    if (builder[j] != '\n')
+                    {
+                        builder.Insert(j, "\n");
+                        builder.Remove(j + 1, 1); //we delete the space after the word, becuase we no longer need it due to the new line 
+                    }
+                }
+            }
+            //else it remains 12
+            return Tuple.Create<string, int>(builder.ToString(), fontsize);
+
+        }
+
 
 
     }
