@@ -32,7 +32,8 @@ namespace Beadando.View
         int textBoxWidth; // width of the textbox
         int textBoxHeight;
         BL bl;
-        RenderedButton rbutton;
+        RenderedButton rbuttonConfirm;
+        RenderedButton rbuttonDeny;
         string keyOfCurrentCard;
         Brush background;
         int fontSize;
@@ -46,7 +47,7 @@ namespace Beadando.View
             textBoxHeight = 120;
             keyOfCurrentCard = cardKey;
             bl = new BL();
-           
+
 
             //determine the background of the window based on the type of card the player stands
             switch (bl.EventCategroySelector(keyOfCurrentCard))
@@ -97,19 +98,58 @@ namespace Beadando.View
                 fontSize, Brushes.Black);
             
             dc.DrawText(eventText, new Point(textboxRect.X+5, textboxRect.Y+5));
-            rbutton = new RenderedButton(dc, new Rect(ActualWidth / 2 - 50, ActualHeight - 50, 100, 30), "Rendben",
-                Brushes.White, Brushes.Black);
-            rbutton.Click += (object sender, EventArgs e) =>
+            Rect confirmButtonRect = new Rect(ActualWidth / 2 - 50, ActualHeight - 50, 100, 30);
+
+            //if the player arrived on an enroll card, we have to display a slightly different layout
+            if (keyOfCurrentCard == "enroll")
             {
-                //TODO call for some bl logic
-            };
+                confirmButtonRect = new Rect(ActualWidth / 2 - 100, ActualHeight - 50, 100, 30);
+                rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
+                Brushes.White, Brushes.Black);
+
+                rbuttonDeny = new RenderedButton(dc, new Rect(ActualWidth / 2+10, ActualHeight-50, 100, 30), 
+                    "Mégsem", Brushes.White, Brushes.Black);
+                rbuttonDeny.Click += (object sender, EventArgs e) =>
+                {
+                    this.DialogResult = false;
+                };
+
+                rbuttonConfirm.Click += RbuttonConfirmEnroll_Click;
+            }
+
+            else
+            {
+                rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
+                Brushes.White, Brushes.Black);
+                rbuttonConfirm.Click += RbuttonConfirm_Click;
+            }
+            
+            
+
         
+        }
+
+        private void RbuttonConfirm_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = true;
+            
+        }
+
+        private void RbuttonConfirmEnroll_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = true;
+            bl.InitializeSubjectTransactions();
+            
         }
 
         private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            rbutton.CheckIfPressed(e.GetPosition(this));
-            this.DialogResult = true;
+            rbuttonConfirm.CheckIfPressed(e.GetPosition(this));
+            if(rbuttonDeny != null)
+            {
+                rbuttonDeny.CheckIfPressed(e.GetPosition(this));
+            }
+            
         }
     }
 

@@ -68,11 +68,17 @@
     <Compile Include="Model\Collections.cs" />
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Subject.cs" />
+    <Compile Include="View\ColorMultiplyerConverter.cs" />
+    <Compile Include="ViewModel\SubjectEventArgs.cs" />
     <Compile Include="View\RenderedButton.cs" />
     <Compile Include="ViewModel\BL.cs" />
     <Compile Include="ViewModel\CardEventArgs.cs" />
     <Compile Include="View\EventViewer.xaml.cs">
       <DependentUpon>EventViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SubjectWindow.xaml.cs">
+      <DependentUpon>SubjectWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -87,6 +93,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\EventViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SubjectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

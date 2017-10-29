@@ -35,20 +35,49 @@ namespace Beadando
             
             InitializeComponent();
             bl = new BL();
+
+            //subscribing to connector events
             bl.Invalidate += (object sender, EventArgs eve) => {
                 InvalidateVisual();
             };
+            bl.EventCard += (object s, CardEventArgs eventArgs) =>
+            {
+                EventViewer ev = new EventViewer(eventArgs.CardTypeKey);
+                //if the player wanted to buy a new subject, we show the subject dialog
+                if (eventArgs.CardTypeKey == "enroll" && ev.ShowDialog() == true)
+                {
+                    SubjectWindow subw = new SubjectWindow(bl);
+                    bl.InitializeSubjectTransactions();
+                    switch (bl.Player.PuppetKey)
+                    {
+                        case "nik":
+                            subw.Background = new SolidColorBrush(Colors.DodgerBlue);
+                            break;
+                        case "kando":
+                        subw.Background = new SolidColorBrush(Colors.Gold);
+                            break;
+                        case "rejto":
+                            subw.Background = new SolidColorBrush(Colors.LimeGreen);
+                            break;
+                        default:
+                            subw.Background = new SolidColorBrush(Colors.LightBlue);
+                            break;
+                    }
+
+                    if (subw.ShowDialog() == true)
+                    {
+                        InvalidateVisual();
+                    }
+                }
+            };
+
+
 
             r = new Random();
             //how many elements the row is designed to hold
 
             //resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun"};
             //resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
-            bl.EventCard += (object s, CardEventArgs eventArgs) =>
-            {
-                EventViewer ev = new EventViewer(eventArgs.CardTypeKey);
-                ev.ShowDialog();
-            };
             
         }
 
@@ -59,8 +88,8 @@ namespace Beadando
             base.OnKeyUp(e);
             if (e.Key == Key.Tab)
             {
-                bl.GoToPosition(r.Next(0, bl.GameBoard.Count));
-                //bl.GoToPosition(2);
+                //bl.GoToPosition(r.Next(0, bl.GameBoard.Count));
+                bl.GoToPosition(2);
             }
         }
         protected override void OnKeyDown(KeyEventArgs e)
@@ -108,7 +137,7 @@ namespace Beadando
             ImageBrush brush;
             int indexer = 1;
             Pen myPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Blue, 3);
-
+            
             //BACKGROUND --> ALWAYS RENDERED FIRST
             Rect myRect = new Rect(0, 0, this.ActualWidth, this.ActualHeight);
             dc.DrawRectangle((ImageBrush)this.Resources["wood"], null, myRect);
@@ -125,11 +154,11 @@ namespace Beadando
             int changingWidth = BL.NormalCard.width;
             int correction = 0;
             Point holder; //this holds the calcuated points
-            for (int i = 1; i <= Constants.numberOfElementsInAHorizontalRow_start; i++)
+            for (int i = 1; i <= bl.NumberOfElementsInAHorizontalRow; i++)
             {
                 //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
                 brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
+                if (i % bl.NumberOfElementsInAHorizontalRow == 0)
                 {
                     //myRect = new Rect(Constants.startPosition - 
                     //    (i * Constants.NormalCard.width - (Constants.SquareCard.widthHeight - 
@@ -162,12 +191,12 @@ namespace Beadando
             //anotherRotateTransform.Angle = 90;
             
 
-            for (int i = 1; i <= Constants.numberOfElementsInAVerticalRow_start; i++)
+            for (int i = 1; i <= bl.NumberOfElementsInAVerticalRow; i++)
             {
                 //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
                 brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
                 //brush.Transform = anotherRotateTransform;
-                if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
+                if (i % bl.NumberOfElementsInAVerticalRow == 0)
                 {
                     changingWidth = BL.SquareCard.widthHeight;
                     //we have to put the square card a little further, because it is wider
@@ -186,11 +215,11 @@ namespace Beadando
             //upper horizontal part
             changingWidth = BL.NormalCard.width;
             correction = 0;
-            for (int i = 1; i <= Constants.numberOfElementsInAHorizontalRow_start; i++)
+            for (int i = 1; i <= bl.NumberOfElementsInAHorizontalRow; i++)
             {
                 //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
                 brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
+                if (i % bl.NumberOfElementsInAHorizontalRow == 0)
                 {
 
                     changingWidth = BL.SquareCard.widthHeight;
@@ -214,18 +243,18 @@ namespace Beadando
 
             changingWidth = BL.NormalCard.width;
             correction = 0;
-            for (int i = 1; i <= Constants.numberOfElementsInAVerticalRow_start-1; i++)
+            for (int i = 1; i <= bl.NumberOfElementsInAVerticalRow-1; i++)
             {
                 //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
                 brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                // if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
+                // if (i % bl.NumberOfElementsInAVerticalRow == 0)
                 // {
                 //     changingWidth = SquareCard.widthHeight;
                 //     //we have to put the square card a little further, because it is wider
                 //     correction = SquareCard.widthHeight - NormalCard.width;
                 // }
                 holder = new Point(bl.RightVerticalAlign,
-                      (bl.LowerHorizontalAlign - Constants.numberOfElementsInAVerticalRow_start * BL.NormalCard.width) + i * BL.NormalCard.width);
+                      (bl.LowerHorizontalAlign - bl.NumberOfElementsInAVerticalRow * BL.NormalCard.width) + i * BL.NormalCard.width);
                 bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, BL.NormalCard.height, changingWidth);
 
                 myRect = new Rect(holder.X, 
@@ -236,11 +265,11 @@ namespace Beadando
 
             }
             Rect backgroundRect = new Rect(bl.LowerHorizontalAlign
-                + Constants.numberOfElementsInAHorizontalRow_start * BL.NormalCard.width,
-                Constants.numberOfElementsInAVerticalRow_start
-                * BL.NormalCard.width, Constants.numberOfElementsInAVerticalRow_start
+                + bl.NumberOfElementsInAHorizontalRow * BL.NormalCard.width,
+                bl.NumberOfElementsInAVerticalRow
+                * BL.NormalCard.width, bl.NumberOfElementsInAVerticalRow
                 * BL.NormalCard.width, bl.LowerHorizontalAlign
-                + Constants.numberOfElementsInAHorizontalRow_start * BL.NormalCard.width);
+                + bl.NumberOfElementsInAHorizontalRow * BL.NormalCard.width);
 
             //TODO background of the gameboard
             dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
@@ -251,10 +280,15 @@ namespace Beadando
             //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));
             //System.Windows.Point center = System.Windows.Point.Add(gameBoard[6].Rect, new Vector(50, NormalCard.height/2));
 
-            foreach (Player p in bl.Players)
+            //the view does not know about Player type, just sees the data from bl
+            for (int i = 0; i < bl.Players.Count; i++)
             {
-                dc.DrawEllipse((ImageBrush)this.Resources[p.PuppetKey], null, p.Currentposition, bl.PuppetDiameter, bl.PuppetDiameter); 
+                dc.DrawEllipse((ImageBrush)this.Resources[bl.Players[i].PuppetKey], null, bl.Players[i].Currentposition, bl.PuppetDiameter, bl.PuppetDiameter);
             }
+           //foreach (Player p in bl.Players)
+           //{
+           //    dc.DrawEllipse((ImageBrush)this.Resources[p.PuppetKey], null, p.Currentposition, bl.PuppetDiameter, bl.PuppetDiameter); 
+           //}
 
             //center = new System.Windows.Point((startPosition + (SquareCard.widthHeight / 2)) - NormalCard.width, 
             //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));

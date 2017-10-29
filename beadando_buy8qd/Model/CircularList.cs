@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Beadando.Model
 {
-    class CircularList<T> : List<T>
+    public class CircularList<T> : List<T>
     {
         int inc;
         public CircularList()

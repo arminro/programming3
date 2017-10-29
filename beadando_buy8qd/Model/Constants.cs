@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Beadando
+namespace Beadando.Model
 {
     public  class Constants
     {
+
+
         public static class NormalCard
         {
             public static int height_start = 135; //180
@@ -27,6 +29,11 @@ namespace Beadando
         public const int numberOfElementsInAVerticalRow_start = 5;
         public const int puppetStartDiameter = 30;
 
+
+        public static string[] nik_targyak = new string[] { "Programozás", "Digitális technika", "Adatbázisok" };
+        public static string[] kando_targyak = new string[] { "Villamosságtan", "Elektronika", "Irányítástechnika" };
+        public static string[] rejto_targyak = new string[] { "Formatervezés", "Művészeti ismeretek", "Ábrázoló Geometria" };
+
         #region EventCards
         public static string[] hallgatoevents = {"TÖKÖS LEGÉNY\nEgy véletlenül kiválasztott helyről folytatod a játékot!",
         "KOCKA NAPOK\nHa NIK-es vagy, kapsz egy tárgyat ingyen!"};
@@ -41,7 +48,7 @@ namespace Beadando
         public static string uv = "UV\nFIZESS 4000-ET";
         public static string einstein = "100,5-ös ÖCSI\nKAPSZ 20.000 ÖSZTÖNDÍJAT";
         public static string lead = "Letiltottak egy tárgyadról mert nem érted el a 20%-os küszöböt!";
-        public static string enroll = "TÁRGYFELVÉTELI LEHETŐSÉG";
+        public static string enroll = "TÁRGYFELVÉTELI LEHETŐSÉG\nLehetőséged van megvenni egy tárgyadat!";
         public static string roll = "Dobhatsz mégegyszer";
         public static string start = "Üdv a következő félévben!\nJUTALMAD 5000";
         public static string megajanlott = "Megajánlott jegy!\nJUTALMAD EGY TÁRGY INGYEN";

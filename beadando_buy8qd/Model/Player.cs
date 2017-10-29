@@ -1,34 +1,38 @@
 ﻿using Beadando.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace Beadando
+namespace Beadando.Model
 {
-    class Player : Bindable
+    public enum PlayerState
+    {
+        neutral = 0, rollagain = 1, missARound = 2
+    }
+
+    public class Player
     {
         string puppetKey;
         Point currentposition;
-        bool[] subjects; //array to store elements
+        ObservableCollection<Subject> subjects; //array to store elements
         int currentCard; //storing the card the player sits on
         string name;
         int order;
         int money;
+        PlayerState state;
 
         public Player(string puppetKey, string name = "Player")
         {
             this.puppetKey = puppetKey;
             this.currentCard = 0;
             this.money = 20000;
-            subjects = new bool[5]; //there are 5 subs
-            for (int i = 0; i < subjects.Length; i++)
-            {
-                subjects[i] = false;
-            }
+            subjects = new ObservableCollection<Subject>();
+            State = PlayerState.neutral; 
         }
 
         public Player(string puppetKey, Point currentposition, int order,  string name = "Player")
@@ -36,11 +40,7 @@ namespace Beadando
             this.puppetKey = puppetKey;
             this.currentposition = currentposition;
             this.money = 20000;
-            subjects = new bool[3]; //there are 3 subs
-            for (int i = 0; i < subjects.Length; i++)
-            {
-                subjects[i] = false;
-            }
+            subjects = new ObservableCollection<Subject>(); 
 
             this.currentCard = 0;
             this.name = name;
@@ -68,11 +68,11 @@ namespace Beadando
             set
             {
                 currentposition = value;
-                OnPropertyChanged();
+                
             }
         }
 
-        public bool[] Subjects
+        public ObservableCollection<Subject> Subjects
         {
             get
             {
@@ -130,10 +130,19 @@ namespace Beadando
             }
         }
 
-        public void AddSubject(int subjectNumber)
+        public PlayerState State
         {
-            subjects[subjectNumber] = true;
+            get
+            {
+                return state;
+            }
+
+            set
+            {
+                state = value;
+            }
         }
+
         //public bool Subjects { get => subjects; set => subjects = value; }
 
         public override bool Equals(object obj)

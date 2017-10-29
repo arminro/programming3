@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Beadando.Model;
+using System.Collections.ObjectModel;
 
 namespace Beadando.ViewModel
 {
-    class BL
+    public class BL :Bindable
     {
 
         public BL()
@@ -22,6 +23,8 @@ namespace Beadando.ViewModel
             IncrementAtMovement = 1;
             OffsetHorizontal = 0;
             OffsetVertical = 0;
+            numberOfElementsInAHorizontalRow = Constants.numberOfElementsInAHorizontalRow_start;
+            numberOfElementsInAVerticalRow = Constants.numberOfElementsInAVerticalRow_start;
             resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
 
@@ -29,8 +32,32 @@ namespace Beadando.ViewModel
             blacks = new string[] { "uv", "randi", };
             yellows = new string[] { "event" };
             blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
-
+            rand = new Random();
             GameBoard = new CircularDictionary<BoardField>();
+            Subjects = new Dictionary<string, ObservableCollection<Subject>>();
+
+            Subjects.Add("nik", new ObservableCollection<Subject>());
+            for (int i = 0; i < Constants.nik_targyak.Length; i++)
+            {
+                //adding the subjects with  prices
+                Subjects["nik"].Add(new Subject(Constants.nik_targyak[i], (i+1)*1000)); 
+            }
+
+            Subjects.Add("rejto", new ObservableCollection<Subject>());
+            for (int i = 0; i < Constants.rejto_targyak.Length; i++)
+            {
+                //adding the subjects with random prices
+                Subjects["rejto"].Add(new Subject(Constants.rejto_targyak[i], (i+1)*1000));
+            }
+
+            Subjects.Add("kando", new ObservableCollection<Subject>());
+            for (int i = 0; i < Constants.kando_targyak.Length; i++)
+            {
+                //adding the subjects with random prices
+                Subjects["kando"].Add(new Subject(Constants.kando_targyak[i], (i+1)*1000));
+            }
+
+
 
             //adding the texts of the events from the data in MODEL
             EventCardTexts = new Dictionary<string, object>
@@ -48,7 +75,11 @@ namespace Beadando.ViewModel
                 { "neptun", Constants.neptunMessages }
             };
 
-            rand = new Random();
+
+            EventActions = new Dictionary<string, Action<Player>>();
+            //EventActions.Add("megajanlott", p=>)
+
+            
            
             //millis = new List<long>();
             
@@ -69,13 +100,18 @@ namespace Beadando.ViewModel
 
         }
 
-
         CircularDictionary<BoardField> gameBoard; //dict to hold the cards of the board
-        Dictionary<string, object> eventCardTexts;
+        Dictionary<string, object> eventCardTexts; //dict to store the text elements for the cards
+        Dictionary<string, Action<Player>> eventActions; //dict to store the actions that has the same signature
+
+        //holds the subjects for the players, we use a more flexible data type that is more flexible than arrays here so we can add and remove them runtime
+        //also, the original lists do not need to be tempered with
+        Dictionary<string, ObservableCollection<Subject>> subjects;
         Random rand;
         CircularList<Player> players;
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
-        public event EventHandler<CardEventArgs> EventCard;
+        public event EventHandler<CardEventArgs> EventCard; //provides a way to invoke the event in the view
+        public event EventHandler<EventArgs> InitiateSubjectTransaction; //provides a way to invoke the subjects window
 
         #region CardMetrics
         public class NormalCard
@@ -93,12 +129,100 @@ namespace Beadando.ViewModel
         #endregion
 
         Player p; //reference to the actual player
+
+        #region SubjectWindowItems
+        ObservableCollection<Subject> subjectsOfPlayer; //represents the subjects of the player
+        ObservableCollection<Subject> subjectsAvailableToPlayer; //represents the subjects available to the player
+        Subject selectedSubject; //represetns the subject the player selected in the subject window
+        bool canPlayerBuyIt;
+
+        public ObservableCollection<Subject> SubjectsOfPlayer
+        {
+            get
+            {
+                return subjectsOfPlayer;
+            }
+
+            set
+            {
+                subjectsOfPlayer = value;
+            }
+        }
+
+        public ObservableCollection<Subject> SubjectsAvailableToPlayer
+        {
+            get
+            {
+                return subjectsAvailableToPlayer;
+            }
+
+            set
+            {
+                subjectsAvailableToPlayer = value;
+            }
+        }
+
+        public Subject SelectedSubject
+        {
+            get
+            {
+                return selectedSubject;
+            }
+
+            set
+            {
+                selectedSubject = value;
+            }
+        }
+        public bool CanPlayerBuyIt
+        {
+            get
+            {
+                return canPlayerBuyIt;
+            }
+
+            set
+            {
+                canPlayerBuyIt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void InitializeSubjectTransactions()
+        {
+            SubjectsAvailableToPlayer = Subjects[Player.PuppetKey];
+            SubjectsOfPlayer = Player.Subjects;
+            SelectedSubject = null;
+            CanPlayerBuyIt = true;
+            InitiateSubjectTransaction?.Invoke(this, new EventArgs());
+        }
+
+        public void CanPlayerBuySubject(object v)
+        {
+            Subject s = (v as Subject);
+            if(Player.Money - s.Price > 0)
+            {
+                CanPlayerBuyIt = true;
+            }
+            else
+            {
+                CanPlayerBuyIt = false;
+            }
+
+        }
+
+
+
+        #endregion
+
         int leftVerticalAlign;
         int incrementAtMovement;
         int upperVerticalAlign;
         int rightVerticalAlign;
         int startPosition;
         int lowerHorizontalAlign;
+        int numberOfElementsInAHorizontalRow;
+        int numberOfElementsInAVerticalRow;
 
         float puppetDiameter; //the diameter of the player puppet
         float puppetDiameterChangeConstant; //the constant to which the diameter of the puppet changes
@@ -301,6 +425,60 @@ namespace Beadando.ViewModel
             }
         }
 
+        internal Dictionary<string, Action<Player>> EventActions
+        {
+            get
+            {
+                return eventActions;
+            }
+
+            set
+            {
+                eventActions = value;
+            }
+        }
+
+        public Dictionary<string, ObservableCollection<Subject>> Subjects
+        {
+            get
+            {
+                return subjects;
+            }
+
+            set
+            {
+                subjects = value;
+            }
+        }
+
+        public int NumberOfElementsInAHorizontalRow
+        {
+            get
+            {
+                return numberOfElementsInAHorizontalRow;
+            }
+
+            set
+            {
+                numberOfElementsInAHorizontalRow = value;
+            }
+        }
+
+        public int NumberOfElementsInAVerticalRow
+        {
+            get
+            {
+                return numberOfElementsInAVerticalRow;
+            }
+
+            set
+            {
+                numberOfElementsInAVerticalRow = value;
+            }
+        }
+
+
+
 
 
         //public Player P { get => p; private set => p = value; }
@@ -424,7 +602,7 @@ namespace Beadando.ViewModel
                     GameBoard[Player.CurrentCard].ArriveAtPosition(Player);
 
                     //we signal that an event has to happen here that a view can handle anyway s/he wants (MVVM <3)
-                    EventCard?.Invoke(this, new CardEventArgs(GameBoard[Player.CurrentCard].ImageKey));
+                    EventCard?.Invoke(this, new CardEventArgs(GameBoard[Player.CurrentCard].ImageKey, Player));
                     NextRound();
 
                 }
@@ -712,7 +890,7 @@ namespace Beadando.ViewModel
 
 
             //generating cards for right vertical row
-
+            
             //we have the -1, bc we already have the start card, so we do not need to generate it here
             for (int i = 1; i <= Constants.numberOfElementsInAVerticalRow_start-1; i++)
             {
@@ -736,7 +914,7 @@ namespace Beadando.ViewModel
                 GameBoard[rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
                 
             }
-            //GameBoard[2].ImageKey = "megajanlott"; //USED FOR TESTING!!!
+            GameBoard[2].ImageKey = "enroll"; //USED FOR TESTING!!!
 
             //while (i < temp.Length && i <= Constants.numberOfElementsInAVerticalRow)
             //{
@@ -858,7 +1036,28 @@ namespace Beadando.ViewModel
 
         }
 
+        public void AddSubjectToPlayer(Player p, Subject subject, bool free = false)
+        {
+            p.Subjects.Add(subject); //adding to the subject of the player
+            Subjects[p.PuppetKey].Remove(subject); //remove the item from the list of availables
+            if (!free)
+            {
+                RemoveMoney(p, subject.Price);
+            }
+        }
 
+        void RemoveMoney(Player p, int sum)
+        {
+            if (p.Money != 0)
+            {
+                p.Money -= sum;
+            }
+            else
+            {
+                //TODO create diákhitel or instant lose?
+            }
+
+        }
 
     }
 }

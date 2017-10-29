@@ -18,7 +18,7 @@ namespace Beadando.Model
         int fontSize;
         public event EventHandler<EventArgs> Click;
 
-        public RenderedButton(DrawingContext dc, Rect dimensions, string text, Brush background, Brush textColor, int fontSize = 12)
+        public RenderedButton(DrawingContext dc, Rect dimensions, string text, Brush background, Brush textColor, int fontSize = 16)
         {
             this.dimensions = dimensions;
             this.text = text;
@@ -32,8 +32,8 @@ namespace Beadando.Model
                 FlowDirection.LeftToRight,
                 new Typeface("Impact"),
                 fontSize, textColor);
-            
-            dc.DrawText(buttonText, new Point(dimensions.X/2 + (dimensions.Width), 
+            //we have to consider how long is the string to display as well as its fontsize
+            dc.DrawText(buttonText, new Point(dimensions.X + (dimensions.Width)/2-(text.Length*fontSize/4), 
                 dimensions.Y + 8));
         }
 

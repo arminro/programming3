@@ -11,7 +11,7 @@ namespace Beadando.Model
     /// A dictionary descendant with INT keys that is implemented the way a circular buffer would be
     /// </summary>
     /// <typeparam name="TValue">The generic param holding the value. It is not possible to change the key from INT. </typeparam>
-    class CircularDictionary<TValue> : Dictionary<int, TValue>
+    public class CircularDictionary<TValue> : Dictionary<int, TValue>
     {
         public new TValue this[int i]
         {
