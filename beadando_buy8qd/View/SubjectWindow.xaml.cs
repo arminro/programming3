@@ -22,19 +22,19 @@ namespace Beadando.View
     {
 
         BL bl;
-
-        public SubjectWindow(BL bl)
+        bool free;
+        public SubjectWindow(BL bl, bool free = false)
         {
             InitializeComponent();
             this.bl = bl;
             this.DataContext = bl;
-            
+            this.free = free;
         }
 
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            bl.AddSubjectToPlayer(bl.Player, bl.SelectedSubject);
+            bl.AddSubjectToPlayer(bl.Player, bl.SelectedSubject, free);
             this.DialogResult = true;
         }
 

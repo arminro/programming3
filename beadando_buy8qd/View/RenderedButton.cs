@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Beadando.Model
+namespace Beadando.View
 {
     class RenderedButton
     {
@@ -35,7 +35,10 @@ namespace Beadando.Model
             //we have to consider how long is the string to display as well as its fontsize
             dc.DrawText(buttonText, new Point(dimensions.X + (dimensions.Width)/2-(text.Length*fontSize/4), 
                 dimensions.Y + 8));
+            
         }
+
+
 
         public Rect Dimensions
         {

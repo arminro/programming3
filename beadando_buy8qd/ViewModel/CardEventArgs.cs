@@ -11,11 +11,14 @@ namespace Beadando.ViewModel
     {
         public string CardTypeKey { get; private set; }
         public Player CurrentPlayer { get; set; }
+        public int? IndexNumberForCols { get; set; }
 
-        public CardEventArgs(string cardTypeKey, Player currentPlayer)
+
+        public CardEventArgs(string cardTypeKey, Player currentPlayer, int? indexNumberForCols = null)
         {
             this.CardTypeKey = cardTypeKey;
             this.CurrentPlayer = currentPlayer;
+            this.IndexNumberForCols = indexNumberForCols;
         }
     }
 }

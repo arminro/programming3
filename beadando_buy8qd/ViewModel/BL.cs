@@ -8,14 +8,18 @@ using System.Windows;
 using System.Windows.Threading;
 using Beadando.Model;
 using System.Collections.ObjectModel;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
 
 namespace Beadando.ViewModel
 {
-    public class BL :Bindable
+    public class BL : Bindable
     {
 
         public BL()
         {
+            
             StartPosition = 1065;
             LowerHorizontalAlign = 550;
             MovementSpeed = 10;
@@ -32,30 +36,11 @@ namespace Beadando.ViewModel
             blacks = new string[] { "uv", "randi", };
             yellows = new string[] { "event" };
             blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
-            rand = new Random();
+            Rand = new Random();
             GameBoard = new CircularDictionary<BoardField>();
             Subjects = new Dictionary<string, ObservableCollection<Subject>>();
+            Players = new CircularList<Player>();
 
-            Subjects.Add("nik", new ObservableCollection<Subject>());
-            for (int i = 0; i < Constants.nik_targyak.Length; i++)
-            {
-                //adding the subjects with  prices
-                Subjects["nik"].Add(new Subject(Constants.nik_targyak[i], (i+1)*1000)); 
-            }
-
-            Subjects.Add("rejto", new ObservableCollection<Subject>());
-            for (int i = 0; i < Constants.rejto_targyak.Length; i++)
-            {
-                //adding the subjects with random prices
-                Subjects["rejto"].Add(new Subject(Constants.rejto_targyak[i], (i+1)*1000));
-            }
-
-            Subjects.Add("kando", new ObservableCollection<Subject>());
-            for (int i = 0; i < Constants.kando_targyak.Length; i++)
-            {
-                //adding the subjects with random prices
-                Subjects["kando"].Add(new Subject(Constants.kando_targyak[i], (i+1)*1000));
-            }
 
 
 
@@ -76,10 +61,77 @@ namespace Beadando.ViewModel
             };
 
 
-            EventActions = new Dictionary<string, Action<Player>>();
-            //EventActions.Add("megajanlott", p=>)
-
+            EventActions_Single = new Dictionary<string, Action>();
+            EventActions_Single.Add("start", 
+                () => 
+                {
+                    this.AddMoney(this.Player, 5000);
+                    Refresh();
+                });
+            EventActions_Single.Add("roll",
+               () =>
+               {
+                   this.Player.State = PlayerState.rollagain;
+               });
+            EventActions_Single.Add("uv",
+               () =>
+               {
+                   this.RemoveMoney(this.Player, 4000);
+                   Refresh();
+               });
+            EventActions_Single.Add("randi",
+               () =>
+               {
+                   this.RemoveMoney(this.Player, 5000);
+                   Refresh();
+               });
+            EventActions_Single.Add("einstein",
+               () =>
+               {
+                   this.AddMoney(this.Player, 20000);
+                   Refresh();
+               });
+            EventActions_Single.Add("lead",
+               () =>
+               {
+                   this.DismissRandomSubject();
+               });
+            NeptunActions = new Action[Constants.neptunMessages.Length];
+           
             
+            NeptunActions[0] = () =>
+            {
+                this.Player.State = PlayerState.missARound;
+            };
+            NeptunActions[1] = () =>
+            {
+                this.ArriveAtPosition(0);
+                this.Refresh();
+                EventCard?.Invoke(this, new CardEventArgs(GameBoard[Player.CurrentCard].ImageKey, Player));
+            };
+            NeptunActions[2] = () =>
+            {
+                //TODO win
+                Win();
+                //MessageBox.Show("NYERÉS");
+            };
+            NeptunActions[3] = () =>
+            {
+                this.RemoveMoney(Player, 7000);
+                this.Refresh();
+            };
+
+
+
+
+
+            //loading the eventmapper with the names of the events to be invoked
+            EventMapper = new Dictionary<int, string>();
+            for (int i = 0; i < Constants.hallgatoevents_nevek.Length; i++)
+            {
+                EventMapper.Add(i, Constants.hallgatoevents_nevek[i]);
+            }
+
            
             //millis = new List<long>();
             
@@ -87,23 +139,44 @@ namespace Beadando.ViewModel
             GenerateOrderOfCards();
             //P.Currentposition = GameBoard[0].Rect;
             Players = new CircularList<Player>(); //the max number of players is 3
-            Players.Add(new Player("nik", GameBoard[0].Rect, 0, "Nikes kocka"));
-            GameBoard[0].ArriveAtPosition(Players[0]);
+            //Players.Add(new Player("nik", GameBoard[0].Rect, 0, "Nikes kocka"));
+            ////GameBoard[0].ArriveAtPosition(Players[0]);
+            //
+            //Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1, "Részeg Kandós"));
+            ////GameBoard[0].ArriveAtPosition(Players[1]);
+            //
+            //Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2, "Cuki rejtős lány <3 <3"));
+            //GameBoard[0].ArriveAtPosition(Players[2]);
 
-            Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1, "Részeg Kandós"));
-            GameBoard[0].ArriveAtPosition(Players[1]);
+            //AddSubjectToPlayer(Players[0], Subjects["nik"][0], false); ADDING SUBJECT FOR TEST
+            //adding the first player
+            Players.Add(new Player("nik", 0, "Player1"));
+            PlayerTokens = new ObservableCollection<string>();
+            for (int i = 0; i < Constants.playerTokens.Length; i++)
+            {
+                PlayerTokens.Add(Constants.playerTokens[i]);
+            }
+            SelectedItem = PlayerTokens[0];
+        }
 
-            Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2, "Cuki rejtős lány <3 <3"));
-            GameBoard[0].ArriveAtPosition(Players[2]);
-
-            NextRound();
-
+        public bool IsFreeCourseValid(int? indexNumberForCols)
+        {
+            //if the player has all the subjects, getting a new one is not relevant
+            if (Player.Subjects.Count == 3)
+            {
+                NotifyPlayer?.Invoke(null, new TransferEventArgs("Az összes tárgyad megvan, így erre nincs szükséged!"));
+                return false;
+            }
+            /*in the events array, we used the same order as in the collection Players,  
+             so we only have to see if the current player has the same index as the given number*/
+            return indexNumberForCols == Players.IndexOf(Player); //todo check if this works after changing to OC
         }
 
         CircularDictionary<BoardField> gameBoard; //dict to hold the cards of the board
         Dictionary<string, object> eventCardTexts; //dict to store the text elements for the cards
-        Dictionary<string, Action<Player>> eventActions; //dict to store the actions that has the same signature
-
+        Dictionary<string, Action> eventActions_single; //dict to store the actions that has the same signature
+        Dictionary<int, string> eventMapper; //maps the string in the event resource dictionary to their corresponding order in constants
+        Action[] neptunActions; //storing actions for the neptun
         //holds the subjects for the players, we use a more flexible data type that is more flexible than arrays here so we can add and remove them runtime
         //also, the original lists do not need to be tempered with
         Dictionary<string, ObservableCollection<Subject>> subjects;
@@ -112,7 +185,10 @@ namespace Beadando.ViewModel
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
         public event EventHandler<CardEventArgs> EventCard; //provides a way to invoke the event in the view
         public event EventHandler<EventArgs> InitiateSubjectTransaction; //provides a way to invoke the subjects window
-
+        public event EventHandler<TransferEventArgs> NotifyPlayer;
+        public event EventHandler<EventArgs> CloseOpenWindows;
+        public event EventHandler<EventArgs> FinishedGame;
+        public event EventHandler<TransferEventArgs> GeneralNotification;
         #region CardMetrics
         public class NormalCard
         {
@@ -132,9 +208,14 @@ namespace Beadando.ViewModel
 
         #region SubjectWindowItems
         ObservableCollection<Subject> subjectsOfPlayer; //represents the subjects of the player
+
+
         ObservableCollection<Subject> subjectsAvailableToPlayer; //represents the subjects available to the player
         Subject selectedSubject; //represetns the subject the player selected in the subject window
         bool canPlayerBuyIt;
+
+    
+
 
         public ObservableCollection<Subject> SubjectsOfPlayer
         {
@@ -229,10 +310,23 @@ namespace Beadando.ViewModel
         int roundIncrementor; //this var is incremented to change players
 
 
+        #region WinWindow
+
+        public string Winner { get; set; }
+
+        public void Win()
+        {
+            Winner = $"GRATULÁLUNK, {Player.Name}\nMEGNYERTED A JÁTÉKOT!";
+            FinishedGame?.Invoke(null, null);
+        }
+        
+
+        #endregion
 
         public string[] resourceNamesNormal;
         public string[] resourceNamesSquare;
 
+        
 
         string[] resourceNamesNormalLeft;
 
@@ -248,6 +342,32 @@ namespace Beadando.ViewModel
         string[] blacks;
         string[] yellows;
         string[] blues;
+
+        int? indexOfEventCardCollection;
+        public int? IndexOfEventCardCollection
+        {
+            get
+            {
+                return indexOfEventCardCollection;
+            }
+
+            set
+            {
+                indexOfEventCardCollection = value;
+            }
+        }
+
+        public int GetPositionFromGostring(string textToBeDisplayed)
+        {
+            //we get the number from the text and return with the number of the card that number far from the player's current card
+            //we know that the last character is the numberic, oc, we could test all the characters and stop where we find a number
+            return Player.CurrentCard + (int)Char.GetNumericValue(textToBeDisplayed.Last());
+        }
+
+        public void ArriveAtRandomPosition()
+        {
+            ArriveAtPosition(Rand.Next(0, GameBoard.Count));
+        }
 
         #endregion
 
@@ -382,7 +502,7 @@ namespace Beadando.ViewModel
                 movementSpeed = value;
             }
         }
-
+        [XmlIgnore]
         public CircularDictionary<BoardField> GameBoard
         {
             get
@@ -395,8 +515,8 @@ namespace Beadando.ViewModel
                 gameBoard = value;
             }
         }
-
-        public  CircularList<Player> Players
+       
+        public CircularList<Player> Players
         {
             get
             {
@@ -412,6 +532,8 @@ namespace Beadando.ViewModel
         public int OffsetHorizontal { get;  set; }
         public int OffsetVertical { get;  set; }
 
+
+        [XmlIgnore]
         public Dictionary<string, object> EventCardTexts
         {
             get
@@ -424,20 +546,21 @@ namespace Beadando.ViewModel
                 eventCardTexts = value;
             }
         }
-
-        internal Dictionary<string, Action<Player>> EventActions
+        [XmlIgnore]
+        public Dictionary<string, Action> EventActions_Single
         {
             get
             {
-                return eventActions;
+                return eventActions_single;
             }
 
             set
             {
-                eventActions = value;
+                eventActions_single = value;
             }
         }
 
+        [XmlIgnore]
         public Dictionary<string, ObservableCollection<Subject>> Subjects
         {
             get
@@ -476,6 +599,46 @@ namespace Beadando.ViewModel
                 numberOfElementsInAVerticalRow = value;
             }
         }
+        [XmlIgnore]
+        public Dictionary<int, string> EventMapper
+        {
+            get
+            {
+                return eventMapper;
+            }
+
+            set
+            {
+                eventMapper = value;
+            }
+        }
+        [XmlIgnore]
+        public Action[] NeptunActions
+        {
+            get
+            {
+                return neptunActions;
+            }
+
+            set
+            {
+                neptunActions = value;
+            }
+        }
+
+        public Random Rand
+        {
+            get
+            {
+                return rand;
+            }
+
+            set
+            {
+                rand = value;
+            }
+        }
+
 
 
 
@@ -513,6 +676,86 @@ namespace Beadando.ViewModel
 
         }
 
+        #region Save/Load
+        /// <summary>
+        /// Seeks for a pre-specified Directory in Documents, creates it, if it does not exist, then saves the BL of the game
+        /// </summary>
+        public void Save()
+        {
+           
+            //getting the locetion of the Documents
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string saveFolder = "Diplomazz Okosan";
+           
+            StringBuilder saveFolderFullPath = new StringBuilder(docPath);
+            saveFolderFullPath.Append($"\\{saveFolder}");
+            if (!Directory.Exists(saveFolderFullPath.ToString()))
+            {
+                Directory.CreateDirectory(saveFolderFullPath.ToString());
+            }
+
+            
+
+           
+            //serializeDictionary.Add(Players);
+            Tuple<CircularList<Player>, List<object>> serializeMe = Tuple.Create(Players, serializeDictionary);
+            Serializer<List<object>>.Serialize(serializeDictionary, saveFolderFullPath.Append($"\\{this.GetHashCode()}.xml").ToString());
+            //    serializeMe, saveFolderFullPath.Append($"\\{DateTime.Now}.xml").ToString());
+
+
+        }
+        List<object> serializeDictionary;
+        public void Load(string fileName)
+        {
+            //string docPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Diplomazz Okosan";
+            //todo find a way to serialize the dictionary
+            Players = Serializer<CircularList<Player>>.Deserialize(fileName);
+            
+
+            //foreach (Player p in Players)
+            //{
+            //    switch (p.PuppetKey)
+            //    {
+            //        case "nik":
+            //            subjects = Constants.nik_targyak;
+            //            break;
+            //        case "rejto":
+            //            subjects = Constants.rejto_targyak;
+            //            break;
+            //        case "kando":
+            //            subjects = Constants.kando_targyak;
+            //            break;
+            //    }
+            //
+            //    //Subjects[p.PuppetKey] = Except(p.Subjects.ToArray(), subjects)
+            //}
+        }
+
+        //Subject[] Except(Subject[] ar1, Subject[] ar2)
+        //{
+        //    Subject[] except = new Subject[ar1.Length > ar2.Length ? ar1.Length : ar2.Length];
+        //    int idx = 0;
+        //    for (int i = 0; i < ar2.Length; i++)
+        //    {
+        //        if (!ar1.Contains(ar2[i]))
+        //        {
+        //            except[idx++] = ar2[i];
+        //        }
+        //    }
+        //    int temp = 0;
+        //    
+        //    while(temp < idx && except[temp] != null)
+        //    {
+        //        temp++;
+        //    }
+        //    string[] ret = new string[temp];
+        //    for (int i = 0; i < ret.Length; i++)
+        //    {
+        //        ret[i] = except[i];
+        //    }
+        //    return ret;
+        //}
+        #endregion
         public void Zoom(int offset)
         {
             //if we multiply both the height and the width by the same number
@@ -526,16 +769,12 @@ namespace Beadando.ViewModel
             SquareCard.widthHeight += (offset * 5 / 3);
             //LowerHorizontalAlign -= offset; 
             //StartPosition -= offset; 
-            
-            
-
 
             float temp = ((float)(NormalCard.width + offset) / (float)NormalCard.width);
             PuppetDiameter *= temp;
 
             //refreshing the position of the puppet so that it moves with the board (the changing board would move away from it)
             Player.Currentposition = GameBoard[Player.CurrentCard].Rect;
-           
             SetMetrics();
         }
 
@@ -603,8 +842,9 @@ namespace Beadando.ViewModel
 
                     //we signal that an event has to happen here that a view can handle anyway s/he wants (MVVM <3)
                     EventCard?.Invoke(this, new CardEventArgs(GameBoard[Player.CurrentCard].ImageKey, Player));
-                    NextRound();
-
+                    //NextRound();
+                    
+                    
                 }
             };
             //Step(31);
@@ -650,6 +890,28 @@ namespace Beadando.ViewModel
             return  temp<= vicinity;
         }
 
+        /// <summary>
+        /// Calculates the position of the next step
+        /// </summary>
+        /// <param name="positionNumber">The number of the card the player is about to arrive on</param>
+        /// <param name="orderInCard">The order of the player within the card indexed from 0</param>
+        /// <returns></returns>
+        Point GetPositionOfNextStep(int positionNumber, int orderInCard)
+        {
+            switch (orderInCard)
+            {
+                //if the player is the 1st to stand on the card
+                case 0:
+                    return GameBoard[positionNumber].Rect;
+                //if the player is 2nd on the card
+                case 1:
+                    return CalculateSecondaryPosition(GameBoard[positionNumber].Rect);
+                //otherwise, which is if the player is 3rd on the card
+                default:
+                   return CalculateTertialPosition(GameBoard[positionNumber].Rect);
+            }
+
+        }
         public void Step(int positionNumber, int orderOnTheCard)
         {
             //we tell the card on which the player priviously stood that s/he is leaving
@@ -665,23 +927,8 @@ namespace Beadando.ViewModel
 
             Point goalPosition;
 
-            
 
-            switch (orderOnTheCard)
-            {
-                //if the player is the 1st to stand on the card
-                case 0:
-                    goalPosition = GameBoard[positionNumber].Rect;
-                    break;
-                    //if the player is 2nd on the card
-                case 1:
-                    goalPosition = CalculateSecondaryPosition(GameBoard[positionNumber].Rect);
-                    break;
-                    //otherwise, which is if the player is 3rd on the card
-                default:
-                    goalPosition = CalculateTertialPosition(GameBoard[positionNumber].Rect);
-                    break;
-            }
+            goalPosition = GetPositionOfNextStep(positionNumber, orderOnTheCard);
 
             //RegisterName("player", p.Currentposition);
 
@@ -726,7 +973,7 @@ namespace Beadando.ViewModel
                 else
                 {
                     Player.Currentposition = Point.Add(Player.Currentposition, v / divide);
-                    Invalidate?.Invoke(null, null); //we just need a way to convey the invalidate visual from here
+                    Refresh(); //we just need a way to convey the invalidate visual from here
                 }
                 c++;
 
@@ -768,7 +1015,37 @@ namespace Beadando.ViewModel
 
         public void NextRound()
         {
-            Player = Players.GetNextElement();
+            //we check if there are players in the game
+            if (IsTheGameStillOn())
+            {
+                //in the case of a re-roll, we have to inspect the current player, in all other cases, the next player matters
+                if (Player.State == PlayerState.rollagain)
+                {
+                    Player.State = PlayerState.neutral;
+                }
+
+                else if (Players.WhatIsNext().State == PlayerState.neutral)
+                {
+                    Player = Players.GetNextElement();
+                }
+
+                //if the next player has to miss the turn, we set back its state bc s/he is going to miss this round
+                //then ask for the player coming after 
+                else if (Players.WhatIsNext().State == PlayerState.missARound)
+                {
+                    Players.WhatIsNext().State = PlayerState.neutral; //set the state back
+                    Player = Players.GetNextElement(2); //ask for the player after the one who misses a round
+                }
+                else if (Players.WhatIsNext().State == PlayerState.lost)
+                {
+                    Player = Players.GetNextElement(2); //ask for the player after the one who misses a round
+                }
+
+            }
+            else
+            {
+                GeneralNotification?.Invoke(this, new TransferEventArgs("Sajnos egyikőtök sincs már játékban, így a játék véget ért"));
+            }
         }
 
         public Point CalculatePrimaryPosition(Point cornerRect, int widthOfCurrentCard, int heightOfCUrrentCard)
@@ -794,7 +1071,7 @@ namespace Beadando.ViewModel
         {
             //2* (const.vert-1) + 2*(const.hor -1) + 4
             int indexer = 0;
-            rand = new Random();
+            Rand = new Random();
             int totalNumberOfCards = 2 * (Constants.numberOfElementsInAVerticalRow_start - 1) + 2 * (Constants.numberOfElementsInAHorizontalRow_start - 1) + 4;
             string[] temp = new string[totalNumberOfCards];
 
@@ -812,12 +1089,12 @@ namespace Beadando.ViewModel
                 if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
                 }
                 //add boardcard to the collection of boardscards
                 GameBoard.Add(indexer++, b);
@@ -830,12 +1107,12 @@ namespace Beadando.ViewModel
                 if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -863,12 +1140,12 @@ namespace Beadando.ViewModel
                 if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -898,12 +1175,12 @@ namespace Beadando.ViewModel
                 if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -911,7 +1188,7 @@ namespace Beadando.ViewModel
             for (int i = 0; i < 3; i++)
             {
                 //we start form 1 bc the start cannot be switched
-                GameBoard[rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
+                GameBoard[Rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
                 
             }
             GameBoard[2].ImageKey = "enroll"; //USED FOR TESTING!!!
@@ -954,12 +1231,14 @@ namespace Beadando.ViewModel
         /// </summary>
         /// <param name="cardKey">The key of the card that triggered the event</param>
         /// <returns></returns>
-        public Tuple<string, int> GetTextToDisplay(string cardKey)
+        public Tuple<string, int, int?> GetTextToDisplay(string cardKey)
         {
 
             
             StringBuilder builder = new StringBuilder();
             object temp = EventCardTexts[cardKey];
+            int? indexHolder = null; //represents the index of the collections, but only if it is a collection
+           
             int boundary = 0; //the number of characters allowed in 1 line  
 
             if(temp is string)
@@ -969,12 +1248,15 @@ namespace Beadando.ViewModel
             else if(temp is string[])
             {
                 string[] tempArray = temp as string[];
-                builder = new StringBuilder(tempArray[rand.Next(0, tempArray.Length)]);
+                 
+                indexHolder = Rand.Next(0, tempArray.Length);
+                builder = new StringBuilder(tempArray[(int)indexHolder]);
             }
             else if(temp is int[])
             {
                 int[] tempArray = temp as int[];
-                builder = new StringBuilder($"Lépj előre: {tempArray[rand.Next(0, tempArray.Length)]}");
+                indexHolder = Rand.Next(0, tempArray.Length);
+                builder = new StringBuilder($"Lépj előre: {tempArray[(int)indexHolder]}");
             }
 
 
@@ -1032,11 +1314,11 @@ namespace Beadando.ViewModel
                 }
             }
             //else it remains 12
-            return Tuple.Create<string, int>(builder.ToString(), fontsize);
+            return Tuple.Create<string, int, int?>(builder.ToString(), fontsize, indexHolder);
 
         }
 
-        public void AddSubjectToPlayer(Player p, Subject subject, bool free = false)
+        public void AddSubjectToPlayer(Player p, Subject subject, bool free)
         {
             p.Subjects.Add(subject); //adding to the subject of the player
             Subjects[p.PuppetKey].Remove(subject); //remove the item from the list of availables
@@ -1044,20 +1326,264 @@ namespace Beadando.ViewModel
             {
                 RemoveMoney(p, subject.Price);
             }
+
+            //we check if the player could win now
+            if (CheckWinningConditions(p))
+            {
+                Win();
+            }
         }
 
         void RemoveMoney(Player p, int sum)
         {
-            if (p.Money != 0)
+            if (p.Money > 0)
             {
                 p.Money -= sum;
             }
             else
             {
-                //TODO create diákhitel or instant lose?
+                p.State = PlayerState.lost;
+                NotifyPlayer?.Invoke(this, new TransferEventArgs("Sajnos a Te számodra véget ért a játék :("));
+
             }
 
         }
+
+        public void AddMoney(Player p, int sum)
+        {
+            p.Money += sum;
+        }
+
+        /// <summary>
+        /// Refreshes the UI whatever the implementation might be
+        /// </summary>
+        public void Refresh()
+        {
+            Invalidate?.Invoke(null, null);
+        }
+
+        /// <summary>
+        /// The player will appear on the designated position
+        /// </summary>
+        /// <param name="pos"></param>
+        public void ArriveAtPosition(int pos)
+        {
+            GameBoard[Player.CurrentCard].DepartFromposition(Player); //leave the current card
+            Player.Currentposition = GetPositionOfNextStep(pos, GameBoard[pos].GetNextFreePosition()); //set current position
+            Player.CurrentCard = pos; //set current card
+            GameBoard[Player.CurrentCard].ArriveAtPosition(Player); //arrive at position
+
+        }
+
+        #region MenuMenu
+
+        [XmlIgnore]
+        public ObservableCollection<string> PlayerTokens { get; set; }
+        public Player NewGameSelectedPlayer { get; set; }
+        string selectedItem;
+        public string SelectedItem
+        {
+            get
+            {
+                return selectedItem;
+            }
+            set
+            {
+                selectedItem = value;
+            }
+        }
+
+        public void AddPlayer()
+        {
+            if (Players.Count < 3)
+            {
+                Players.Add(new Player("nik", Players.Count + 1, $"Player {Players.Count + 1}")); 
+            }
+        }
+
+        public void DeletePlayer(Player p)
+        {
+            if (Players.Count > 1)
+            {
+                Players.Remove(p); 
+            }
+        }
+
+        public void InitializeGameplay()
+        {
+            
+            foreach (Player p in Players)
+            {
+
+                //we only load the subjects we need
+
+                
+                if (!Subjects.ContainsKey(p.PuppetKey))
+                {
+                    Subjects.Add(p.PuppetKey, new ObservableCollection<Subject>()); 
+                }
+                if (Subjects[p.PuppetKey].Count < 3) //only works because we habe 3 subjects
+                {
+                    switch (p.PuppetKey)
+                    {
+                        case "nik":
+                            for (int i = 0; i < Constants.nik_targyak.Length; i++)
+                            {
+                                //adding the subjects with  prices
+                                Subjects["nik"].Add(new Subject(Constants.nik_targyak[i], (i + 1) * 1000));
+                            }
+                            break;
+
+                        case "rejto":
+                            for (int i = 0; i < Constants.rejto_targyak.Length; i++)
+                            {
+                                //adding the subjects with  prices
+                                Subjects["rejto"].Add(new Subject(Constants.rejto_targyak[i], (i + 1) * 1000));
+                            }
+                            break;
+                        case "kando":
+                            for (int i = 0; i < Constants.kando_targyak.Length; i++)
+                            {
+                                //adding the subjects with  prices
+                                Subjects["kando"].Add(new Subject(Constants.kando_targyak[i], (i + 1) * 1000));
+                            }
+                            break;
+
+
+                    }
+
+                }            }
+
+            //adding the players to the first card
+            for (int i = 0; i < Players.Count; i++)
+            {
+                Players[i].CurrentCard = 0;
+                BoardField start = GameBoard[Players[i].CurrentCard];
+                Players[i].Currentposition = GetPositionOfNextStep(0, start.GetNextFreePosition());
+                GameBoard[Players[i].CurrentCard].ArriveAtPosition(Players[i]);
+               
+
+            }
+            //set the first player
+            Player = Players[0];
+
+
+            //Subjects.Add("nik", new ObservableCollection<Subject>());
+            //for (int i = 0; i < Constants.nik_targyak.Length; i++)
+            //{
+            //    //adding the subjects with  prices
+            //    Subjects["nik"].Add(new Subject(Constants.nik_targyak[i], (i + 1) * 1000));
+            //}
+            //
+            //Subjects.Add("rejto", new ObservableCollection<Subject>());
+            //for (int i = 0; i < Constants.rejto_targyak.Length; i++)
+            //{
+            //    //adding the subjects with  prices
+            //    Subjects["rejto"].Add(new Subject(Constants.rejto_targyak[i], (i + 1) * 1000));
+            //}
+            //
+            //Subjects.Add("kando", new ObservableCollection<Subject>());
+            //for (int i = 0; i < Constants.kando_targyak.Length; i++)
+            //{
+            //    //adding the subjects with  prices
+            //    Subjects["kando"].Add(new Subject(Constants.kando_targyak[i], (i + 1) * 1000));
+            //}
+
+        }
+
+        public void ChangePuppetKey(object p, object selected, object unselected)
+        {
+            //we have to do casting as well as remapping the user-fruendly names to the keyes we used
+            //of course we could just changed the keyes themselves, but then we needed to change it everywhere
+            string temp = "";
+            string selectedString = selected as string;
+            switch (selectedString)
+            {
+                case "NIK":
+                    temp = "nik";
+                    break;
+                case "KVK":
+                    temp = "kando";
+                    break;
+                case "RKK":
+                    temp = "rejto";
+                    break;
+
+
+            }
+
+            (p as Player).PuppetKey = temp;
+            //PlayerTokens.Remove(selectedString);
+            //if(unselected != null)
+            //{
+            //    PlayerTokens.Add(unselected as string);
+            //}
+
+        }
+
+        public void CloseWindows()
+        {
+            //we signal that the game now begins
+            CloseOpenWindows?.Invoke(null, null);
+        }
+        #endregion
+
+        public void DismissRandomSubject()
+        {
+            
+            string message = "";
+            if (Player.Subjects.Count > 0)
+            {
+                Subject sub = Player.Subjects[Rand.Next(0, Player.Subjects.Count)];
+                DismissSubject(sub, Player);
+                message = $"Eltávolítottuk {sub.Name} nevű tárgyadat!";
+            }
+            else
+            {
+                message = "Még nincsenek tárgyaid, ezért ez rád nem érvényes!";
+            }
+            NotifyPlayer?.Invoke(null, new TransferEventArgs(message));
+        }
+
+        public void DismissSubject(Subject sub, Player player)
+        {
+            player.Subjects.Remove(sub);
+            Subjects[player.PuppetKey].Add(sub);
+        }
+
+        public void TakeStep(int step)
+        {
+            GoToPosition(Player.CurrentCard + step);
+        }
+
+        public void Quit()
+        {
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// Checks if any of the players are in game; returns true if the game can go on
+        /// </summary>
+        /// <returns></returns>
+        public bool IsTheGameStillOn()
+        {
+            int i = 0;
+            while (i < Players.Count && Players[i].State == PlayerState.lost)
+            {
+                i++;
+            }
+            return i < Players.Count;
+        }
+        /// <summary>
+        /// Checks if the player satisfies the conditions for winning; returns true if the player does
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public bool CheckWinningConditions(Player p)
+        {
+            return p.Subjects.Count == 3 && p.Money >= 0;
+        }
+
 
     }
 }

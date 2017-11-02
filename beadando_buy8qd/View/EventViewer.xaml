@@ -23,6 +23,10 @@
         <ImageBrush x:Key="enroll" ImageSource="pack://siteoforigin:,,,/Resources/enroll_event.png" />
         <ImageBrush x:Key="oe" ImageSource="pack://siteoforigin:,,,/Resources/oe.jpg"  />
         <ImageBrush x:Key="megajanlott" ImageSource="pack://siteoforigin:,,,/Resources/megajanlott_event.png"   />
+        <ImageBrush x:Key="event_rejto" ImageSource="pack://siteoforigin:,,,/Resources/rejto_event.jpg"  />
+        <ImageBrush x:Key="event_kando" ImageSource="pack://siteoforigin:,,,/Resources/grasshopper.jpg" />
+        <ImageBrush x:Key="event_nik" ImageSource="pack://siteoforigin:,,,/Resources/kocka.jpg" />
+        <ImageBrush x:Key="tokos" ImageSource="pack://siteoforigin:,,,/Resources/worldwide.jpg" />
     </Window.Resources>
     <Canvas >
         

@@ -73,6 +73,56 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap blue_leatcher2 {
+            get {
+                object obj = ResourceManager.GetObject("blue_leatcher2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap blue_leatcher3 {
+            get {
+                object obj = ResourceManager.GetObject("blue_leatcher3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap blue_leather1 {
+            get {
+                object obj = ResourceManager.GetObject("blue_leather1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap cert {
+            get {
+                object obj = ResourceManager.GetObject("cert", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap cert_blank {
+            get {
+                object obj = ResourceManager.GetObject("cert_blank", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap dorm {
             get {
                 object obj = ResourceManager.GetObject("dorm", resourceCulture);
@@ -173,6 +223,26 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap golden {
+            get {
+                object obj = ResourceManager.GetObject("golden", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap grasshopper {
+            get {
+                object obj = ResourceManager.GetObject("grasshopper", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap kando {
             get {
                 object obj = ResourceManager.GetObject("kando", resourceCulture);
@@ -196,6 +266,16 @@ namespace Beadando.Properties {
         public static System.Drawing.Bitmap kimarad {
             get {
                 object obj = ResourceManager.GetObject("kimarad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap kocka {
+            get {
+                object obj = ResourceManager.GetObject("kocka", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -353,6 +433,26 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap rejto_event {
+            get {
+                object obj = ResourceManager.GetObject("rejto_event", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ribbon {
+            get {
+                object obj = ResourceManager.GetObject("ribbon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap rkk_out {
             get {
                 object obj = ResourceManager.GetObject("rkk_out", resourceCulture);
@@ -396,6 +496,16 @@ namespace Beadando.Properties {
         public static System.Drawing.Bitmap rollAgain2 {
             get {
                 object obj = ResourceManager.GetObject("rollAgain2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap silver {
+            get {
+                object obj = ResourceManager.GetObject("silver", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -453,9 +563,49 @@ namespace Beadando.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap velvet_1 {
+            get {
+                object obj = ResourceManager.GetObject("velvet_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap velvet_2 {
+            get {
+                object obj = ResourceManager.GetObject("velvet_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap win {
+            get {
+                object obj = ResourceManager.GetObject("win", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap wood {
             get {
                 object obj = ResourceManager.GetObject("wood", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap worldwide {
+            get {
+                object obj = ResourceManager.GetObject("worldwide", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

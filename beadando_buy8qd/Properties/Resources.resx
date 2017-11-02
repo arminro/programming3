@@ -238,4 +238,49 @@
   <data name="oe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\oe.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="grasshopper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\grasshopper.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kocka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kocka.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rejto_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rejto_event.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="worldwide" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\worldwide.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blue_leatcher2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blue_leatcher2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blue_leatcher3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blue_leatcher3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="blue_leather1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blue_leather1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cert.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="golden" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Resources\golden.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ribbon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ribbon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="silver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\silver.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="velvet_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\velvet_1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="velvet_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\velvet_2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cert_blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cert_blank.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

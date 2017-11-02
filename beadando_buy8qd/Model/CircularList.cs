@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Beadando.Model
 {
-    public class CircularList<T> : List<T>
+    public class CircularList<T> : ObservableCollection<T>
     {
         int inc;
         public CircularList()
@@ -26,9 +27,14 @@ namespace Beadando.Model
             }
         }
 
-        public T GetNextElement()
+        public T GetNextElement(int number = 1)
         {
-            return this[inc++];
+            return this[inc+=number];
+        }
+
+        public T WhatIsNext()
+        {
+            return this[inc + 1];
         }
     }
 }

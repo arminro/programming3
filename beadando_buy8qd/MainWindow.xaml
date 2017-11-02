@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Beadando"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
-        Background="Transparent" WindowStyle="None" WindowState="Maximized" PreviewMouseWheel="Window_PreviewMouseWheel">
+        Background="Transparent" WindowStyle="None" WindowState="Maximized" PreviewMouseWheel="Window_PreviewMouseWheel" PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        Closing="Window_Closing">
     <Window.Resources>
         <!--Puppets-->
         <ImageBrush x:Key="nik" ImageSource="pack://siteoforigin:,,,/Resources/nik.png"   />
@@ -28,7 +29,7 @@
         <ImageBrush x:Key="lead" ImageSource="lead.png"   />
         <ImageBrush x:Key="einstein" ImageSource="einstein.png"  />
         <ImageBrush x:Key="phone" ImageSource="pack://siteoforigin:,,,/Resources/stats.png" />
-
+        
 
     </Window.Resources>
 

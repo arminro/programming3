@@ -38,16 +38,19 @@ namespace Beadando.View
         Brush background;
         int fontSize;
         string textToBeDisplayed;
+        Dictionary<string, SolidColorBrush> playerColors;
 
-        public EventViewer(string cardKey)
+
+
+        public EventViewer(string cardKey, BL bl, Dictionary<string, SolidColorBrush> playerColors)
         {
             InitializeComponent();
             offset = 10;
             textBoxWidth = 350;
             textBoxHeight = 120;
             keyOfCurrentCard = cardKey;
-            bl = new BL();
-
+            this.bl = bl;
+            this.playerColors = playerColors;
 
             //determine the background of the window based on the type of card the player stands
             switch (bl.EventCategroySelector(keyOfCurrentCard))
@@ -65,10 +68,10 @@ namespace Beadando.View
                     background = new SolidColorBrush(Colors.Yellow);
                     break;
             }
-            Tuple<string, int> tempTup = bl.GetTextToDisplay(keyOfCurrentCard);
+            Tuple<string, int, int?> tempTup = bl.GetTextToDisplay(keyOfCurrentCard);
             textToBeDisplayed = tempTup.Item1;
             fontSize = tempTup.Item2;
-           
+            bl.IndexOfEventCardCollection = tempTup.Item3;
 
         }
 
@@ -80,11 +83,22 @@ namespace Beadando.View
             //draws the eventcard
             Rect drawingRect = new Rect(offset, offset, ActualWidth-(offset*2), ActualHeight-200);
 
+
             //used the same keys, becuase it is a different window
+            //the event has different pics
             //if the start triggered the event, we show the oe image
-            dc.DrawRoundedRectangle((ImageBrush)Resources[keyOfCurrentCard == "start" ? 
-               "oe" : keyOfCurrentCard], null, drawingRect, 5, 5);
-        
+            if(keyOfCurrentCard == "event")
+            {
+                //we use the mapper to map the given int to a source in the resource dictionary
+                dc.DrawRoundedRectangle((ImageBrush)Resources[bl.EventMapper[(int)bl.IndexOfEventCardCollection]], 
+                    null, drawingRect, 5, 5);
+            }
+            else
+            {
+                dc.DrawRoundedRectangle((ImageBrush)Resources[keyOfCurrentCard == "start" ?
+                      "oe" : keyOfCurrentCard], null, drawingRect, 5, 5);
+            }
+
             //draw textbox
             Rect textboxRect = new Rect(ActualWidth/2 - textBoxWidth/2, (ActualHeight - 200) + textBoxHeight/6, textBoxWidth, textBoxHeight);
             dc.DrawRoundedRectangle(Brushes.White, null, textboxRect, 5, 5);
@@ -101,12 +115,16 @@ namespace Beadando.View
             Rect confirmButtonRect = new Rect(ActualWidth / 2 - 50, ActualHeight - 50, 100, 30);
 
             //if the player arrived on an enroll card, we have to display a slightly different layout
+            //this is done by relocating the confirm button, adding a new deny button and subscribing to a diff event
+            //so if we have the enroll, we go with this
             if (keyOfCurrentCard == "enroll")
             {
+                //confirm button needs a new place
                 confirmButtonRect = new Rect(ActualWidth / 2 - 100, ActualHeight - 50, 100, 30);
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
                 Brushes.White, Brushes.Black);
 
+                //denybutton
                 rbuttonDeny = new RenderedButton(dc, new Rect(ActualWidth / 2+10, ActualHeight-50, 100, 30), 
                     "Mégsem", Brushes.White, Brushes.Black);
                 rbuttonDeny.Click += (object sender, EventArgs e) =>
@@ -117,6 +135,7 @@ namespace Beadando.View
                 rbuttonConfirm.Click += RbuttonConfirmEnroll_Click;
             }
 
+            //this is the defualt scenario
             else
             {
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
@@ -132,7 +151,60 @@ namespace Beadando.View
         private void RbuttonConfirm_Click(object sender, EventArgs e)
         {
             this.DialogResult = true;
-            
+            /*there are some event that require parameters, they have different sections
+             others can be stored in two diff collections: 1) dictioanary: those that are mapped to a single string in Constants, 
+             for these, the IndexOfEventCardCollection will be null
+             2) array of Tasks: those that are mapped to a string[], for these, the IndexOfEventCardCollection will hold the index of the chosen*/
+            if (keyOfCurrentCard == "go")
+            {
+                //the player we go to an extra distance
+                //we have to get the number from the text which is the last character
+                //then the player steps forward
+                
+                bl.GoToPosition(bl.GetPositionFromGostring(textToBeDisplayed));
+            }
+            else if (keyOfCurrentCard == "event")
+            {
+               
+                //if the player can get a new course for free
+
+                if (bl.IsFreeCourseValid(bl.IndexOfEventCardCollection))
+                {
+                    SubjectWindow subw = new SubjectWindow(bl, true);
+
+                    bl.InitializeSubjectTransactions();
+                    subw.Background = playerColors[bl.Player.PuppetKey];
+                    if (subw.ShowDialog() == true)
+                    {
+                        InvalidateVisual();
+                        bl.IndexOfEventCardCollection = null; //we have to set the var back to null
+                    }
+
+                }
+                else if (bl.IndexOfEventCardCollection != null && bl.IndexOfEventCardCollection == 3)
+                {
+                    //the tökös legény event is the 4th one
+                    bl.ArriveAtRandomPosition();
+                    bl.Refresh();
+                    bl.IndexOfEventCardCollection = null;
+                }
+
+            }
+            //we index the dict with the single elements
+            else if(bl.IndexOfEventCardCollection == null)
+            {
+                bl.EventActions_Single[keyOfCurrentCard].Invoke();
+
+            }
+            //we index the array 
+            else
+            {
+                bl.NeptunActions[(int)bl.IndexOfEventCardCollection].Invoke(); //TODO begininvoke vs invoke!!!
+            }
+
+
+
+
         }
 
         private void RbuttonConfirmEnroll_Click(object sender, EventArgs e)

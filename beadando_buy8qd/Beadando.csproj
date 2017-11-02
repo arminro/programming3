@@ -65,12 +65,22 @@
     <Compile Include="Model\BoardField.cs" />
     <Compile Include="Model\CircularList.cs" />
     <Compile Include="Model\CircularDictionary.cs" />
-    <Compile Include="Model\Collections.cs" />
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Subject.cs" />
+    <Compile Include="ViewModel\Serializer.cs" />
+    <Compile Include="ViewModel\TransferEventArgs.cs" />
     <Compile Include="View\ColorMultiplyerConverter.cs" />
     <Compile Include="ViewModel\SubjectEventArgs.cs" />
+    <Compile Include="View\LoadWindow.xaml.cs">
+      <DependentUpon>LoadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewGameWindow.xaml.cs">
+      <DependentUpon>NewGameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RenderedButton.cs" />
     <Compile Include="ViewModel\BL.cs" />
     <Compile Include="ViewModel\CardEventArgs.cs" />
@@ -79,6 +89,9 @@
     </Compile>
     <Compile Include="View\SubjectWindow.xaml.cs">
       <DependentUpon>SubjectWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WinWindow.xaml.cs">
+      <DependentUpon>WinWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -96,7 +109,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\LoadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SubjectWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WinWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -260,6 +289,57 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\oe.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grasshopper.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\kocka.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rejto_event.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\worldwide.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\golden.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_leatcher2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_leatcher3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_leather1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Resources\golden.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\silver.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\velvet_1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\velvet_2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\diploma.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cert.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ribbon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cert_blank.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

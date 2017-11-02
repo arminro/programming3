@@ -28,52 +28,67 @@ namespace Beadando
     {
 
         BL bl;
-        Random r;
-
-        public MainWindow()
+        
+        RenderedButton next;
+        //storing the chosen colors for the players, we could not use the standard resource dict for this as we want to use the same key as those used for the puppets themselves
+        Dictionary<string, SolidColorBrush> playerColors; 
+        public MainWindow(BL bl)
         {
             
             InitializeComponent();
-            bl = new BL();
+            this.bl = bl;
+            playerColors = new Dictionary<string, SolidColorBrush>
+            {
+                { "nik", Brushes.DodgerBlue },
+                { "kando", Brushes.Gold },
+                { "rejto", Brushes.LimeGreen }
+            };
 
             //subscribing to connector events
             bl.Invalidate += (object sender, EventArgs eve) => {
                 InvalidateVisual();
             };
-            bl.EventCard += (object s, CardEventArgs eventArgs) =>
+            bl.NotifyPlayer += (object sender, TransferEventArgs trans) =>
             {
-                EventViewer ev = new EventViewer(eventArgs.CardTypeKey);
-                //if the player wanted to buy a new subject, we show the subject dialog
-                if (eventArgs.CardTypeKey == "enroll" && ev.ShowDialog() == true)
-                {
-                    SubjectWindow subw = new SubjectWindow(bl);
-                    bl.InitializeSubjectTransactions();
-                    switch (bl.Player.PuppetKey)
-                    {
-                        case "nik":
-                            subw.Background = new SolidColorBrush(Colors.DodgerBlue);
-                            break;
-                        case "kando":
-                        subw.Background = new SolidColorBrush(Colors.Gold);
-                            break;
-                        case "rejto":
-                            subw.Background = new SolidColorBrush(Colors.LimeGreen);
-                            break;
-                        default:
-                            subw.Background = new SolidColorBrush(Colors.LightBlue);
-                            break;
-                    }
-
-                    if (subw.ShowDialog() == true)
-                    {
-                        InvalidateVisual();
-                    }
-                }
+                MessageBox.Show(trans.Load, $"Üzenet {bl.Player.Name} számára", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            
             };
 
+            bl.GeneralNotification += (object sender, TransferEventArgs trans) =>
+            {
+                MessageBox.Show(trans.Load, "Általános Üzenet",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+            bl.EventCard += (object s, CardEventArgs eventArgs) =>
+            {
+                EventViewer ev = new EventViewer(eventArgs.CardTypeKey, bl, playerColors);
+                bool closedWithPositive = (bool)ev.ShowDialog();
+                if(closedWithPositive == true)
+                {
 
+                    //if the player wanted to buy a new subject, we show the subject dialog
+                    if (eventArgs.CardTypeKey == "enroll")
+                    {
+                        SubjectWindow subw = new SubjectWindow(bl);
+                        bl.InitializeSubjectTransactions();
+                        subw.Background = playerColors[bl.Player.PuppetKey];
+                        if (subw.ShowDialog() == true)
+                        {
+                            InvalidateVisual();
+                        }
+                    }
 
-            r = new Random();
+                }
+                
+            };
+            bl.FinishedGame += (object s, EventArgs e) =>
+            {
+                WinWindow w = new WinWindow(bl, this);
+                w.ShowDialog();
+            };
+
+           
             //how many elements the row is designed to hold
 
             //resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun"};
@@ -88,8 +103,9 @@ namespace Beadando
             base.OnKeyUp(e);
             if (e.Key == Key.Tab)
             {
-                //bl.GoToPosition(r.Next(0, bl.GameBoard.Count));
-                bl.GoToPosition(2);
+                //bl.GoToPosition(bl.Rand.Next(0, bl.GameBoard.Count)); 
+                bl.GoToPosition(2); //TESTING PURPOSES
+                //bl.TakeStep(bl.Rand.Next(1, 7));
             }
         }
         protected override void OnKeyDown(KeyEventArgs e)
@@ -131,7 +147,7 @@ namespace Beadando
         {
             //SolidColorBrush mySolidColorBrush = new SolidColorBrush();
             //mySolidColorBrush.Color = Colors.LimeGreen;
-
+            base.OnRender(dc);
             //updating the start card center
             bl.GameBoard[0].Rect = bl.CalculatePrimaryPosition(new Point(bl.StartPosition, bl.LowerHorizontalAlign), BL.SquareCard.widthHeight, BL.SquareCard.widthHeight);
             ImageBrush brush;
@@ -183,12 +199,6 @@ namespace Beadando
             //left vertical part
             changingWidth = BL.NormalCard.width;
             correction = 0;
-            // Create a 45 rotate transform about the brush's center
-            // and apply it to the brush's Transform property.
-            //RotateTransform anotherRotateTransform = new RotateTransform();
-            //anotherRotateTransform.CenterX = 87.5;
-            //anotherRotateTransform.CenterY = 45;
-            //anotherRotateTransform.Angle = 90;
             
 
             for (int i = 1; i <= bl.NumberOfElementsInAVerticalRow; i++)
@@ -270,6 +280,7 @@ namespace Beadando
                 * BL.NormalCard.width, bl.NumberOfElementsInAVerticalRow
                 * BL.NormalCard.width, bl.LowerHorizontalAlign
                 + bl.NumberOfElementsInAHorizontalRow * BL.NormalCard.width);
+            
 
             //TODO background of the gameboard
             dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
@@ -354,6 +365,14 @@ namespace Beadando
             
             dc.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
             DrawPlayerUI(dc, startPoint);
+            //next player
+            next = new RenderedButton(dc, new Rect(ActualWidth-120, ActualHeight-120, 100, 40), "Kör vége", playerColors[bl.Player.PuppetKey], Brushes.White, 20);
+            next.Click += (object sender, EventArgs eve) =>
+             {
+                 bl.NextRound();
+                 InvalidateVisual();
+             };
+
         }
 
         private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -364,7 +383,7 @@ namespace Beadando
 
         private void DrawPlayerUI(DrawingContext drawingContext, Point uiRect)
         {
-            Brush brush = bl.Player.PuppetKey == "nik" ? Brushes.DodgerBlue : bl.Player.PuppetKey == "kando" ? Brushes.Gold : Brushes.LimeGreen;
+            Brush brush = playerColors[bl.Player.PuppetKey];
             FormattedText playerName = new FormattedText(
                bl.Player.Name,
                 CultureInfo.CurrentUICulture,
@@ -381,7 +400,21 @@ namespace Beadando
                 new Typeface("Impact"),
                 70, brush);
 
-            drawingContext.DrawText(playerMoney, new Point((uiRect.X + 250), (uiRect.Y + 260)));
+            drawingContext.DrawText(playerMoney, new Point((uiRect.X + 200), (uiRect.Y + 260)));
+        }
+
+        private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            next.CheckIfPressed(e.GetPosition(this));
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (bl.IsTheGameStillOn() && MessageBox.Show("Mentesz kilépés előtt? Ha nem, elveszik amit elértél", 
+                "Kilépsz?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+            {
+                bl.Save(); 
+            }
         }
     }
 }

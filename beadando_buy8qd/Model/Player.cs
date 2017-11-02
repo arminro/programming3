@@ -12,10 +12,10 @@ namespace Beadando.Model
 {
     public enum PlayerState
     {
-        neutral = 0, rollagain = 1, missARound = 2
+        neutral = 0, rollagain = 1, missARound = 2, lost = 3
     }
 
-    public class Player
+    public class Player : Bindable
     {
         string puppetKey;
         Point currentposition;
@@ -26,13 +26,15 @@ namespace Beadando.Model
         int money;
         PlayerState state;
 
-        public Player(string puppetKey, string name = "Player")
+        public Player(string puppetKey, int order, string name = "Player")
         {
             this.puppetKey = puppetKey;
             this.currentCard = 0;
             this.money = 20000;
             subjects = new ObservableCollection<Subject>();
-            State = PlayerState.neutral; 
+            State = PlayerState.neutral;
+            this.order = order;
+            this.name = name;
         }
 
         public Player(string puppetKey, Point currentposition, int order,  string name = "Player")
@@ -44,8 +46,13 @@ namespace Beadando.Model
 
             this.currentCard = 0;
             this.name = name;
-            this.order = order;
+           
             name += $" {order}";
+        }
+
+        public Player()
+        {
+            //empty ctor for xml
         }
 
         public string PuppetKey
@@ -53,6 +60,11 @@ namespace Beadando.Model
             get
             {
                 return puppetKey;
+            }
+            set
+            {
+                puppetKey = value;
+                OnPropertyChanged();
             }
 
           
@@ -104,6 +116,7 @@ namespace Beadando.Model
             set
             {
                 name = value;
+                OnPropertyChanged();
             }
         }
 
@@ -145,15 +158,15 @@ namespace Beadando.Model
 
         //public bool Subjects { get => subjects; set => subjects = value; }
 
-        public override bool Equals(object obj)
-        {
-            Player other = obj as Player;
-            return other.Name == name && other.Order == order;
-        }
-        public override int GetHashCode()
-        {
-            return this.Name.GetHashCode() ^ this.Order.GetHashCode();
-        }
+       // public override bool Equals(object obj)
+       // {
+       //     Player other = obj as Player;
+       //     return other.Name == name && other.Order == order;
+       // }
+        //public override int GetHashCode()
+        //{
+        //    return this.Name.GetHashCode() ^ this.Order.GetHashCode();
+        //}
 
         public override string ToString()
         {

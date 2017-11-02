@@ -14,6 +14,11 @@ namespace Beadando.Model
             this.Price = price;
         }
 
+        public Subject()
+        {
+            //empty ctor for xml
+        }
+
         public string Name { get; set; }
         public int Price { get; set; }
 
