@@ -53,6 +53,7 @@ namespace Beadando.Model
         public Player()
         {
             //empty ctor for xml
+
         }
 
         public string PuppetKey
@@ -89,6 +90,10 @@ namespace Beadando.Model
             get
             {
                 return subjects;
+            }
+            set
+            {
+                subjects = value;
             }
 
         }

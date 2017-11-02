@@ -24,8 +24,8 @@
                     <DataTemplate>
                         <DockPanel   VerticalAlignment="Center" Width="300" Background="Transparent" Margin="10">
                             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" DockPanel.Dock="Left" FontFamily="Edwardian Script ITC" FontSize="40" Width="200"/>
-                            <ComboBox  x:Name="Combo" ItemsSource="{Binding DataContext.PlayerTokens, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" 
-                                       DockPanel.Dock="Right" SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                            <ComboBox  x:Name="Combo" ItemsSource="{Binding DataContext.PlayerTokens, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                       DockPanel.Dock="Right" SelectedItem="{Binding SelectedItem,  RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, Mode=OneWayToSource}"
                                        VerticalContentAlignment="Center" FontSize="25" FontFamily="Edwardian Script ITC" Background="Transparent" SelectionChanged="Combo_SelectionChanged" />
                         </DockPanel>
                     </DataTemplate>

@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using Polenter.Serialization;
 
 namespace Beadando.ViewModel
 {
@@ -40,7 +41,7 @@ namespace Beadando.ViewModel
             GameBoard = new CircularDictionary<BoardField>();
             Subjects = new Dictionary<string, ObservableCollection<Subject>>();
             Players = new CircularList<Player>();
-
+            SaveFolderPath = GetSaveDirectory();
 
 
 
@@ -111,9 +112,7 @@ namespace Beadando.ViewModel
             };
             NeptunActions[2] = () =>
             {
-                //TODO win
                 Win();
-                //MessageBox.Show("NYERÉS");
             };
             NeptunActions[3] = () =>
             {
@@ -150,13 +149,27 @@ namespace Beadando.ViewModel
 
             //AddSubjectToPlayer(Players[0], Subjects["nik"][0], false); ADDING SUBJECT FOR TEST
             //adding the first player
-            Players.Add(new Player("nik", 0, "Player1"));
+            Players.Add(new Player("lel", 0, "Player 1"));
             PlayerTokens = new ObservableCollection<string>();
             for (int i = 0; i < Constants.playerTokens.Length; i++)
             {
                 PlayerTokens.Add(Constants.playerTokens[i]);
             }
             SelectedItem = PlayerTokens[0];
+        }
+
+        public void DeleteSave(string selectedPath)
+        {
+            if (selectedPath != null)
+            {
+                FileInfo info = new FileInfo(selectedPath);
+                info.Delete();
+                Saves.Remove(selectedPath); 
+            }
+            else
+            {
+                GeneralNotification?.Invoke(this, new TransferEventArgs("Nem jelöltél ki semmit!"));
+            }
         }
 
         public bool IsFreeCourseValid(int? indexNumberForCols)
@@ -678,57 +691,125 @@ namespace Beadando.ViewModel
 
         #region Save/Load
         /// <summary>
-        /// Seeks for a pre-specified Directory in Documents, creates it, if it does not exist, then saves the BL of the game
+        /// Seeks for a pre-specified Directory in Documents, creates it, if it does not exist, then saves critical data
         /// </summary>
         public void Save()
         {
+            StringBuilder saveFolderPath = new StringBuilder(SaveFolderPath);
+
+            //dictionaries cannot be serialized in this version of .Net
+            //instatiating dictioanry helper lists
+            //Keys = new List<string>();
+            //Values = new List<ObservableCollection<Subject>>();
+            //
+            //foreach (KeyValuePair<string, ObservableCollection<Subject>> pair in Subjects)
+            //{
+            //    Keys.Add(pair.Key);
+            //    Values.Add(pair.Value);
+            //}
+            //
+            //Ser = new List<object>();
+            //Ser.Add(Players);
+            //Ser.Add(Keys);
+            //Ser.Add(Values);
+            //DateTime time = DateTime.Now;
+            //saveFolderFullPath.Append($"\\{DateTime.Now.ToString("yyyy.MM.dd HH_mm_ss")}");
+            //Directory.CreateDirectory(saveFolderFullPath.ToString());
+            //
+            //Serializer<CircularList<Player>>.Serialize(Players, saveFolderFullPath.ToString() + $"\\players.xml");
+            //Serializer<List<string>>.Serialize(Keys, saveFolderFullPath.ToString() + $"\\subjects_keys.xml");
+            //Serializer<List<ObservableCollection<Subject>>>.Serialize(Values, saveFolderFullPath.ToString() + $"\\subjects_values.xml");
+            //we store the data in one place, so that the shiny serializer can serialize it into 1 file
+            Ser = new List<object>
+            {
+                Players,
+                Subjects,
+                Player
+            };
+            SharpSerializer serializer = new SharpSerializer();
+
+
+            saveFolderPath.Append($"\\{DateTime.Now.ToString("yyyy.MM.dd HH_mm_ss")}.xml");
+            serializer.Serialize(Ser, saveFolderPath.ToString());
+            //serializeDictionary.Add(Players);
+            //    serializeMe, saveFolderFullPath.Append($"\\{DateTime.Now}.xml").ToString());
+
+
+        }
+
+        /// <summary>
+        /// Fills a list with save files
+        /// </summary>
+        public void Peek()
+        {
+            string docPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Diplomazz Okosan";
            
+            Saves = new ObservableCollection<string>();
+
+            //adding all the files found in the saves directory to Saves
+            DirectoryInfo info = new DirectoryInfo(docPath);
+            foreach (var item in info.GetFiles())
+            {
+                Saves.Add(item.FullName);
+            }
+
+        }
+        /// <summary>
+        /// Gets the defualt save folder from the win environment var
+        /// </summary>
+        /// <returns></returns>
+        string GetSaveDirectory()
+        {
             //getting the locetion of the Documents
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string saveFolder = "Diplomazz Okosan";
-           
             StringBuilder saveFolderFullPath = new StringBuilder(docPath);
             saveFolderFullPath.Append($"\\{saveFolder}");
+
+            //creating directory if it does not exist
             if (!Directory.Exists(saveFolderFullPath.ToString()))
             {
                 Directory.CreateDirectory(saveFolderFullPath.ToString());
             }
 
-            
-
-           
-            //serializeDictionary.Add(Players);
-            Tuple<CircularList<Player>, List<object>> serializeMe = Tuple.Create(Players, serializeDictionary);
-            Serializer<List<object>>.Serialize(serializeDictionary, saveFolderFullPath.Append($"\\{this.GetHashCode()}.xml").ToString());
-            //    serializeMe, saveFolderFullPath.Append($"\\{DateTime.Now}.xml").ToString());
-
-
+            return saveFolderFullPath.ToString();
         }
-        List<object> serializeDictionary;
-        public void Load(string fileName)
+        public bool Load(string fullFilePath)
         {
-            //string docPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Diplomazz Okosan";
-            //todo find a way to serialize the dictionary
-            Players = Serializer<CircularList<Player>>.Deserialize(fileName);
+            
+            //SharpSerializer serializer = new SharpSerializer();
+            //object temp = serializer.Deserialize(fullFilePath);
+            if (fullFilePath != null)
+            {
+                try
+                {
+                    //deserializing persistent data
+                    SharpSerializer serializer = new SharpSerializer();
+                    Ser = (List<object>)serializer.Deserialize(fullFilePath);
+                    Players = (CircularList<Player>)Ser[0];
+                    Subjects = (Dictionary<string, ObservableCollection<Subject>>)Ser[1];
+                    Player = (Player)Ser[2];
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    GeneralNotification?.Invoke(this, new TransferEventArgs(e.Message));
+                    return false;
+                }
+                finally
+                {
+                    //we set the selected path back, so we can re-use it
+                    SelectedPath = null;
+                }
+
+            }
+            else
+            {
+                GeneralNotification?.Invoke(this, new TransferEventArgs("Csak úgy tudsz betölteni, ha ki is jelölsz valamit!"));
+                return false;
+            }
             
 
-            //foreach (Player p in Players)
-            //{
-            //    switch (p.PuppetKey)
-            //    {
-            //        case "nik":
-            //            subjects = Constants.nik_targyak;
-            //            break;
-            //        case "rejto":
-            //            subjects = Constants.rejto_targyak;
-            //            break;
-            //        case "kando":
-            //            subjects = Constants.kando_targyak;
-            //            break;
-            //    }
-            //
-            //    //Subjects[p.PuppetKey] = Except(p.Subjects.ToArray(), subjects)
-            //}
         }
 
         //Subject[] Except(Subject[] ar1, Subject[] ar2)
@@ -755,6 +836,28 @@ namespace Beadando.ViewModel
         //    }
         //    return ret;
         //}
+
+        public List<object> Ser { get; set; }
+        public string SelectedPath { get; set; }
+        public ObservableCollection<string> Saves { get; set; }
+        public string SaveFolderPath { get; set; }
+
+        string FormatForSave(string unformatted)
+        {
+            //split the text
+            string[] temp = unformatted.Split('\\');
+
+            //now we have only the name
+            StringBuilder builder = new StringBuilder(temp[temp.Length - 1]);
+
+            //we clip the ".xml" part
+            builder.Remove(builder.Length - 4, 4);
+
+            //we replace the '_' s with ':'s to make it more user-friendly
+            builder.Replace('_', ':');
+            return builder.ToString();
+
+        }
         #endregion
         public void Zoom(int offset)
         {
@@ -1390,6 +1493,7 @@ namespace Beadando.ViewModel
             set
             {
                 selectedItem = value;
+                
             }
         }
 
@@ -1511,16 +1615,32 @@ namespace Beadando.ViewModel
 
 
             }
-
-            (p as Player).PuppetKey = temp;
-            //PlayerTokens.Remove(selectedString);
-            //if(unselected != null)
-            //{
-            //    PlayerTokens.Add(unselected as string);
-            //}
+            
+          
+                (p as Player).PuppetKey = temp;
 
         }
 
+        public bool CheckIfApplicable(string name)
+        {
+            string temp = "";
+            switch (name)
+            {
+                case "NIK":
+                    temp = "nik";
+                    break;
+                case "KVK":
+                    temp = "kando";
+                    break;
+                case "RKK":
+                    temp = "rejto";
+                    break;
+
+
+            }
+
+            return Players.FirstOrDefault(pl => pl.PuppetKey == temp) != null;
+        }
         public void CloseWindows()
         {
             //we signal that the game now begins
@@ -1583,6 +1703,7 @@ namespace Beadando.ViewModel
         {
             return p.Subjects.Count == 3 && p.Money >= 0;
         }
+
 
 
     }

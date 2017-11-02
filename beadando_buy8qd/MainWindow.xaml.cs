@@ -358,6 +358,7 @@ namespace Beadando
             // myRect = new Rect(Constants.startPosition - 7 * Constants.NormalCard.width-60, Constants.lowerHorizontalposition, Constants.SquareCard.widthHeight, Constants.SquareCard.widthHeight);
             // dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
 
+            //todo create buttons for random generation and disable it after 1 roll
             //PLAYER UI
             Size playerUiSize = new Size(550, 450);
             Point startPoint = new Point(((ActualWidth / 2) - (playerUiSize.Width / 2) + bl.OffsetHorizontal), ((ActualHeight / 2) - (playerUiSize.Height / 2)) + bl.OffsetVertical);

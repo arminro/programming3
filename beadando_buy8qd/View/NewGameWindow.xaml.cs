@@ -1,6 +1,7 @@
 ﻿using Beadando.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Beadando.View
     public partial class NewGameWindow : Window
     {
         BL bl;
+        
         public NewGameWindow(BL bl)
         {
             InitializeComponent();
@@ -30,8 +32,12 @@ namespace Beadando.View
             {
                 this.Close();
             };
-
-           
+            bl.GeneralNotification += (object s, TransferEventArgs eve) =>
+            {
+                MessageBox.Show(eve.Load, "Már van ilyen játékos", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            };
+            
+            
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -63,8 +69,22 @@ namespace Beadando.View
 
         private void Combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*We deny selecting the same type of player for the nth time by setting the*/
             ComboBox combo = (sender as ComboBox);
-            bl.ChangePuppetKey(combo.DataContext, combo.SelectedValue, e.RemovedItems.Count > 0 ? e.RemovedItems[0] : null);
+            //the event fires again when we set the selected value to null
+            if (combo.SelectedValue != null)
+            {
+               
+                if (!bl.CheckIfApplicable((string)combo.SelectedValue))
+                {
+                    bl.ChangePuppetKey(combo.DataContext, combo.SelectedValue, e.RemovedItems.Count > 0 ? e.RemovedItems[0] : null);
+                }
+                else
+                {
+                    MessageBox.Show("Nem lehet 2 ugyan olyan játékos!", "Már van ilyen játékos", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    combo.SelectedItem = null;
+                } 
+            }
         }
     }
 }

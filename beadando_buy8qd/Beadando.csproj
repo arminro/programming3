@@ -37,6 +37,9 @@
     <CodeAnalysisRuleSet>oenik.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Polenter.SharpSerializer, Version=3.0.1.0, Culture=neutral, PublicKeyToken=8f4f20011571ee5f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpSerializer.3.0.1\lib\net452\Polenter.SharpSerializer.dll</HintPath>
+    </Reference>
     <Reference Include="StyleCop, Version=5.0.0.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
       <HintPath>..\packages\StyleCop.5.0.0\lib\net40\StyleCop.dll</HintPath>
     </Reference>
@@ -68,6 +71,7 @@
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Subject.cs" />
+    <Compile Include="ViewModel\SaveConverter.cs" />
     <Compile Include="ViewModel\Serializer.cs" />
     <Compile Include="ViewModel\TransferEventArgs.cs" />
     <Compile Include="View\ColorMultiplyerConverter.cs" />

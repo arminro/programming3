@@ -26,13 +26,6 @@ namespace Beadando.ViewModel
             }
         }
 
-        public static void Serialize()
-        {
-            //foreach (Type t in )
-            //{
-            //
-            //}
-        }
 
         public static T Deserialize(string fileName)
         {
@@ -43,13 +36,7 @@ namespace Beadando.ViewModel
             }
         }
 
-        public static class SerializeDictionary<TKey, TValue>
-        {
-            public void AddToSerializable(Dictionary<TKey, TValue> dictToSerialize)
-            {
 
-            }
-        }
 
 
 

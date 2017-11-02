@@ -60,7 +60,9 @@ namespace Beadando.View
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-
+            bl.Peek();
+            LoadWindow load = new LoadWindow(bl);
+            load.ShowDialog();
         }
     }
 }
