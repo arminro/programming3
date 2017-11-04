@@ -43,7 +43,7 @@ namespace Beadando.View
             //we only close the windows, if the load was successful
             if (bl.Load(bl.SelectedPath))
             {
-               
+                bl.InitializeGame();
                 this.DialogResult = true;
                 MainWindow main = new MainWindow(bl);
                 App.Current.MainWindow = main;

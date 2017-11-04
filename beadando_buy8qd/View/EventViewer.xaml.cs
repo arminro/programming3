@@ -122,11 +122,11 @@ namespace Beadando.View
                 //confirm button needs a new place
                 confirmButtonRect = new Rect(ActualWidth / 2 - 100, ActualHeight - 50, 100, 30);
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
-                Brushes.White, Brushes.Black);
+                Brushes.White, Brushes.Black, true);
 
                 //denybutton
                 rbuttonDeny = new RenderedButton(dc, new Rect(ActualWidth / 2+10, ActualHeight-50, 100, 30), 
-                    "Mégsem", Brushes.White, Brushes.Black);
+                    "Mégsem", Brushes.White, Brushes.Black, true);
                 rbuttonDeny.Click += (object sender, EventArgs e) =>
                 {
                     this.DialogResult = false;
@@ -139,7 +139,7 @@ namespace Beadando.View
             else
             {
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
-                Brushes.White, Brushes.Black);
+                Brushes.White, Brushes.Black, true);
                 rbuttonConfirm.Click += RbuttonConfirm_Click;
             }
             
@@ -170,9 +170,8 @@ namespace Beadando.View
 
                 if (bl.IsFreeCourseValid(bl.IndexOfEventCardCollection))
                 {
+                    bl.InitializeSubjectTransactions(true, false);
                     SubjectWindow subw = new SubjectWindow(bl, true);
-
-                    bl.InitializeSubjectTransactions();
                     subw.Background = playerColors[bl.Player.PuppetKey];
                     if (subw.ShowDialog() == true)
                     {
@@ -199,7 +198,7 @@ namespace Beadando.View
             //we index the array 
             else
             {
-                bl.NeptunActions[(int)bl.IndexOfEventCardCollection].Invoke(); //TODO begininvoke vs invoke!!!
+                bl.NeptunActions[(int)bl.IndexOfEventCardCollection].Invoke(); 
             }
 
 
@@ -210,8 +209,16 @@ namespace Beadando.View
         private void RbuttonConfirmEnroll_Click(object sender, EventArgs e)
         {
             this.DialogResult = true;
-            bl.InitializeSubjectTransactions();
-            
+            bl.InitializeSubjectTransactions(false, false);
+            SubjectWindow subw = new SubjectWindow(bl, false);
+            subw.Background = playerColors[bl.Player.PuppetKey];
+            if (subw.ShowDialog() == true)
+            {
+                bl.Refresh(); //make the main window refresh
+                bl.IndexOfEventCardCollection = null; //we have to set the var back to null
+            }
+
+
         }
 
         private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

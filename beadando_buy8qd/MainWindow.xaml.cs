@@ -30,6 +30,9 @@ namespace Beadando
         BL bl;
         
         RenderedButton next;
+        RenderedButton roll;
+        RenderedTextblock block;
+        List<RenderedButton> buttons;
         //storing the chosen colors for the players, we could not use the standard resource dict for this as we want to use the same key as those used for the puppets themselves
         Dictionary<string, SolidColorBrush> playerColors; 
         public MainWindow(BL bl)
@@ -43,8 +46,10 @@ namespace Beadando
                 { "kando", Brushes.Gold },
                 { "rejto", Brushes.LimeGreen }
             };
-
+            buttons = new List<RenderedButton>();
             //subscribing to connector events
+
+            
             bl.Invalidate += (object sender, EventArgs eve) => {
                 InvalidateVisual();
             };
@@ -70,18 +75,25 @@ namespace Beadando
                     //if the player wanted to buy a new subject, we show the subject dialog
                     if (eventArgs.CardTypeKey == "enroll")
                     {
-                        SubjectWindow subw = new SubjectWindow(bl);
-                        bl.InitializeSubjectTransactions();
-                        subw.Background = playerColors[bl.Player.PuppetKey];
-                        if (subw.ShowDialog() == true)
-                        {
-                            InvalidateVisual();
-                        }
+                        bl.InitializeSubjectTransactions(false, false);
                     }
 
                 }
                 
             };
+
+            bl.InitiateSubjectTransaction += (object sender, SubjectEventArgs subEve) =>
+            {
+                SubjectWindow subw = new SubjectWindow(bl, subEve.IsSubjectFree);
+                subw.Background = playerColors[bl.Player.PuppetKey];
+                subw.ShowDialog();
+                //if (subw.ShowDialog() == true)
+                //{
+                    //InvalidateVisual();
+                //}
+
+            };
+
             bl.FinishedGame += (object s, EventArgs e) =>
             {
                 WinWindow w = new WinWindow(bl, this);
@@ -97,17 +109,17 @@ namespace Beadando
         }
 
 
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            
-            base.OnKeyUp(e);
-            if (e.Key == Key.Tab)
-            {
-                //bl.GoToPosition(bl.Rand.Next(0, bl.GameBoard.Count)); 
-                bl.GoToPosition(2); //TESTING PURPOSES
-                //bl.TakeStep(bl.Rand.Next(1, 7));
-            }
-        }
+       // protected override void OnKeyUp(KeyEventArgs e)
+       // {
+       //     //used for testing purposes ONLY 
+       //     base.OnKeyUp(e);
+       //     if (e.Key == Key.Tab)
+       //     {
+       //         //bl.GoToPosition(bl.Rand.Next(0, bl.GameBoard.Count)); 
+       //         bl.GoToPosition(2); //TESTING PURPOSES
+       //         //bl.TakeStep(bl.Rand.Next(1, 7));
+       //     }
+       // }
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -157,6 +169,12 @@ namespace Beadando
             //BACKGROUND --> ALWAYS RENDERED FIRST
             Rect myRect = new Rect(0, 0, this.ActualWidth, this.ActualHeight);
             dc.DrawRectangle((ImageBrush)this.Resources["wood"], null, myRect);
+
+            //TODO background of the gameboard
+            Rect backgroundRect = new Rect(this.ActualWidth / 2-150, this.ActualHeight / 2-150, 300, 300);
+
+            dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
+
 
             //THE TRACK --> ALWAYS RENDERED AFTER THE BACKGROUND
             //start column
@@ -274,105 +292,58 @@ namespace Beadando
                 dc.DrawRectangle(brush, myPen, myRect);
 
             }
-            Rect backgroundRect = new Rect(bl.LowerHorizontalAlign
-                + bl.NumberOfElementsInAHorizontalRow * BL.NormalCard.width,
-                bl.NumberOfElementsInAVerticalRow
-                * BL.NormalCard.width, bl.NumberOfElementsInAVerticalRow
-                * BL.NormalCard.width, bl.LowerHorizontalAlign
-                + bl.NumberOfElementsInAHorizontalRow * BL.NormalCard.width);
             
 
-            //TODO background of the gameboard
-            dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
 
             //PUPPETS --> RENDERED AFTER THE TRACK
-            //myRect = new Rect(Constants.startPosition, Constants.lowerHorizontalAlign, 50, 50);
-            //System.Windows.Point center = new System.Windows.Point(startPosition + (SquareCard.widthHeight / 2), 
-            //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));
-            //System.Windows.Point center = System.Windows.Point.Add(gameBoard[6].Rect, new Vector(50, NormalCard.height/2));
 
             //the view does not know about Player type, just sees the data from bl
             for (int i = 0; i < bl.Players.Count; i++)
             {
                 dc.DrawEllipse((ImageBrush)this.Resources[bl.Players[i].PuppetKey], null, bl.Players[i].Currentposition, bl.PuppetDiameter, bl.PuppetDiameter);
             }
-           //foreach (Player p in bl.Players)
-           //{
-           //    dc.DrawEllipse((ImageBrush)this.Resources[p.PuppetKey], null, p.Currentposition, bl.PuppetDiameter, bl.PuppetDiameter); 
-           //}
-
-            //center = new System.Windows.Point((startPosition + (SquareCard.widthHeight / 2)) - NormalCard.width, 
-            //    lowerHorizontalAlign + (SquareCard.widthHeight / 2));
-            //Point newCenter = Point.Subtract(center, new Vector(0, 60));
-
-            //dc.DrawEllipse((ImageBrush)this.Resources["kando"], null, CalculateSecondaryPosition(gameBoard[0].Rect), puppetDiameter, puppetDiameter);
-
-            //center = new System.Windows.Point((startPosition + (SquareCard.widthHeight / 2)) - NormalCard.width,
-            //    lowerHorizontalAlign + (SquareCard.widthHeight / 2) - NormalCard.width);
-            //newCenter = Point.Add(center, new Vector(0, 60));
-
-            //dc.DrawEllipse((ImageBrush)this.Resources["rejto"], null, CalculateTertialPosition(gameBoard[0].Rect), puppetDiameter, puppetDiameter);
-
-            //for (int i = 1; i <= numberOfElementsInAVerticalRow; i++)
-            //{
-            //    //if (i != 0 && i % numberOfElementsInAVerticalRow == 0)
-            //    //{
-            //    //    myRect = new Rect(Constants.lowerHorizontalAlign -
-            //    //        (Constants.NormalCard.width - (Constants.SquareCard.widthHeight -
-            //    //        Constants.NormalCard.height)),  i *Constants.lowerHorizontalAlign,
-            //    //        Constants.SquareCard.widthHeight, Constants.SquareCard.widthHeight);
-            //    //}
-            //    //else
-            //    //{
-            //        myRect = new Rect(Constants.startPosition - 
-            //            ((numberOfElementsInAHorizontalRow) * Constants.NormalCard.width) + 2*Constants.SquareCard.widthHeight,
-            //            Constants.lowerHorizontalAlign - i*Constants.NormalCard.width, Constants.NormalCard.height, Constants.NormalCard.width);
-            //    //}
-            //    dc.DrawRectangle((ImageBrush)this.Resources[resourceNames[i - 1]], myPen, myRect);
-            //}
 
 
 
-
-            // //1st column
-            // myRect = new Rect(Constants.startPosition- Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["go"], myPen, myRect);
-            //
-            // //2nd column
-            // myRect = new Rect(Constants.startPosition - 2 * Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["event"], myPen, myRect);
-            //
-            // myRect = new Rect(Constants.startPosition -  3 * Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["event"], myPen, myRect);
-            //
-            // myRect = new Rect(Constants.startPosition -  4 * Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["event"], myPen, myRect);
-            //
-            //
-            // myRect = new Rect(Constants.startPosition - 5 * Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["event"], myPen, myRect);
-            //
-            // myRect = new Rect(Constants.startPosition - 6 * Constants.NormalCard.width, Constants.lowerHorizontalposition, Constants.NormalCard.width, Constants.NormalCard.height);
-            // dc.DrawRectangle((ImageBrush)this.Resources["event"], myPen, myRect);
-            //
-            // myRect = new Rect(Constants.startPosition - 7 * Constants.NormalCard.width-60, Constants.lowerHorizontalposition, Constants.SquareCard.widthHeight, Constants.SquareCard.widthHeight);
-            // dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
-
-            //todo create buttons for random generation and disable it after 1 roll
             //PLAYER UI
             Size playerUiSize = new Size(550, 450);
             Point startPoint = new Point(((ActualWidth / 2) - (playerUiSize.Width / 2) + bl.OffsetHorizontal), ((ActualHeight / 2) - (playerUiSize.Height / 2)) + bl.OffsetVertical);
             Rect mainPlayerScreen = new Rect(startPoint, playerUiSize);
             
             dc.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
+            
             DrawPlayerUI(dc, startPoint);
+
+            RenderedTextblock rounds = new RenderedTextblock(playerColors[bl.Player.PuppetKey], Brushes.White, dc, new Rect(ActualWidth - 120, ActualHeight - 270, 100, 40));
+            rounds.DrawText(dc, bl.RoundCounter.ToString());
+
+            //drawing the block
+            RenderedTextblock block = new RenderedTextblock(playerColors[bl.Player.PuppetKey], Brushes.White, dc, new Rect(ActualWidth - 120, ActualHeight - 220, 100, 40));
+            if (bl.RandomGeneratedNumber > 0)
+            {
+                block.DrawText(dc, bl.RandomGeneratedNumber.ToString());
+            }
+
+
+            //drawing the roll button
+            roll = new RenderedButton(dc, new Rect(ActualWidth - 120, ActualHeight - 170, 100, 40), "Gurítok", playerColors[bl.Player.PuppetKey], Brushes.White, bl.RollButtonEnabled, 20);
+            roll.Click += (object s, EventArgs e) =>
+            {
+                bl.GenerateRandomNumber();
+                bl.GoToPosition(bl.RandomGeneratedNumber);
+                bl.RollButtonEnabled = false; //we make the button uninteractable
+            };
+            buttons.Add(roll);
+
             //next player
-            next = new RenderedButton(dc, new Rect(ActualWidth-120, ActualHeight-120, 100, 40), "Kör vége", playerColors[bl.Player.PuppetKey], Brushes.White, 20);
+            next = new RenderedButton(dc, new Rect(ActualWidth-120, ActualHeight-120, 100, 40), "Következő", playerColors[bl.Player.PuppetKey], Brushes.White, true, 20);
             next.Click += (object sender, EventArgs eve) =>
              {
                  bl.NextRound();
                  InvalidateVisual();
              };
+
+            buttons.Add(next);
 
         }
 
@@ -406,7 +377,11 @@ namespace Beadando
 
         private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //we have to check every button if it was  pressed
+            //tried it with adding these elements ot a list and looping over it, but this does not work that way 
+            //(maybe because how preview is propagated)                                                                                     
             next.CheckIfPressed(e.GetPosition(this));
+            roll.CheckIfPressed(e.GetPosition(this));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -417,5 +392,6 @@ namespace Beadando
                 bl.Save(); 
             }
         }
+
     }
 }

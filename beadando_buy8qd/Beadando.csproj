@@ -64,7 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Bindable.cs" />
+    <Compile Include="ViewModel\Bindable.cs" />
     <Compile Include="Model\BoardField.cs" />
     <Compile Include="Model\CircularList.cs" />
     <Compile Include="Model\CircularDictionary.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="View\EventViewer.xaml.cs">
       <DependentUpon>EventViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\RenderedTextblock.cs" />
     <Compile Include="View\SubjectWindow.xaml.cs">
       <DependentUpon>SubjectWindow.xaml</DependentUpon>
     </Compile>

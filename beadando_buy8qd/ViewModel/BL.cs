@@ -12,6 +12,8 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using Polenter.Serialization;
+using System.ComponentModel;
+
 
 namespace Beadando.ViewModel
 {
@@ -42,7 +44,7 @@ namespace Beadando.ViewModel
             Subjects = new Dictionary<string, ObservableCollection<Subject>>();
             Players = new CircularList<Player>();
             SaveFolderPath = GetSaveDirectory();
-
+            RollButtonEnabled = true;
 
 
             //adding the texts of the events from the data in MODEL
@@ -97,6 +99,10 @@ namespace Beadando.ViewModel
                {
                    this.DismissRandomSubject();
                });
+            EventActions_Single.Add("megajanlott", () =>
+            {
+                InitializeSubjectTransactions(true, true);
+            });
             NeptunActions = new Action[Constants.neptunMessages.Length];
            
             
@@ -135,7 +141,8 @@ namespace Beadando.ViewModel
             //millis = new List<long>();
             
             SetMetrics();
-            GenerateOrderOfCards();
+            //if we do not yet have elements in the gameboard, it is a new game, so generate it
+            //if there are already elements, then it is a load and loading has already taken care of filling GB with data
             //P.Currentposition = GameBoard[0].Rect;
             Players = new CircularList<Player>(); //the max number of players is 3
             //Players.Add(new Player("nik", GameBoard[0].Rect, 0, "Nikes kocka"));
@@ -156,6 +163,20 @@ namespace Beadando.ViewModel
                 PlayerTokens.Add(Constants.playerTokens[i]);
             }
             SelectedItem = PlayerTokens[0];
+
+           
+
+            PropertyChanged += (object sender, PropertyChangedEventArgs prop) =>
+            {
+                
+                if(prop.PropertyName == "Turn")
+                {
+                    if (Turn % Players.Count == 0)
+                    {
+                        RoundCounter++;
+                    }
+                }
+            };
         }
 
         public void DeleteSave(string selectedPath)
@@ -197,7 +218,7 @@ namespace Beadando.ViewModel
         CircularList<Player> players;
         public event EventHandler Invalidate; //provides a way to invalidate the visual from hte view
         public event EventHandler<CardEventArgs> EventCard; //provides a way to invoke the event in the view
-        public event EventHandler<EventArgs> InitiateSubjectTransaction; //provides a way to invoke the subjects window
+        public event EventHandler<SubjectEventArgs> InitiateSubjectTransaction; //provides a way to invoke the subjects window
         public event EventHandler<TransferEventArgs> NotifyPlayer;
         public event EventHandler<EventArgs> CloseOpenWindows;
         public event EventHandler<EventArgs> FinishedGame;
@@ -216,7 +237,23 @@ namespace Beadando.ViewModel
 
 
         #endregion
+        int turn;  //marks the turns in the game
 
+        int roundCounter;
+        
+        public int RoundCounter
+        {
+            get
+            {
+               
+                return roundCounter;
+            }
+
+            set
+            {
+                roundCounter = value;
+            }
+        }
         Player p; //reference to the actual player
 
         #region SubjectWindowItems
@@ -282,14 +319,25 @@ namespace Beadando.ViewModel
             }
         }
 
-        public void InitializeSubjectTransactions()
+        public void InitializeSubjectTransactions(bool isSubjectForFree, bool weNeedEvent)
         {
+            /*If we need to initiate a new subject transaction from a view element,
+             we must deal with actually showing the windows right where we are going to use them and
+             pass false to weneedevent.
+             If we initiate it from the view model, we need the even to tunnel the showing of the windows to a view element and
+             we pass true to weneedevent.*/
+            //we initialize the data needed to show the subjects
             SubjectsAvailableToPlayer = Subjects[Player.PuppetKey];
             SubjectsOfPlayer = Player.Subjects;
             SelectedSubject = null;
             CanPlayerBuyIt = true;
-            InitiateSubjectTransaction?.Invoke(this, new EventArgs());
+            if (weNeedEvent)
+            {
+                InitiateSubjectTransaction?.Invoke(this, new SubjectEventArgs(Player, SubjectsAvailableToPlayer, isSubjectForFree));
+
+            }
         }
+
 
         public void CanPlayerBuySubject(object v)
         {
@@ -320,7 +368,6 @@ namespace Beadando.ViewModel
 
         float puppetDiameter; //the diameter of the player puppet
         float puppetDiameterChangeConstant; //the constant to which the diameter of the puppet changes
-        int roundIncrementor; //this var is incremented to change players
 
 
         #region WinWindow
@@ -374,7 +421,7 @@ namespace Beadando.ViewModel
         {
             //we get the number from the text and return with the number of the card that number far from the player's current card
             //we know that the last character is the numberic, oc, we could test all the characters and stop where we find a number
-            return Player.CurrentCard + (int)Char.GetNumericValue(textToBeDisplayed.Last());
+            return (int)Char.GetNumericValue(textToBeDisplayed.Last());
         }
 
         public void ArriveAtRandomPosition()
@@ -383,6 +430,8 @@ namespace Beadando.ViewModel
         }
 
         #endregion
+
+        public bool RollButtonEnabled { get; set; }
 
         //List<long> millis; 
 
@@ -697,6 +746,12 @@ namespace Beadando.ViewModel
         {
             StringBuilder saveFolderPath = new StringBuilder(SaveFolderPath);
 
+            GameBoard_TempForSerilaize = new Dictionary<int, BoardField>();
+
+            foreach (KeyValuePair<int, BoardField> board in GameBoard)
+            {
+                GameBoard_TempForSerilaize.Add(board.Key, board.Value);
+            }
             //dictionaries cannot be serialized in this version of .Net
             //instatiating dictioanry helper lists
             //Keys = new List<string>();
@@ -724,7 +779,9 @@ namespace Beadando.ViewModel
             {
                 Players,
                 Subjects,
-                Player
+                Player,
+                RoundCounter,
+                GameBoard_TempForSerilaize
             };
             SharpSerializer serializer = new SharpSerializer();
 
@@ -774,6 +831,10 @@ namespace Beadando.ViewModel
 
             return saveFolderFullPath.ToString();
         }
+        /*for some reason, the polenter serializer cannot save my circular dictionary implementation
+         so this temp dict is used to save the data, strangely enough, my circular list means no problem*/
+        public Dictionary<int, BoardField> GameBoard_TempForSerilaize { get; set; } 
+
         public bool Load(string fullFilePath)
         {
             
@@ -789,6 +850,15 @@ namespace Beadando.ViewModel
                     Players = (CircularList<Player>)Ser[0];
                     Subjects = (Dictionary<string, ObservableCollection<Subject>>)Ser[1];
                     Player = (Player)Ser[2];
+                    RoundCounter = (int)Ser[3];
+                    GameBoard_TempForSerilaize = new Dictionary<int, BoardField>();
+                    GameBoard_TempForSerilaize = (Dictionary<int, BoardField>)Ser[4];
+                    //getting data out of the normal dictionary
+                    foreach (KeyValuePair<int, BoardField> item in GameBoard_TempForSerilaize)
+                    {
+                        GameBoard.Add(item.Key, item.Value);
+                    }
+                    GameBoard_TempForSerilaize = null;
                     return true;
                 }
                 catch (Exception e)
@@ -842,6 +912,8 @@ namespace Beadando.ViewModel
         public ObservableCollection<string> Saves { get; set; }
         public string SaveFolderPath { get; set; }
 
+        public int RandomGeneratedNumber { get; set; }
+        
         string FormatForSave(string unformatted)
         {
             //split the text
@@ -907,6 +979,11 @@ namespace Beadando.ViewModel
         /// Goes to the specified position from the current one. 
         /// </summary>
         /// <param name="position">The key of the destination card</param>
+        public void GenerateRandomNumber()
+        {
+            RandomGeneratedNumber = Rand.Next(1, 7);
+        }
+        
         public void GoToPosition(int position)
         {
             /*We have to keep stepping from the current position, but the number of steps has to start from 0*/
@@ -917,7 +994,8 @@ namespace Beadando.ViewModel
             //if the goal position is in the same round (eg. from 9 to 12) we only have to take just as many steps as is there difference
             //if the goal position is in another round (eg. from 25 to 1)
             //we have to take as many steps as it takes to get to the start + the number of steps taking us to the goal card
-            int boundary = position > Player.CurrentCard ? position - Player.CurrentCard : (GameBoard.Count - Player.CurrentCard) + position;
+            //int boundary = position > Player.CurrentCard ? position - Player.CurrentCard : (GameBoard.Count - Player.CurrentCard) + position;
+            int boundary = position;
             timer.Interval = TimeSpan.FromMilliseconds(422); //422 //kókány: 328.10526
             timer.Start();
             timer.Tick += (o, args) => {
@@ -1125,11 +1203,13 @@ namespace Beadando.ViewModel
                 if (Player.State == PlayerState.rollagain)
                 {
                     Player.State = PlayerState.neutral;
+                    //Turn++; //increment the number of turns
                 }
 
                 else if (Players.WhatIsNext().State == PlayerState.neutral)
                 {
                     Player = Players.GetNextElement();
+                    Turn++;
                 }
 
                 //if the next player has to miss the turn, we set back its state bc s/he is going to miss this round
@@ -1138,11 +1218,15 @@ namespace Beadando.ViewModel
                 {
                     Players.WhatIsNext().State = PlayerState.neutral; //set the state back
                     Player = Players.GetNextElement(2); //ask for the player after the one who misses a round
+                    Turn += 2; //now one of the players missed a round, so it takes only 2 players to complete a round
                 }
                 else if (Players.WhatIsNext().State == PlayerState.lost)
                 {
                     Player = Players.GetNextElement(2); //ask for the player after the one who misses a round
+                    Turn += 2;
                 }
+                RollButtonEnabled = true;
+                RandomGeneratedNumber = 0; //at the start of every new round, we set this back to 0
 
             }
             else
@@ -1287,14 +1371,12 @@ namespace Beadando.ViewModel
                 }
                 GameBoard.Add(indexer++, b);
             }
-            //to make sure that the game can be won, 3 of the cards are switched to a win card randomly
-            for (int i = 0; i < 3; i++)
-            {
-                //we start form 1 bc the start cannot be switched
-                GameBoard[Rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
+            //to make sure that the game can be won, 1 of the cards are switched to a win card randomly
+            //we start form 1 bc the start cannot be switched
+             GameBoard[Rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
                 
-            }
-            GameBoard[2].ImageKey = "enroll"; //USED FOR TESTING!!!
+            
+            GameBoard[2].ImageKey = "go"; //USED FOR TESTING!!!
 
             //while (i < temp.Length && i <= Constants.numberOfElementsInAVerticalRow)
             //{
@@ -1439,7 +1521,7 @@ namespace Beadando.ViewModel
 
         void RemoveMoney(Player p, int sum)
         {
-            if (p.Money > 0)
+            if ((p.Money - sum) > 0)
             {
                 p.Money -= sum;
             }
@@ -1497,6 +1579,20 @@ namespace Beadando.ViewModel
             }
         }
 
+        public int Turn
+        {
+            get
+            {
+                return turn;
+            }
+
+            set
+            {
+                turn = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void AddPlayer()
         {
             if (Players.Count < 3)
@@ -1513,9 +1609,32 @@ namespace Beadando.ViewModel
             }
         }
 
-        public void InitializeGameplay()
+        /// <summary>
+        /// This must run before any gameplay either new or loaded
+        /// </summary>
+        public void InitializeGame()
         {
-            
+            if (GameBoard.Count == 0)
+            {
+                GenerateOrderOfCards();
+            }
+
+            //if it is a new game, we will start it from 1 instead of 0
+            //if it is a load, the loading has already loaded data, so it will not be 0
+            if (RoundCounter == 0)
+            {
+                RoundCounter++;
+            }
+
+        }
+
+        /// <summary>
+        /// This must run before any NEW game, but not before loaded ones
+        /// </summary>
+        public void InitializeStartOfNewGame()
+        {
+
+
             foreach (Player p in Players)
             {
 
@@ -1556,7 +1675,8 @@ namespace Beadando.ViewModel
 
                     }
 
-                }            }
+                }
+            }
 
             //adding the players to the first card
             for (int i = 0; i < Players.Count; i++)

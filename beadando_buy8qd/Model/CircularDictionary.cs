@@ -15,10 +15,10 @@ namespace Beadando.Model
     {
         public new TValue this[int i]
         {
+            
+
             get
             {
-                
-
                 return base[i % this.Count]; 
             }
             set

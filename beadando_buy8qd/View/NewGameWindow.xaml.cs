@@ -42,7 +42,8 @@ namespace Beadando.View
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            bl.InitializeGameplay();
+            bl.InitializeGame();
+            bl.InitializeStartOfNewGame();
             this.DialogResult = true;
             MainWindow main = new MainWindow(bl);
             App.Current.MainWindow = main;

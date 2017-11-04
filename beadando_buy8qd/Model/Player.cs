@@ -15,7 +15,7 @@ namespace Beadando.Model
         neutral = 0, rollagain = 1, missARound = 2, lost = 3
     }
 
-    public class Player : Bindable
+    public class Player 
     {
         string puppetKey;
         Point currentposition;
@@ -65,7 +65,7 @@ namespace Beadando.Model
             set
             {
                 puppetKey = value;
-                OnPropertyChanged();
+                
             }
 
           
@@ -121,7 +121,7 @@ namespace Beadando.Model
             set
             {
                 name = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
 
