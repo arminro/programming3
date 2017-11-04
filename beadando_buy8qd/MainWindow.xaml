@@ -16,20 +16,33 @@
         
         <ImageBrush x:Key="go" ImageSource="pack://siteoforigin:,,,/Resources/go.png"  />
         <ImageBrush x:Key="event" ImageSource="pack://siteoforigin:,,,/Resources/event.png" />
-        <ImageBrush x:Key="wood" ImageSource="wood.jpg" />
-        <ImageBrush x:Key="table" ImageSource="pack://siteoforigin:,,,/Resources/table.jpg" />
+        <ImageBrush x:Key="wood" ImageSource="Resources/wood.jpg" />
         <ImageBrush x:Key="start" ImageSource="pack://siteoforigin:,,,/Resources/start.png"  />
         <ImageBrush x:Key="roll" ImageSource="pack://siteoforigin:,,,/Resources/rollAgain2.png"  />
-        <ImageBrush x:Key="uv" ImageSource="Resources/uv.png"  />
+        <ImageBrush x:Key="uv" ImageSource="pack://siteoforigin:,,,/Resources/uv.png"   />
         <ImageBrush x:Key="megajanlott" ImageSource="pack://siteoforigin:,,,/Resources/megajanlott.png"  />
         <ImageBrush x:Key="enroll" ImageSource="pack://siteoforigin:,,,/Resources/enroll.png"  />
 
+        <ImageBrush x:Key="go_horizontal" ImageSource="Resources/go_horizontal.png"   />
+        <ImageBrush x:Key="event_horizontal" ImageSource="Resources/event_horizontal.png"  />
+        <ImageBrush x:Key="neptun_horizontal" ImageSource="pack://siteoforigin:,,,/Resources/neptun_horizontal.png" />
+
+        <ImageBrush x:Key="roll_horizontal" ImageSource="Resources/rollAgain2_horizontal.png"  />
+        <ImageBrush x:Key="uv_horizontal" ImageSource="Resources/uv_horizontal.png"   />
+        <ImageBrush x:Key="enroll_horizontal" ImageSource="Resources/enroll_horizontal.png" />
+
+
         <ImageBrush x:Key="randi" ImageSource="pack://siteoforigin:,,,/Resources/randi.png"  />
         <ImageBrush x:Key="neptun" ImageSource="pack://siteoforigin:,,,/Resources/neptun.png"  />
-        <ImageBrush x:Key="lead" ImageSource="lead.png"   />
-        <ImageBrush x:Key="einstein" ImageSource="einstein.png"  />
+        <ImageBrush x:Key="lead" ImageSource="Resources/lead.png"  />
+        <ImageBrush x:Key="einstein" ImageSource="Resources/einstein.png"   />
         <ImageBrush x:Key="phone" ImageSource="pack://siteoforigin:,,,/Resources/stats.png" />
+        <ImageBrush x:Key="options" ImageSource="pack://siteoforigin:,,,/Resources/Gears-Transparent-Background.png" />
+        <ImageBrush x:Key="randi_horizontal" ImageSource="Resources/randi_horizontal.png"   />
+       
         
+       
+
 
     </Window.Resources>
 

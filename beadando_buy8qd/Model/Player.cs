@@ -30,7 +30,7 @@ namespace Beadando.Model
         {
             this.puppetKey = puppetKey;
             this.currentCard = 0;
-            this.money = 20000;
+            this.money = 10000;
             subjects = new ObservableCollection<Subject>();
             State = PlayerState.neutral;
             this.order = order;

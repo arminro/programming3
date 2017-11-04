@@ -21,12 +21,13 @@ namespace Beadando.View
     public partial class LoadWindow : Window
     {
         BL bl;
-        public LoadWindow(BL bl)
+        Window invokedIn;
+        public LoadWindow(BL bl, Window invokedIn)
         {
             InitializeComponent();
             this.bl = bl;
             this.DataContext = bl;
-
+            this.invokedIn = invokedIn;
             //subscribing to the event in case something goes wrong in the bl controlling this part
             bl.GeneralNotification += (object s, TransferEventArgs trans) =>
             {
@@ -47,7 +48,9 @@ namespace Beadando.View
                 this.DialogResult = true;
                 MainWindow main = new MainWindow(bl);
                 App.Current.MainWindow = main;
-                bl.CloseWindows();
+                this.Close();
+                invokedIn.Close();
+                //bl.CloseWindows();
                 main.Show();
 
             }

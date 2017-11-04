@@ -31,22 +31,29 @@ namespace Beadando
         
         RenderedButton next;
         RenderedButton roll;
-        RenderedTextblock block;
-        List<RenderedButton> buttons;
+        RenderedButton options;
+       
+        
+       
+
         //storing the chosen colors for the players, we could not use the standard resource dict for this as we want to use the same key as those used for the puppets themselves
-        Dictionary<string, SolidColorBrush> playerColors; 
+        Dictionary<string, SolidColorBrush> playerColors;
+
+
+
         public MainWindow(BL bl)
         {
             
             InitializeComponent();
             this.bl = bl;
+            
             playerColors = new Dictionary<string, SolidColorBrush>
             {
                 { "nik", Brushes.DodgerBlue },
                 { "kando", Brushes.Gold },
                 { "rejto", Brushes.LimeGreen }
             };
-            buttons = new List<RenderedButton>();
+          
             //subscribing to connector events
 
             
@@ -99,7 +106,7 @@ namespace Beadando
                 WinWindow w = new WinWindow(bl, this);
                 w.ShowDialog();
             };
-
+            
            
             //how many elements the row is designed to hold
 
@@ -161,8 +168,8 @@ namespace Beadando
             //mySolidColorBrush.Color = Colors.LimeGreen;
             base.OnRender(dc);
             //updating the start card center
-            bl.GameBoard[0].Rect = bl.CalculatePrimaryPosition(new Point(bl.StartPosition, bl.LowerHorizontalAlign), BL.SquareCard.widthHeight, BL.SquareCard.widthHeight);
-            ImageBrush brush;
+            bl.GameBoard[0].Rect = bl.CalculatePrimaryPosition(new Point(bl.Met.StartPosition.X, bl.StartY), Metrics.SquareCard.widthHeight, Metrics.SquareCard.widthHeight);
+            
             int indexer = 1;
             Pen myPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.Blue, 3);
             
@@ -171,127 +178,12 @@ namespace Beadando
             dc.DrawRectangle((ImageBrush)this.Resources["wood"], null, myRect);
 
             //TODO background of the gameboard
-            Rect backgroundRect = new Rect(this.ActualWidth / 2-150, this.ActualHeight / 2-150, 300, 300);
+            Rect backgroundRect = new Rect((this.ActualWidth / 2)-(bl.Met.WidthOfBoard/2), (this.ActualHeight / 2)-(bl.Met.HeightOfBoard/2), bl.Met.WidthOfBoard, bl.Met.HeightOfBoard);
 
             dc.DrawRectangle(Brushes.Blue, null, backgroundRect);
 
 
-            //THE TRACK --> ALWAYS RENDERED AFTER THE BACKGROUND
-            //start column
-
-            myRect = new Rect(bl.StartPosition, bl.LowerHorizontalAlign, BL.SquareCard.widthHeight, BL.SquareCard.widthHeight);
-            dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
-
-           
-
-            //lower horizontal part
-            int changingWidth = BL.NormalCard.width;
-            int correction = 0;
-            Point holder; //this holds the calcuated points
-            for (int i = 1; i <= bl.NumberOfElementsInAHorizontalRow; i++)
-            {
-                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
-                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                if (i % bl.NumberOfElementsInAHorizontalRow == 0)
-                {
-                    //myRect = new Rect(Constants.startPosition - 
-                    //    (i * Constants.NormalCard.width - (Constants.SquareCard.widthHeight - 
-                    //    Constants.NormalCard.width) + Constants.SquareCard.widthHeight), Constants.lowerHorizontalAlign, 
-                    //    Constants.SquareCard.widthHeight, Constants.SquareCard.widthHeight);
-                    changingWidth = BL.SquareCard.widthHeight;
-
-                    //we have to put the square card a little further, because it is wider
-                    correction = BL.SquareCard.widthHeight - BL.NormalCard.width;
-
-                }
-                holder = new Point(bl.StartPosition - i * BL.NormalCard.width - correction, bl.LowerHorizontalAlign);
-                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, changingWidth, BL.NormalCard.height);
-                myRect = new Rect(holder.X, holder.Y, changingWidth, BL.NormalCard.height);
-                // dc.DrawRectangle((ImageBrush)this.Resources[resourceNamesNormal[rand.Next(0,
-                //     resourceNamesNormal.Length)]], myPen, myRect);
-                 dc.DrawRectangle(brush, myPen, myRect);
-
-            }
-
-            
-            //left vertical part
-            changingWidth = BL.NormalCard.width;
-            correction = 0;
-            
-
-            for (int i = 1; i <= bl.NumberOfElementsInAVerticalRow; i++)
-            {
-                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
-                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                //brush.Transform = anotherRotateTransform;
-                if (i % bl.NumberOfElementsInAVerticalRow == 0)
-                {
-                    changingWidth = BL.SquareCard.widthHeight;
-                    //we have to put the square card a little further, because it is wider
-                    correction = BL.SquareCard.widthHeight - BL.NormalCard.width;
-                }
-                holder = new Point(bl.LeftVerticalAlign, (bl.LowerHorizontalAlign - i * BL.NormalCard.width) - correction);
-                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, BL.NormalCard.height, changingWidth);
-                myRect = new Rect(holder.X, holder.Y, BL.NormalCard.height, changingWidth);
-                //dc.DrawRectangle((ImageBrush)this.Resources[resourceNamesNormal[rand.Next(0,
-                //    resourceNamesNormal.Length)]], myPen, myRect);
-                
-                dc.DrawRectangle(brush, myPen, myRect);
-
-            }
-
-            //upper horizontal part
-            changingWidth = BL.NormalCard.width;
-            correction = 0;
-            for (int i = 1; i <= bl.NumberOfElementsInAHorizontalRow; i++)
-            {
-                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
-                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                if (i % bl.NumberOfElementsInAHorizontalRow == 0)
-                {
-
-                    changingWidth = BL.SquareCard.widthHeight;
-
-                    //we have to put the square card a little further, because it is wider
-                    correction = BL.SquareCard.widthHeight - BL.NormalCard.width;
-
-                }
-                holder = new Point((bl.LeftVerticalAlign + i * BL.NormalCard.width)
-                    + BL.SquareCard.widthHeight - BL.NormalCard.width, bl.UpperVerticalAlign);
-                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, changingWidth, BL.NormalCard.height);
-
-                myRect = new Rect(holder.X, 
-                    holder.Y, 
-                    changingWidth, BL.NormalCard.height);
-                //dc.DrawRectangle((ImageBrush)this.Resources[resourceNamesNormal[rand.Next(0,
-                //    resourceNamesNormal.Length)]], myPen, myRect);
-                dc.DrawRectangle(brush, myPen, myRect);
-            }
-
-
-            changingWidth = BL.NormalCard.width;
-            correction = 0;
-            for (int i = 1; i <= bl.NumberOfElementsInAVerticalRow-1; i++)
-            {
-                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
-                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
-                // if (i % bl.NumberOfElementsInAVerticalRow == 0)
-                // {
-                //     changingWidth = SquareCard.widthHeight;
-                //     //we have to put the square card a little further, because it is wider
-                //     correction = SquareCard.widthHeight - NormalCard.width;
-                // }
-                holder = new Point(bl.RightVerticalAlign,
-                      (bl.LowerHorizontalAlign - bl.NumberOfElementsInAVerticalRow * BL.NormalCard.width) + i * BL.NormalCard.width);
-                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, BL.NormalCard.height, changingWidth);
-
-                myRect = new Rect(holder.X, 
-                    holder.Y, BL.NormalCard.height, changingWidth);
-                //dc.DrawRectangle((ImageBrush)this.Resources[resourceNamesNormal[rand.Next(0,
-                //    resourceNamesNormal.Length)]], myPen, myRect);
-                dc.DrawRectangle(brush, myPen, myRect);
-
-            }
+            DrawBoard(dc, myRect, indexer, myPen);
             
 
 
@@ -333,17 +225,24 @@ namespace Beadando
                 bl.GoToPosition(bl.RandomGeneratedNumber);
                 bl.RollButtonEnabled = false; //we make the button uninteractable
             };
-            buttons.Add(roll);
+           
 
             //next player
             next = new RenderedButton(dc, new Rect(ActualWidth-120, ActualHeight-120, 100, 40), "Következő", playerColors[bl.Player.PuppetKey], Brushes.White, true, 20);
             next.Click += (object sender, EventArgs eve) =>
-             {
-                 bl.NextRound();
-                 InvalidateVisual();
-             };
+            {
+                bl.NextRound();
+                InvalidateVisual();
+            };
 
-            buttons.Add(next);
+            options = new RenderedButton(dc, new Rect(ActualWidth - 90, ActualHeight - 70, 50, 50), "", (ImageBrush)Resources["options"], Brushes.White, true, 20, false);
+            options.Click += (object senderOptions, EventArgs eveOptions) =>
+            {
+                OptionsWindow opt = new OptionsWindow(bl, this);
+                opt.ShowDialog();
+            };
+
+
 
         }
 
@@ -382,6 +281,7 @@ namespace Beadando
             //(maybe because how preview is propagated)                                                                                     
             next.CheckIfPressed(e.GetPosition(this));
             roll.CheckIfPressed(e.GetPosition(this));
+            options.CheckIfPressed(e.GetPosition(this));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -390,6 +290,148 @@ namespace Beadando
                 "Kilépsz?", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
             {
                 bl.Save(); 
+            }
+        }
+
+
+        /// <summary>
+        /// Draws the images of the board. It uses the images defined in the WPF Resource Dictionary reading the entries stored in the Dictionary GameBoard of BL.
+        /// </summary>
+        /// <param name="dc">Drawing Context</param>
+        /// <param name="myRect">Rectangle to hold position info</param>
+        /// <param name="indexer">This iterates through the Dictionary GameBoard of BL</param>
+        /// <param name="myPen">A pen used to draw the edges of the card images</param>
+        void DrawBoard(DrawingContext dc, Rect myRect, int indexer, Pen myPen)
+        {
+            //THE TRACK --> ALWAYS RENDERED AFTER THE BACKGROUND
+            //start column
+            ImageBrush brush;
+            myRect = new Rect(bl.Met.StartPosition.X, bl.StartY, Metrics.SquareCard.widthHeight, Metrics.SquareCard.widthHeight);
+            dc.DrawRectangle((ImageBrush)this.Resources["start"], myPen, myRect);
+
+
+
+            //lower horizontal part
+            int changingWidth = Metrics.NormalCard.width;
+            int correction = 0;
+            Point holder; //this holds the calcuated points
+            for (int i = 1; i <= bl.Met.NumberOfElementsInAHorizontalRow; i++)
+            {
+                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
+                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
+                if (i % bl.Met.NumberOfElementsInAHorizontalRow == 0)
+                {
+                    changingWidth = Metrics.SquareCard.widthHeight;
+
+                    //we have to put the square card a little further, because it is wider
+                    correction = Metrics.SquareCard.widthHeight - Metrics.NormalCard.width;
+
+                }
+                holder = new Point(bl.Met.StartPosition.X - i * Metrics.NormalCard.width - correction, bl.StartY);
+                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, changingWidth, Metrics.NormalCard.height);
+                myRect = new Rect(holder.X, holder.Y, changingWidth, Metrics.NormalCard.height);
+                dc.DrawRectangle(brush, myPen, myRect);
+
+            }
+
+
+            //left vertical part
+            changingWidth = Metrics.NormalCard.width;
+            correction = 0;
+
+
+            /*The vertical parts are tricky, because we want to use images here that are tilted by 90° */
+            for (int i = 1; i <= bl.Met.NumberOfElementsInAVerticalRow; i++)
+            {
+
+
+
+                //save the imagekey of the gameboard
+                string temp = bl.GameBoard[indexer].ImageKey;
+
+                //we check if the image is not among the square ones, as they do not have tilted alternatives
+                if (bl.ResourceNamesSquare.Contains(temp))
+                {
+                    brush = (ImageBrush)this.Resources[temp];
+                }
+                else
+                {
+                    //the string[]s for both the normal and tilted images have the same order
+                    //so we we can look for the index of temp in the string[] of normal images
+                    //and use its index to access the name of the tilted image
+                    int indexInHorizontal = Array.FindIndex(bl.ResourceNamesNormal, p => p == temp);
+                    brush = (ImageBrush)this.Resources[bl.ResourceNamesHorizontal[indexInHorizontal]];
+                }
+
+                if (i % bl.Met.NumberOfElementsInAVerticalRow == 0)
+                {
+                    changingWidth = Metrics.SquareCard.widthHeight;
+                    //we have to put the square card a little further, because it is wider
+                    correction = Metrics.SquareCard.widthHeight - Metrics.NormalCard.width;
+                }
+                holder = new Point(bl.LeftVerticalAlign, (bl.StartY - i * Metrics.NormalCard.width) - correction);
+                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, Metrics.NormalCard.height, changingWidth);
+                myRect = new Rect(holder.X, holder.Y, Metrics.NormalCard.height, changingWidth);
+
+                dc.DrawRectangle(brush, myPen, myRect);
+
+            }
+
+            //upper horizontal part
+            changingWidth = Metrics.NormalCard.width;
+            correction = 0;
+            for (int i = 1; i <= bl.Met.NumberOfElementsInAHorizontalRow; i++)
+            {
+                //if we reached the last in the row (and it cannot be 0 bc of the starting idx)
+                brush = (ImageBrush)this.Resources[bl.GameBoard[indexer].ImageKey];
+                if (i % bl.Met.NumberOfElementsInAHorizontalRow == 0)
+                {
+
+                    changingWidth = Metrics.SquareCard.widthHeight;
+
+                    //we have to put the square card a little further, because it is wider
+                    correction = Metrics.SquareCard.widthHeight - Metrics.NormalCard.width;
+
+                }
+                holder = new Point((bl.LeftVerticalAlign + i * Metrics.NormalCard.width)
+                    + Metrics.SquareCard.widthHeight - Metrics.NormalCard.width, bl.UpperVerticalAlign);
+                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, changingWidth, Metrics.NormalCard.height);
+
+                myRect = new Rect(holder.X,
+                    holder.Y,
+                    changingWidth, Metrics.NormalCard.height);
+                dc.DrawRectangle(brush, myPen, myRect);
+            }
+
+
+            changingWidth = Metrics.NormalCard.width;
+            correction = 0;
+            for (int i = 1; i <= bl.Met.NumberOfElementsInAVerticalRow - 1; i++)
+            {
+                //save the imagekey of the gameboard
+                string temp = bl.GameBoard[indexer].ImageKey;
+
+                //we check if the image is not among the square ones, as they do not have tilted alternatives
+                if (bl.ResourceNamesSquare.Contains(temp))
+                {
+                    brush = (ImageBrush)this.Resources[temp];
+                }
+                else
+                {
+                    //the string[]s for both the normal and tilted images have the same order
+                    //so we we can look for the index of temp in the string[] of normal images
+                    //and use its index to access the name of the tilted image
+                    int indexInHorizontal = Array.FindIndex(bl.ResourceNamesNormal, p => p == temp);
+                    brush = (ImageBrush)this.Resources[bl.ResourceNamesHorizontal[indexInHorizontal]];
+                }
+                holder = new Point(bl.RightVerticalAlign,
+                      (bl.StartY - bl.Met.NumberOfElementsInAVerticalRow * Metrics.NormalCard.width) + i * Metrics.NormalCard.width);
+                bl.GameBoard[indexer++].Rect = bl.CalculatePrimaryPosition(holder, Metrics.NormalCard.height, changingWidth);
+
+                myRect = new Rect(holder.X,
+                    holder.Y, Metrics.NormalCard.height, changingWidth);
+                dc.DrawRectangle(brush, myPen, myRect);
+
             }
         }
 

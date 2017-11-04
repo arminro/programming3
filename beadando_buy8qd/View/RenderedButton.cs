@@ -19,7 +19,7 @@ namespace Beadando.View
         bool enabled;
         public event EventHandler<EventArgs> Click; //click event to be fired when we detect that the mouse clicked on the button
 
-        public RenderedButton(DrawingContext dc, Rect dimensions, string text, Brush background, Brush textColor, bool enabled, int fontSize = 16)
+        public RenderedButton(DrawingContext dc, Rect dimensions, string text, Brush background, Brush textColor, bool enabled, int fontSize, bool needBorder = true)
         {
             this.dimensions = dimensions;
             this.text = text;
@@ -29,7 +29,7 @@ namespace Beadando.View
             this.enabled = enabled;
 
             //drawing the background part
-            dc.DrawRoundedRectangle(enabled == true ? background : Brushes.Gray, new Pen(Brushes.DarkGray, 2), dimensions, 5, 5);
+            dc.DrawRoundedRectangle(enabled == true ? background : Brushes.Gray,  needBorder == true ? new Pen(Brushes.DarkGray, 2) : null, dimensions, 5, 5);
             FormattedText buttonText = new FormattedText(
                text,
                 CultureInfo.CurrentUICulture,

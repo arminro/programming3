@@ -22,18 +22,22 @@ namespace Beadando.ViewModel
 
         public BL()
         {
-            
-            StartPosition = 1065;
-            LowerHorizontalAlign = 550;
+            Met = new Metrics();
+            StartX = (int)Met.StartPosition.X;
+            StartY = (int)Met.StartPosition.Y;
+
             MovementSpeed = 10;
             PuppetDiameter = 30;
             IncrementAtMovement = 1;
             OffsetHorizontal = 0;
             OffsetVertical = 0;
-            numberOfElementsInAHorizontalRow = Constants.numberOfElementsInAHorizontalRow_start;
-            numberOfElementsInAVerticalRow = Constants.numberOfElementsInAVerticalRow_start;
-            resourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
-            resourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
+            
+            //numberOfElementsInAHorizontalRow = met.NumberOfElementsInAHorizontalRow;
+            //numberOfElementsInAVerticalRow = met.NumberOfElementsInAVerticalRow;
+            ResourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
+            ResourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
+            ResourceNamesHorizontal = new string[] { "go_horizontal", "event_horizontal", "roll_horizontal", "enroll_horizontal", "uv_horizontal", "randi_horizontal", "neptun_horizontal" };
+            
 
             greens = new string[] { "go", "start", "roll", "einstein" };
             blacks = new string[] { "uv", "randi", };
@@ -45,7 +49,7 @@ namespace Beadando.ViewModel
             Players = new CircularList<Player>();
             SaveFolderPath = GetSaveDirectory();
             RollButtonEnabled = true;
-
+            
 
             //adding the texts of the events from the data in MODEL
             EventCardTexts = new Dictionary<string, object>
@@ -162,7 +166,7 @@ namespace Beadando.ViewModel
             {
                 PlayerTokens.Add(Constants.playerTokens[i]);
             }
-            SelectedItem = PlayerTokens[0];
+            //SelectedItem = PlayerTokens[0];
 
            
 
@@ -223,24 +227,24 @@ namespace Beadando.ViewModel
         public event EventHandler<EventArgs> CloseOpenWindows;
         public event EventHandler<EventArgs> FinishedGame;
         public event EventHandler<TransferEventArgs> GeneralNotification;
-        #region CardMetrics
-        public class NormalCard
-        {
-            public static int height = 135; //180
-            public static int width = 90; //120
-        }
-
-        public class SquareCard
-        {
-            public static int widthHeight = 135; //180
-        }
+        Metrics met;
+        public int StartX { get; set; }
+        public int StartY { get; set; }
 
 
-        #endregion
         int turn;  //marks the turns in the game
-
+       
         int roundCounter;
         
+        public void ClearPreviousData()
+        {
+            GameBoard.Clear();
+            Players.Clear();
+            Subjects.Clear();
+            
+
+        }
+
         public int RoundCounter
         {
             get
@@ -361,11 +365,13 @@ namespace Beadando.ViewModel
         int incrementAtMovement;
         int upperVerticalAlign;
         int rightVerticalAlign;
-        int startPosition;
-        int lowerHorizontalAlign;
+        
+        
         int numberOfElementsInAHorizontalRow;
         int numberOfElementsInAVerticalRow;
 
+        int heigthOfTheBoard;
+        int widthOfTheBoard;
         float puppetDiameter; //the diameter of the player puppet
         float puppetDiameterChangeConstant; //the constant to which the diameter of the puppet changes
 
@@ -379,20 +385,20 @@ namespace Beadando.ViewModel
             Winner = $"GRATULÁLUNK, {Player.Name}\nMEGNYERTED A JÁTÉKOT!";
             FinishedGame?.Invoke(null, null);
         }
-        
+
 
         #endregion
 
-        public string[] resourceNamesNormal;
-        public string[] resourceNamesSquare;
+        string[] resourceNamesNormal;
+        string[] resourceNamesSquare;
 
-        
 
-        string[] resourceNamesNormalLeft;
+
+        string[] resourceNamesHorizontal;
 
        
 
-        string[] resourceNamesNormalRight;
+        
 
         int movementSpeed;
 
@@ -500,31 +506,7 @@ namespace Beadando.ViewModel
             }
         }
 
-        public int StartPosition
-        {
-            get
-            {
-                return startPosition;
-            }
 
-            set
-            {
-                startPosition = value;
-            }
-        }
-
-        public int LowerHorizontalAlign
-        {
-            get
-            {
-                return lowerHorizontalAlign;
-            }
-
-            set
-            {
-                lowerHorizontalAlign = value;
-            }
-        }
 
         public float PuppetDiameter
         {
@@ -715,7 +697,7 @@ namespace Beadando.ViewModel
         //public int UpperVerticalAlign { get => upperVerticalAlign; set => upperVerticalAlign = value; }
         //public int RightVerticalAlign { get => rightVerticalAlign; set => rightVerticalAlign = value; }
         //public int StartPosition { get => startPosition; set => startPosition = value; }
-        //public int LowerHorizontalAlign { get => lowerHorizontalAlign; set => lowerHorizontalAlign = value; }
+        //public int StartY { get => StartY; set => StartY = value; }
         //public float PuppetDiameter { get => puppetDiameter; set => puppetDiameter = value; }
         //public float PuppetDiameterChangeConstant { get => puppetDiameterChangeConstant; set => puppetDiameterChangeConstant = value; }
         //public string[] ResourceNamesSquare { get => resourceNamesSquare; set => resourceNamesSquare = value; }
@@ -727,14 +709,14 @@ namespace Beadando.ViewModel
         public void SetMetrics()
         {
             //the rect marking the outer edge of the left vertical row
-            LeftVerticalAlign = StartPosition - ((Constants.numberOfElementsInAHorizontalRow_start) * NormalCard.width
-                + (SquareCard.widthHeight - NormalCard.width));
+            LeftVerticalAlign = StartX - ((Met.NumberOfElementsInAHorizontalRow) * Metrics.NormalCard.width
+                + (Metrics.SquareCard.widthHeight - Metrics.NormalCard.width));
 
             //the rect marking the upper edge of the board
-            UpperVerticalAlign = LowerHorizontalAlign -
-                (NormalCard.width * Constants.numberOfElementsInAVerticalRow_start)
-                - (SquareCard.widthHeight - NormalCard.width);
-            RightVerticalAlign = LeftVerticalAlign + (Constants.numberOfElementsInAHorizontalRow_start - 1) * NormalCard.width + SquareCard.widthHeight;
+            UpperVerticalAlign = StartY -
+                (Metrics.NormalCard.width * Met.NumberOfElementsInAVerticalRow)
+                - (Metrics.SquareCard.widthHeight - Metrics.NormalCard.width);
+            RightVerticalAlign = LeftVerticalAlign + (Met.NumberOfElementsInAHorizontalRow - 1) * Metrics.NormalCard.width + Metrics.SquareCard.widthHeight;
 
         }
 
@@ -844,6 +826,8 @@ namespace Beadando.ViewModel
             {
                 try
                 {
+                    ClearPreviousData();
+
                     //deserializing persistent data
                     SharpSerializer serializer = new SharpSerializer();
                     Ser = (List<object>)serializer.Deserialize(fullFilePath);
@@ -914,6 +898,7 @@ namespace Beadando.ViewModel
 
         public int RandomGeneratedNumber { get; set; }
         
+       
         string FormatForSave(string unformatted)
         {
             //split the text
@@ -939,13 +924,13 @@ namespace Beadando.ViewModel
             //height has to change more than width, so it has to increase by the offsset + the difference in their ratio
             //this is taking 1 2/3 of the offset which is 5/3 * offset
 
-            NormalCard.height += (offset * 5 / 3);
-            NormalCard.width += offset;
-            SquareCard.widthHeight += (offset * 5 / 3);
-            //LowerHorizontalAlign -= offset; 
+            Metrics.NormalCard.height += (offset * 5 / 3);
+            Metrics.NormalCard.width += offset;
+            Metrics.SquareCard.widthHeight += (offset * 5 / 3);
+            //StartY -= offset; 
             //StartPosition -= offset; 
 
-            float temp = ((float)(NormalCard.width + offset) / (float)NormalCard.width);
+            float temp = ((float)(Metrics.NormalCard.width + offset) / (float)Metrics.NormalCard.width);
             PuppetDiameter *= temp;
 
             //refreshing the position of the puppet so that it moves with the board (the changing board would move away from it)
@@ -955,7 +940,7 @@ namespace Beadando.ViewModel
 
         public void MoveHorizontally(int offset)
         {
-            StartPosition += offset;
+            StartX += offset;
             //megcsinálni az összes bábura
             foreach (Player player in Players)
             {
@@ -967,7 +952,7 @@ namespace Beadando.ViewModel
 
         public void MoveVertically(int offset)
         {
-            LowerHorizontalAlign += offset;
+            StartY += offset;
             foreach (Player player in Players)
             {
                 player.Currentposition = Point.Add(player.Currentposition, new Vector(0, offset));
@@ -1259,47 +1244,47 @@ namespace Beadando.ViewModel
             //2* (const.vert-1) + 2*(const.hor -1) + 4
             int indexer = 0;
             Rand = new Random();
-            int totalNumberOfCards = 2 * (Constants.numberOfElementsInAVerticalRow_start - 1) + 2 * (Constants.numberOfElementsInAHorizontalRow_start - 1) + 4;
+            int totalNumberOfCards = 2 * (Met.NumberOfElementsInAVerticalRow - 1) + 2 * (Met.NumberOfElementsInAHorizontalRow - 1) + 4;
             string[] temp = new string[totalNumberOfCards];
 
             GameBoard.Add(indexer++, new BoardField()
             {
-                Rect = CalculatePrimaryPosition(new Point(StartPosition, LowerHorizontalAlign), SquareCard.widthHeight, SquareCard.widthHeight),
+                Rect = CalculatePrimaryPosition(Met.StartPosition, Metrics.SquareCard.widthHeight, Metrics.SquareCard.widthHeight),
                 ImageKey = "start"
             });
 
             BoardField b; //reference to a board item so that we can store elements in it
             //generating cards for lower horizontal row
-            for (int i = 1; i <= Constants.numberOfElementsInAHorizontalRow_start; i++)
+            for (int i = 1; i <= Met.NumberOfElementsInAHorizontalRow; i++)
             {
                 b = new BoardField();
-                if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
+                if (i % Met.NumberOfElementsInAHorizontalRow == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = ResourceNamesSquare[Rand.Next(0, ResourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = ResourceNamesNormal[Rand.Next(0, ResourceNamesNormal.Length)];
                 }
                 //add boardcard to the collection of boardscards
                 GameBoard.Add(indexer++, b);
             }
 
             //generating cards for left vertical row
-            for (int i = 1; i <= Constants.numberOfElementsInAVerticalRow_start; i++)
+            for (int i = 1; i <= Met.NumberOfElementsInAVerticalRow; i++)
             {
                 b = new BoardField();
-                if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
+                if (i % Met.NumberOfElementsInAVerticalRow == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = ResourceNamesSquare[Rand.Next(0, ResourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = ResourceNamesNormal[Rand.Next(0, ResourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -1321,18 +1306,18 @@ namespace Beadando.ViewModel
             //}
 
             //generating cards for lower horizontal row
-            for (int i = 1; i <= Constants.numberOfElementsInAHorizontalRow_start; i++)
+            for (int i = 1; i <= Met.NumberOfElementsInAHorizontalRow; i++)
             {
                 b = new BoardField();
-                if (i % Constants.numberOfElementsInAHorizontalRow_start == 0)
+                if (i % Met.NumberOfElementsInAHorizontalRow == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = ResourceNamesSquare[Rand.Next(0, ResourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = ResourceNamesNormal[Rand.Next(0, ResourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -1356,18 +1341,18 @@ namespace Beadando.ViewModel
             //generating cards for right vertical row
             
             //we have the -1, bc we already have the start card, so we do not need to generate it here
-            for (int i = 1; i <= Constants.numberOfElementsInAVerticalRow_start-1; i++)
+            for (int i = 1; i <= Met.NumberOfElementsInAVerticalRow-1; i++)
             {
                 b = new BoardField();
-                if (i % Constants.numberOfElementsInAVerticalRow_start == 0)
+                if (i % Met.NumberOfElementsInAVerticalRow == 0)
                 {
                     //temp[indexer++] = resourceNamesSquare[rand.Next(0, resourceNamesSquare.Length)];
-                    b.ImageKey = resourceNamesSquare[Rand.Next(0, resourceNamesSquare.Length)];
+                    b.ImageKey = ResourceNamesSquare[Rand.Next(0, ResourceNamesSquare.Length)];
                 }
                 else
                 {
                     //temp[indexer++] = resourceNamesNormal[rand.Next(0, resourceNamesNormal.Length)];
-                    b.ImageKey = resourceNamesNormal[Rand.Next(0, resourceNamesNormal.Length)];
+                    b.ImageKey = ResourceNamesNormal[Rand.Next(0, ResourceNamesNormal.Length)];
                 }
                 GameBoard.Add(indexer++, b);
             }
@@ -1376,7 +1361,7 @@ namespace Beadando.ViewModel
              GameBoard[Rand.Next(1, GameBoard.Count)].ImageKey = "enroll";
                 
             
-            GameBoard[2].ImageKey = "go"; //USED FOR TESTING!!!
+            //GameBoard[2].ImageKey = "go"; //USED FOR TESTING!!!
 
             //while (i < temp.Length && i <= Constants.numberOfElementsInAVerticalRow)
             //{
@@ -1593,11 +1578,89 @@ namespace Beadando.ViewModel
             }
         }
 
+        public int HeigthOfTheBoard
+        {
+            get
+            {
+                return heigthOfTheBoard;
+            }
+
+            set
+            {
+                heigthOfTheBoard = value;
+            }
+        }
+
+        public int WidthOfTheBoard
+        {
+            get
+            {
+                return widthOfTheBoard;
+            }
+
+            set
+            {
+                widthOfTheBoard = value;
+            }
+        }
+
+        public Metrics Met
+        {
+            get
+            {
+                return met;
+            }
+
+            set
+            {
+                met = value;
+            }
+        }
+
+        public string[] ResourceNamesNormal
+        {
+            get
+            {
+                return resourceNamesNormal;
+            }
+
+            set
+            {
+                resourceNamesNormal = value;
+            }
+        }
+
+        public string[] ResourceNamesSquare
+        {
+            get
+            {
+                return resourceNamesSquare;
+            }
+
+            set
+            {
+                resourceNamesSquare = value;
+            }
+        }
+
+        public string[] ResourceNamesHorizontal
+        {
+            get
+            {
+                return resourceNamesHorizontal;
+            }
+
+            set
+            {
+                resourceNamesHorizontal = value;
+            }
+        }
+
         public void AddPlayer()
         {
             if (Players.Count < 3)
             {
-                Players.Add(new Player("nik", Players.Count + 1, $"Player {Players.Count + 1}")); 
+                Players.Add(new Player("lel", Players.Count + 1, $"Player {Players.Count + 1}")); 
             }
         }
 

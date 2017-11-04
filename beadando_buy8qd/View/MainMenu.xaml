@@ -86,7 +86,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <Button Height="80" Content="Statisztikák" Background="{x:Null}" BorderBrush="{x:Null}" 
+            <!--<Button Height="80" Content="Statisztikák" Background="{x:Null}" BorderBrush="{x:Null}" 
                   FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
@@ -117,7 +117,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-            </Button>
+            </Button>-->
             <Button x:Name="Quit" Height="80" Content="Kiíratkozás" Background="{x:Null}" BorderBrush="{x:Null}" 
                   FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Click="Quit_Click">
                 <Button.Style>

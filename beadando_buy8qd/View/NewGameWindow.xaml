@@ -19,7 +19,8 @@
                      FontFamily="Edwardian Script ITC" Text="Beíratkozás" HorizontalAlignment="Center"  FontSize="60" Margin="75,16,75,15"  />
         <StackPanel Grid.Row="1">
             <ListBox  HorizontalAlignment="Center" ItemsSource="{Binding Players}" 
-                      SelectedItem="{Binding NewGameSelectedPlayer, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Background="Transparent">
+                      SelectedItem="{Binding NewGameSelectedPlayer, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Background="Transparent"
+                      BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel   VerticalAlignment="Center" Width="300" Background="Transparent" Margin="10">

@@ -122,11 +122,11 @@ namespace Beadando.View
                 //confirm button needs a new place
                 confirmButtonRect = new Rect(ActualWidth / 2 - 100, ActualHeight - 50, 100, 30);
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
-                Brushes.White, Brushes.Black, true);
+                Brushes.White, Brushes.Black, true, 16);
 
                 //denybutton
                 rbuttonDeny = new RenderedButton(dc, new Rect(ActualWidth / 2+10, ActualHeight-50, 100, 30), 
-                    "Mégsem", Brushes.White, Brushes.Black, true);
+                    "Mégsem", Brushes.White, Brushes.Black, true, 16);
                 rbuttonDeny.Click += (object sender, EventArgs e) =>
                 {
                     this.DialogResult = false;
@@ -139,7 +139,7 @@ namespace Beadando.View
             else
             {
                 rbuttonConfirm = new RenderedButton(dc, confirmButtonRect, "Rendben",
-                Brushes.White, Brushes.Black, true);
+                Brushes.White, Brushes.Black, true, 16);
                 rbuttonConfirm.Click += RbuttonConfirm_Click;
             }
             
