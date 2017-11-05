@@ -1,13 +1,13 @@
-﻿using Beadando.Model;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="SubjectEventArgs.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.ViewModel
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using Beadando.Model;
+
     public class SubjectEventArgs : EventArgs
     {
         public SubjectEventArgs(Player player, ObservableCollection<Subject> availableSubjects, bool isSubjectForFree)
@@ -18,6 +18,7 @@ namespace Beadando.ViewModel
         }
 
         public Player Player { get; set; }
+
         public bool IsSubjectFree { get; set; }
 
         public ObservableCollection<Subject> AvailableSubjects { get; set; }

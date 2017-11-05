@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Copy of Rules for ExampleProject_Tetris.Visuals" Description="Code analysis rules for ExampleProject_Tetris.Visuals.csproj." ToolsVersion="14.0">
+<RuleSet Name="Copy of Rules for ExampleProject_Tetris.Visuals" Description="Code analysis rules for ExampleProject_Tetris.Visuals.csproj." ToolsVersion="15.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1009" Action="Warning" />

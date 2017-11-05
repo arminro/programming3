@@ -1,33 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
+﻿// <copyright file="BoardField.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.Model
 {
-  
+    using System.Windows;
 
     public class BoardField
     {
-        //int number;
+        // int number;
+        private string imageKey;
+        private Point rect;
+        private Player[] positions; // stores how many puppets are standing on it
 
-        string imageKey;
-        Point rect;
-        Player[] positions; //stores how many puppets are standing on it
-       
+        public BoardField(string imageKey)
+        {
+            this.ImageKey = imageKey;
+            this.positions = new Player[3];
+        }
+
+        public BoardField()
+        {
+            this.positions = new Player[3];
+        }
+
         public Point Rect
         {
             get
             {
-                return rect;
+                return this.rect;
             }
 
             set
             {
-                rect = value;
+                this.rect = value;
             }
         }
 
@@ -35,76 +41,65 @@ namespace Beadando.Model
         {
             get
             {
-                return imageKey;
+                return this.imageKey;
             }
 
             set
             {
-                imageKey = value;
+                this.imageKey = value;
             }
         }
 
-        public BoardField(string imageKey)
+        public int NextFreePosition
         {
-            
-            this.ImageKey = imageKey;
-            positions = new Player[3];
-        }
-
-        public BoardField()
-        {
-            positions = new Player[3];
-        }
-
-        
-        public int ArriveAtPosition(Player p)
+            get
             {
-            //insert the player stepping on the card on the 1st empty place
-            //the func will be invoked on the same card as well, so
-            //if it is already in the list, we just return that position
+                int idx = 0;
+
+                // if there is free space (most likely will be), we return the first one
+                while (idx < this.positions.Length && this.positions[idx] != null)
+                {
+                    idx++;
+                }
+
+                return idx;
+            }
+        }
+
+        public int ArriveAtPosition(Player p)
+        {
+            // insert the player stepping on the card on the 1st empty place
+            // the func will be invoked on the same card as well, so
+            // if it is already in the list, we just return that position
             int idx = 0;
-            while (idx < positions.Length && (positions[idx] != null && !positions[idx].Equals(p)))
+            while (idx < this.positions.Length && (this.positions[idx] != null && !this.positions[idx].Equals(p)))
             {
                 idx++;
             }
-            if(idx < positions.Length && positions[idx] != p)
+
+            if (idx < this.positions.Length && this.positions[idx] != p)
             {
-                positions[idx] = p;
+                this.positions[idx] = p;
             }
 
-            //we return which position the new player arrived on
+            // we return which position the new player arrived on
             return idx;
         }
 
         public void DepartFromposition(Player p)
         {
-            
-            for (int i = 0; i < positions.Length; i++)
+            for (int i = 0; i < this.positions.Length; i++)
             {
-                if(positions[i] == null)
+                if (this.positions[i] == null)
                 {
                     continue;
                 }
-                else if(positions[i].Equals(p))
+                else if (this.positions[i].Equals(p))
                 {
-                    positions[i] = null;
+                    this.positions[i] = null;
                     return;
                 }
             }
         }
-
-        public int GetNextFreePosition()
-        {
-            int idx = 0;
-            //if there is free space (most likely will be), we return the first one
-            while (idx < positions.Length && positions[idx] != null)
-            {
-                idx++;
-            }
-            return idx;
-        }
-
-        //public int Number { get => number; set =>  number = value; }
-        
     }
 }

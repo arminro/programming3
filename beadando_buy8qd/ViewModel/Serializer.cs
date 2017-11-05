@@ -1,31 +1,28 @@
-﻿using Beadando.Model;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Xml.Serialization;
+﻿// <copyright file="Serializer.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.ViewModel
 {
-    public static class Serializer<T> where T : class
+    using System.IO;
+    using System.Xml.Serialization;
+
+    public static class Serializer<T>
+        where T : class
     {
         /// <summary>
-        /// Deals with de/serializing the whole amount of data accumulated in BL
+        /// XML Serialization: This class was to be responsible for serialization, until a better alternative was found
         /// </summary>
-        /// <param name="bl"></param>
+        /// <param name="item">The item to be serialized</param>
+        /// <param name="fullPath">The full path of the file to be created</param>
         public static void Serialize(T item, string fullPath)
         {
-
             XmlSerializer xs = new XmlSerializer(typeof(T));
             using (StreamWriter wr = new StreamWriter(fullPath))
             {
                 xs.Serialize(wr, item);
             }
         }
-
 
         public static T Deserialize(string fileName)
         {
@@ -35,10 +32,5 @@ namespace Beadando.ViewModel
                 return xs.Deserialize(rd) as T;
             }
         }
-
-
-
-
-
     }
 }

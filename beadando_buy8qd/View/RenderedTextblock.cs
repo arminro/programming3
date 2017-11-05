@@ -1,54 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
+﻿// <copyright file="RenderedTextblock.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.View
 {
-    class RenderedTextblock
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Media;
+
+    public class RenderedTextblock
     {
-
-
         public RenderedTextblock(Brush background, Brush textColor, DrawingContext dc, Rect dimensions)
         {
             this.Background = background;
             this.TextColor = textColor;
-          
+
             this.Dimensions = dimensions;
 
-           
             /*Yes, this is copy/pasted from rendered button*/
-            dc.DrawRoundedRectangle(Background, new Pen(Brushes.DarkGray, 2), Dimensions, 5, 5);
-
-
-
-
+            dc.DrawRoundedRectangle(this.Background, new Pen(Brushes.DarkGray, 2), this.Dimensions, 5, 5);
         }
 
         public Brush Background { get; set; }
+
         public Rect Dimensions { get; set; }
+
         public Brush TextColor { get; set; }
-       
 
     public void DrawText(DrawingContext dc, string text)
         {
-            
             FormattedText textblockText = new FormattedText(
                     text,
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface("Impact"),
-                    16, TextColor);
+                    16,
+                    this.TextColor);
 
-            //we have to consider how long is the string to display as well as its fontsize
-            dc.DrawText(textblockText, new Point(Dimensions.X + (Dimensions.Width) / 2 - (text.Length * 4),
-                Dimensions.Y + 8));
-
+            // we have to consider how long is the string to display as well as its fontsize
+            dc.DrawText(textblockText, new Point(this.Dimensions.X + (this.Dimensions.Width / 2) - (text.Length * 4), this.Dimensions.Y + 8));
         }
-
     }
 }

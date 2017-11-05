@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="CircularList.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.Model
 {
+    using System.Collections.ObjectModel;
+
     public class CircularList<T> : ObservableCollection<T>
     {
-        int inc;
+        private int inc;
+
         public CircularList()
         {
-            inc = 0;
+            this.inc = 0;
         }
 
         public new T this[int i]
@@ -21,6 +21,7 @@ namespace Beadando.Model
             {
                 return base[i % this.Count];
             }
+
             set
             {
                 base[i] = value;
@@ -29,12 +30,12 @@ namespace Beadando.Model
 
         public T GetNextElement(int number = 1)
         {
-            return this[inc+=number];
+            return this[this.inc += number];
         }
 
         public T WhatIsNext()
         {
-            return this[inc + 1];
+            return this[this.inc + 1];
         }
     }
 }

@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:Beadando.View"
         mc:Ignorable="d"
         Title="SubjectWindow" Height="300" Width="600" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True">
-    <Window.Resources>
-        <local:ColorMultiplyerConverter x:Key="ColorMultiplyerConverter" />
-    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>

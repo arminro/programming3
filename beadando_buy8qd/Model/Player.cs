@@ -1,38 +1,35 @@
-﻿using Beadando.Model;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
+﻿// <copyright file="Player.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.Model
 {
+    using System.Collections.ObjectModel;
+    using System.Windows;
+
     public enum PlayerState
     {
-        neutral = 0, rollagain = 1, missARound = 2, lost = 3
+        Neutral = 0, Rollagain = 1, MissARound = 2, Lost = 3
     }
 
-    public class Player 
+    public class Player
     {
-        string puppetKey;
-        Point currentposition;
-        ObservableCollection<Subject> subjects; //array to store elements
-        int currentCard; //storing the card the player sits on
-        string name;
-        int order;
-        int money;
-        PlayerState state;
+        private string puppetKey;
+        private Point currentposition;
+        private ObservableCollection<Subject> subjects; // array to store elements
+        private int currentCard; // storing the card the player sits on
+        private string name;
+        private int order;
+        private int money;
+        private PlayerState state;
 
         public Player(string puppetKey, int order, string name = "Player")
         {
             this.puppetKey = puppetKey;
             this.currentCard = 0;
             this.money = 10000;
-            subjects = new ObservableCollection<Subject>();
-            State = PlayerState.neutral;
+            this.subjects = new ObservableCollection<Subject>();
+            this.State = PlayerState.Neutral;
             this.order = order;
             this.name = name;
         }
@@ -42,46 +39,42 @@ namespace Beadando.Model
             this.puppetKey = puppetKey;
             this.currentposition = currentposition;
             this.money = 20000;
-            subjects = new ObservableCollection<Subject>(); 
+            this.subjects = new ObservableCollection<Subject>();
 
             this.currentCard = 0;
             this.name = name;
-           
+
             name += $" {order}";
         }
 
         public Player()
         {
-            //empty ctor for xml
-
+            // empty ctor for xml
         }
 
         public string PuppetKey
         {
             get
             {
-                return puppetKey;
-            }
-            set
-            {
-                puppetKey = value;
-                
+                return this.puppetKey;
             }
 
-          
+            set
+            {
+                this.puppetKey = value;
+            }
         }
 
         public Point Currentposition
         {
             get
             {
-                return currentposition;
+                return this.currentposition;
             }
 
             set
             {
-                currentposition = value;
-                
+                this.currentposition = value;
             }
         }
 
@@ -89,25 +82,25 @@ namespace Beadando.Model
         {
             get
             {
-                return subjects;
-            }
-            set
-            {
-                subjects = value;
+                return this.subjects;
             }
 
+            set
+            {
+                this.subjects = value;
+            }
         }
 
         public int CurrentCard
         {
             get
             {
-                return currentCard;
+                return this.currentCard;
             }
 
             set
             {
-                currentCard = value;
+                this.currentCard = value;
             }
         }
 
@@ -115,13 +108,14 @@ namespace Beadando.Model
         {
             get
             {
-                return name;
+                return this.name;
             }
 
             set
             {
-                name = value;
-                //OnPropertyChanged();
+                this.name = value;
+
+                // OnPropertyChanged();
             }
         }
 
@@ -129,22 +123,20 @@ namespace Beadando.Model
         {
             get
             {
-                return order;
+                return this.order;
             }
-
-           
         }
 
         public int Money
         {
             get
             {
-                return money;
+                return this.money;
             }
 
             set
             {
-                money = value;
+                this.money = value;
             }
         }
 
@@ -152,30 +144,29 @@ namespace Beadando.Model
         {
             get
             {
-                return state;
+                return this.state;
             }
 
             set
             {
-                state = value;
+                this.state = value;
             }
         }
 
-        //public bool Subjects { get => subjects; set => subjects = value; }
+        // public bool Subjects { get => subjects; set => subjects = value; }
 
        // public override bool Equals(object obj)
        // {
        //     Player other = obj as Player;
        //     return other.Name == name && other.Order == order;
        // }
-        //public override int GetHashCode()
-        //{
+        // public override int GetHashCode()
+        // {
         //    return this.Name.GetHashCode() ^ this.Order.GetHashCode();
-        //}
-
+        // }
         public override string ToString()
         {
-            return string.Format($"{Name}[ {PuppetKey}]");
+            return string.Format($"{this.Name}[ {this.PuppetKey}]");
         }
     }
 }

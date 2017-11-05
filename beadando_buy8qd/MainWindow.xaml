@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Beadando"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
-        Background="Transparent" WindowStyle="None" WindowState="Maximized" PreviewMouseWheel="Window_PreviewMouseWheel" PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        Background="Transparent" WindowStyle="None" WindowState="Maximized"  PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
         Closing="Window_Closing">
     <Window.Resources>
         <!--Puppets-->
