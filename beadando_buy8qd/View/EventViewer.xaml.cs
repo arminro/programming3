@@ -63,6 +63,8 @@ namespace Beadando.View
                 case "yellow":
                     this.background = new SolidColorBrush(Colors.Yellow);
                     break;
+                default:
+                    break;
             }
 
             Tuple<string, int, int?> tempTup = bl.GetTextToDisplay(this.keyOfCurrentCard);

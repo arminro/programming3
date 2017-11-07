@@ -33,6 +33,7 @@ namespace Beadando.View
             {
                 MessageBox.Show(trans.Load, this.Name);
             };
+
             bl.CloseOpenWindows += (object s, EventArgs e) =>
             {
                 this.Close();

@@ -122,6 +122,8 @@ namespace Beadando
                     this.InvalidateVisual();
                     this.bl.SetMetrics();
                     break;
+                default:
+                    break;
             }
         }
 
@@ -306,9 +308,23 @@ namespace Beadando
                 }
 
                 holder = new Point(this.bl.StartX - (i * this.bl.Met.NormalCardWidth) - correction, this.bl.StartY);
-                this.bl.GameBoard[indexer++].Rect = this.bl.CalculatePrimaryPosition(holder, changingWidth, this.bl.Met.NormalCardHeight);
+                this.bl.GameBoard[indexer].Rect = this.bl.CalculatePrimaryPosition(holder, changingWidth, this.bl.Met.NormalCardHeight);
                 myRect = new Rect(holder.X, holder.Y, changingWidth, this.bl.Met.NormalCardHeight);
                 dc.DrawRectangle(brush, myPen, myRect);
+
+                // drawing the number of the card, we treat square cards differently, as they do not have the number on their edges
+                Vector numberVector;
+                if (this.bl.CardIsSquare(indexer))
+                {
+                    numberVector = new Vector(-40, 60);
+                }
+                else
+                {
+                    numberVector = new Vector(0, 60);
+                }
+
+                this.DrawText(dc, Point.Subtract(this.bl.GameBoard[indexer].Rect, numberVector), indexer.ToString());
+                indexer++;
             }
 
             // left vertical part
@@ -344,10 +360,23 @@ namespace Beadando
                 }
 
                 holder = new Point(this.bl.LeftVerticalAlign, (this.bl.StartY - (i * this.bl.Met.NormalCardWidth)) - correction);
-                this.bl.GameBoard[indexer++].Rect = this.bl.CalculatePrimaryPosition(holder, this.bl.Met.NormalCardHeight, changingWidth);
+                this.bl.GameBoard[indexer].Rect = this.bl.CalculatePrimaryPosition(holder, this.bl.Met.NormalCardHeight, changingWidth);
                 myRect = new Rect(holder.X, holder.Y, this.bl.Met.NormalCardHeight, changingWidth);
-
                 dc.DrawRectangle(brush, myPen, myRect);
+
+                // drawing the number of the card
+                Vector numberVector;
+                if (this.bl.CardIsSquare(indexer))
+                {
+                    numberVector = new Vector(-42, -40);
+                }
+                else
+                {
+                    numberVector = new Vector(-43, 15);
+                }
+
+                this.DrawText(dc, Point.Subtract(this.bl.GameBoard[indexer].Rect, numberVector), indexer.ToString());
+                indexer++;
             }
 
             // upper horizontal part
@@ -368,10 +397,24 @@ namespace Beadando
                 holder = new Point(
                     (this.bl.LeftVerticalAlign + (i * this.bl.Met.NormalCardWidth))
                     + this.bl.Met.SquareCardMetric - this.bl.Met.NormalCardWidth, this.bl.UpperVerticalAlign);
-                this.bl.GameBoard[indexer++].Rect = this.bl.CalculatePrimaryPosition(holder, changingWidth, this.bl.Met.NormalCardHeight);
+                this.bl.GameBoard[indexer].Rect = this.bl.CalculatePrimaryPosition(holder, changingWidth, this.bl.Met.NormalCardHeight);
 
                 myRect = new Rect(holder.X, holder.Y, changingWidth, this.bl.Met.NormalCardHeight);
                 dc.DrawRectangle(brush, myPen, myRect);
+
+                // drawing the number of the card
+                Vector numberVector;
+                if (this.bl.CardIsSquare(indexer))
+                {
+                    numberVector = new Vector(60, -40);
+                }
+                else
+                {
+                    numberVector = new Vector(10, -40);
+                }
+
+                this.DrawText(dc, Point.Subtract(this.bl.GameBoard[indexer].Rect, numberVector), indexer.ToString());
+                indexer++;
             }
 
             changingWidth = this.bl.Met.NormalCardWidth;
@@ -398,11 +441,29 @@ namespace Beadando
                 holder = new Point(
                     this.bl.RightVerticalAlign,
                       (this.bl.StartY - (this.bl.Met.NumberOfElementsInAVerticalRow * this.bl.Met.NormalCardWidth)) + (i * this.bl.Met.NormalCardWidth));
-                this.bl.GameBoard[indexer++].Rect = this.bl.CalculatePrimaryPosition(holder, this.bl.Met.NormalCardHeight, changingWidth);
+                this.bl.GameBoard[indexer].Rect = this.bl.CalculatePrimaryPosition(holder, this.bl.Met.NormalCardHeight, changingWidth);
 
                 myRect = new Rect(holder.X, holder.Y, this.bl.Met.NormalCardHeight, changingWidth);
                 dc.DrawRectangle(brush, myPen, myRect);
+
+                // drawing the number of the card, we do not need to check the square cards here, bc we only have normal horizontal ones
+                Vector numberVector = new Vector(60, 10);
+                this.DrawText(dc, Point.Subtract(this.bl.GameBoard[indexer].Rect, numberVector), indexer.ToString());
+                indexer++;
             }
+        }
+
+        private void DrawText(DrawingContext drawingContext, Point origin, string textToBeDisplayed)
+        {
+            FormattedText eventText = new FormattedText(
+              textToBeDisplayed,
+              CultureInfo.CurrentUICulture,
+              FlowDirection.LeftToRight,
+              new Typeface("Impact"),
+              20,
+              Brushes.White);
+
+            drawingContext.DrawText(eventText, origin);
         }
     }
 }

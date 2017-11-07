@@ -107,4 +107,14 @@
     <Rule Id="CA2241" Action="Warning" />
     <Rule Id="CA2242" Action="Warning" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.EditorFeatures" RuleNamespace="Microsoft.CodeAnalysis.CSharp.EditorFeatures">
+    <Rule Id="IDE0032" Action="Warning" />
+    <Rule Id="IDE0032WithoutSuggestion" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.Features" RuleNamespace="Microsoft.CodeAnalysis.Features">
+    <Rule Id="IDE0010" Action="Warning" />
+    <Rule Id="IDE0010WithoutSuggestion" Action="Warning" />
+    <Rule Id="IDE0033" Action="Warning" />
+    <Rule Id="IDE0033WithoutSuggestion" Action="Warning" />
+  </Rules>
 </RuleSet>

@@ -1268,6 +1268,16 @@ namespace Beadando.ViewModel
         }
 
         /// <summary>
+        /// Decides if the card with the given index is a square card or not
+        /// </summary>
+        /// <param name="indexer">The index of the card</param>
+        /// <returns>T if the card with the given index is in the collection storing the names of square cards</returns>
+        public bool CardIsSquare(int indexer)
+        {
+            return this.ResourceNamesSquare.Contains(this.GameBoard[indexer].ImageKey);
+        }
+
+        /// <summary>
         /// Generates the order of the cards by providing data to the collection GameBoard
         /// </summary>
         public void GenerateOrderOfCards()
@@ -1680,6 +1690,8 @@ namespace Beadando.ViewModel
                             }
 
                             break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -1719,6 +1731,8 @@ namespace Beadando.ViewModel
                 case "RKK":
                     temp = "rejto";
                     break;
+                default:
+                    break;
             }
 
                 (p as Player).PuppetKey = temp;
@@ -1742,6 +1756,8 @@ namespace Beadando.ViewModel
                     break;
                 case "RKK":
                     temp = "rejto";
+                    break;
+                default:
                     break;
             }
 
