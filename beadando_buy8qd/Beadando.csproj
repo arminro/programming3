@@ -190,7 +190,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\neptun_horizontal.png" />
+    <Content Include="Resources\neptun_horizontal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\noRoll2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
