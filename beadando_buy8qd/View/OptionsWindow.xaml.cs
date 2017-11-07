@@ -1,75 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Beadando.ViewModel;
+﻿// <copyright file="OptionsWindow.xaml.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando.View
 {
+    using System.Windows;
+    using Beadando.ViewModel;
+
     /// <summary>
     /// Interaction logic for OptionsWindow.xaml
     /// </summary>
     public partial class OptionsWindow : Window
     {
+        private BL bl;
+        private MainWindow mainW;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OptionsWindow"/> class.
+        /// </summary>
+        /// <param name="bl">reference to a business logic instance</param>
+        /// <param name="main">reference to the main window</param>
         public OptionsWindow(BL bl, MainWindow main)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             this.bl = bl;
             this.mainW = main;
-            
         }
 
-        BL bl;
-        MainWindow mainW;
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bl.Save();
-            MessageBox.Show("Játékállásodat mentettük", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            
+            this.bl.Save();
+            MessageBox.Show("Játékállásodat mentettük", string.Empty, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            e.Handled = true;
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-
-            bl.Peek();
-            LoadWindow load = new LoadWindow(bl, this);
+            this.bl.Peek();
+            LoadWindow load = new LoadWindow(this.bl, this);
             if (load.ShowDialog() == true)
             {
-                CloseWindows();
+                this.CloseWindows();
             }
+
+            e.Handled = true;
         }
 
         private void Main_Click(object sender, RoutedEventArgs e)
         {
-            
-            //we set the mainwindow as the main menu
+            // we set the mainwindow as the main menu
             MainMenu main = new MainMenu();
-            App.Current.MainWindow = main;
-            CloseWindows();
+            Application.Current.MainWindow = main;
+            this.CloseWindows();
 
-            //we show the main menu
+            // we show the main menu
             main.ShowDialog();
+            e.Handled = true;
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e)
         {
-            bl.Quit();
+            this.bl.Quit();
+            e.Handled = true;
         }
 
-        void CloseWindows()
+        private void CloseWindows()
         {
-            //we close both the options menu and the main window
+            // we close both the options menu and the main window
             this.Close();
-            mainW.Close();
+            this.mainW.Close();
         }
     }
 }
