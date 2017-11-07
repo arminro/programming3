@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['viewmodel',['ViewModel',['../class_beadando_1_1_view_model.html',1,'Beadando']]]
+  ['winwindow',['WinWindow',['../class_beadando_1_1_view_1_1_win_window.html',1,'Beadando::View']]]
 ];

@@ -2,5 +2,5 @@ var searchData=
 [
   ['bindable',['Bindable',['../class_beadando_1_1_model_1_1_bindable.html',1,'Beadando.Model.Bindable'],['../class_beadando_1_1_view_model_1_1_bindable.html',1,'Beadando.ViewModel.Bindable']]],
   ['bl',['BL',['../class_beadando_1_1_view_model_1_1_b_l.html',1,'Beadando::ViewModel']]],
-  ['boardfield',['BoardField',['../class_beadando_1_1_board_field.html',1,'Beadando.BoardField'],['../class_beadando_1_1_model_1_1_board_field.html',1,'Beadando.Model.BoardField']]]
+  ['boardfield',['BoardField',['../class_beadando_1_1_model_1_1_board_field.html',1,'Beadando.Model.BoardField'],['../class_beadando_1_1_board_field.html',1,'Beadando.BoardField']]]
 ];

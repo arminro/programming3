@@ -11,7 +11,6 @@ var searchData=
   ['nextfreeposition',['NextFreePosition',['../class_beadando_1_1_model_1_1_board_field.html#a91ce00c15c15ef9ef72319416be0730d',1,'Beadando::Model::BoardField']]],
   ['nextround',['NextRound',['../class_beadando_1_1_view_model_1_1_b_l.html#a160a4ae43c562dd48582466df6627d4a',1,'Beadando::ViewModel::BL']]],
   ['nik',['nik',['../class_beadando_1_1_properties_1_1_resources.html#a7f69546c7c471cb7ed88cf8e0fe2fe9a',1,'Beadando::Properties::Resources']]],
-  ['normalcard',['NormalCard',['../class_beadando_1_1_view_model_1_1_normal_card.html',1,'Beadando::ViewModel']]],
   ['normalcardheight',['NormalCardHeight',['../class_beadando_1_1_view_model_1_1_metrics.html#ac2affb0453a622d466b7001ff10410f8',1,'Beadando::ViewModel::Metrics']]],
   ['normalcardwidth',['NormalCardWidth',['../class_beadando_1_1_view_model_1_1_metrics.html#ad135e698910ae693d1f751efe4baa622',1,'Beadando::ViewModel::Metrics']]],
   ['noroll2',['noRoll2',['../class_beadando_1_1_properties_1_1_resources.html#a44b74bfec5d5f7a58db81614a5bf5e99',1,'Beadando::Properties::Resources']]],
