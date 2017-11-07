@@ -1606,15 +1606,20 @@ namespace Beadando.ViewModel
         /// <returns>T if all the players have valid data</returns>
         public bool ValidateStartNewGame()
         {
-            int idx = 0;
-
-            // we added players with a bogus puppetkey that we change when the user selects its puppetkey
-            while (idx < this.Players.Count && this.Players[idx].PuppetKey != "lel")
+            if (this.Players != null && this.Players.Count > 0)
             {
-                idx++;
+                int idx = 0;
+
+                // we added players with a bogus puppetkey that we change when the user selects its puppetkey
+                while (idx < this.Players.Count && this.Players[idx].PuppetKey != "lel")
+                {
+                    idx++;
+                }
+
+                return idx >= this.Players.Count;
             }
 
-            return idx >= this.Players.Count;
+            return false;
         }
 
         /// <summary>
