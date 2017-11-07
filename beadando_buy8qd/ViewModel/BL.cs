@@ -134,51 +134,62 @@ namespace Beadando.ViewModel
                 { "neptun", Constants.NeptunMessages }
             };
 
-            this.EventActions_Single = new Dictionary<string, Action>();
-            this.EventActions_Single.Add(
-                "start",
-                () =>
-                {
-                    this.AddMoney(this.Player, 5000);
-                    this.Refresh();
-                });
-            this.EventActions_Single.Add(
-                "roll",
-               () =>
-               {
-                   this.Player.State = PlayerState.Rollagain;
-               });
-            this.EventActions_Single.Add(
-                "uv",
-               () =>
-               {
-                   this.RemoveMoney(this.Player, 4000);
-                   this.Refresh();
-               });
-            this.EventActions_Single.Add(
-                "randi",
-               () =>
-               {
-                   this.RemoveMoney(this.Player, 5000);
-                   this.Refresh();
-               });
-            this.EventActions_Single.Add(
-                 "einstein",
-               () =>
-               {
-                   this.AddMoney(this.Player, 20000);
-                   this.Refresh();
-               });
-            this.EventActions_Single.Add(
-                "lead",
-               () =>
-               {
-                   this.DismissRandomSubject();
-               });
-            this.EventActions_Single.Add("megajanlott", () =>
+            this.EventActions_Single = new Dictionary<string, Action>
             {
-                this.InitializeSubjectTransactions(true, true);
-            });
+                {
+                    "start",
+                    () =>
+                    {
+                        this.AddMoney(this.Player, 5000);
+                        this.Refresh();
+                    }
+                },
+                {
+                    "roll",
+                    () =>
+                    {
+                        this.Player.State = PlayerState.Rollagain;
+                    }
+                },
+                {
+                    "uv",
+                    () =>
+                    {
+                        this.RemoveMoney(this.Player, 4000);
+                        this.Refresh();
+                    }
+                },
+                {
+                    "randi",
+                    () =>
+                    {
+                        this.RemoveMoney(this.Player, 5000);
+                        this.Refresh();
+                    }
+                },
+                {
+                    "einstein",
+                    () =>
+                    {
+                        this.AddMoney(this.Player, 20000);
+                        this.Refresh();
+                    }
+                },
+                {
+                    "lead",
+                    () =>
+                    {
+                        this.DismissRandomSubject();
+                    }
+                },
+                {
+                    "megajanlott",
+                    () =>
+    {
+        this.InitializeSubjectTransactions(true, true);
+    }
+                }
+            };
             this.NeptunActions = new Action[Constants.NeptunMessages.Length];
 
             this.NeptunActions[0] = () =>
@@ -214,19 +225,11 @@ namespace Beadando.ViewModel
             // if we do not yet have elements in the gameboard, it is a new game, so generate it
             // if there are already elements, then it is a load and loading has already taken care of filling GB with data
             // P.Currentposition = GameBoard[0].Rect;
-            this.Players = new CircularList<Player>(); // the max number of players is 3
-            // Players.Add(new Player("nik", GameBoard[0].Rect, 0, "Nikes kocka"));
-            ////GameBoard[0].ArriveAtPosition(Players[0]);
-            //
-            // Players.Add(new Player("kando", CalculateSecondaryPosition(GameBoard[0].Rect), 1, "Részeg Kandós"));
-            ////GameBoard[0].ArriveAtPosition(Players[1]);
-            //
-            // Players.Add(new Player("rejto", CalculateTertialPosition(GameBoard[0].Rect), 2, "Cuki rejtős lány <3 <3"));
-            // GameBoard[0].ArriveAtPosition(Players[2]);
-
-            // AddSubjectToPlayer(Players[0], Subjects["nik"][0], false); ADDING SUBJECT FOR TEST
-            // adding the first player
-            this.Players.Add(new Player("lel", 0, "Player 1"));
+            this.Players = new CircularList<Player>
+            {
+                // adding the first player
+                new Player("lel", 0, "Player 1")
+            }; // the max number of players is 3
             this.PlayerTokens = new ObservableCollection<string>();
             for (int i = 0; i < Constants.PlayerTokens.Length; i++)
             {

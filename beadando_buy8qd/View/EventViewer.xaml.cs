@@ -186,8 +186,10 @@ namespace Beadando.View
                 if (this.bl.IsFreeCourseValid(this.bl.IndexOfEventCardCollection))
                 {
                     this.bl.InitializeSubjectTransactions(true, false);
-                    SubjectWindow subw = new SubjectWindow(this.bl, true);
-                    subw.Background = this.playerColors[this.bl.Player.PuppetKey];
+                    SubjectWindow subw = new SubjectWindow(this.bl, true)
+                    {
+                        Background = this.playerColors[this.bl.Player.PuppetKey]
+                    };
                     if (subw.ShowDialog() == true)
                     {
                         this.InvalidateVisual();
@@ -220,8 +222,10 @@ namespace Beadando.View
         {
             this.DialogResult = true;
             this.bl.InitializeSubjectTransactions(false, false);
-            SubjectWindow subw = new SubjectWindow(this.bl, false);
-            subw.Background = this.playerColors[this.bl.Player.PuppetKey];
+            SubjectWindow subw = new SubjectWindow(this.bl, false)
+            {
+                Background = this.playerColors[this.bl.Player.PuppetKey]
+            };
             if (subw.ShowDialog() == true)
             {
                 this.bl.Refresh(); // make the main window refresh

@@ -74,8 +74,10 @@ namespace Beadando
 
             bl.InitiateSubjectTransaction += (object sender, SubjectEventArgs subEve) =>
             {
-                SubjectWindow subw = new SubjectWindow(bl, subEve.IsSubjectFree);
-                subw.Background = this.playerColors[bl.Player.PuppetKey];
+                SubjectWindow subw = new SubjectWindow(bl, subEve.IsSubjectFree)
+                {
+                    Background = this.playerColors[bl.Player.PuppetKey]
+                };
                 subw.ShowDialog();
 
                 // if (subw.ShowDialog() == true)
