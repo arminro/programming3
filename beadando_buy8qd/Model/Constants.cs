@@ -21,7 +21,7 @@ namespace Beadando.Model
         private const string RollValue = "Dobhatsz mégegyszer";
         private const string StartValue = "Pontosan érkeztél a következő félévbe!\nJUTALMAD 5000";
         private const string MegajanlottValue = "Megajánlott jegy!\nJUTALMAD EGY TÁRGY INGYEN";
-
+        private const string Tutorial = "A játék alapja a jól ismert Gazdálkodj Okosan játék: a játékosok körökre osztva lépdelnek végig a számokra osztott táblán és közben különféle játékeseményeken vesznek részt. A játékosok száma 1 és 3 között változhat, de a pályán egyszerre csak 1 féle karakter lehet, melyeket az Óbudai Egyetem 3 Kara testesít meg: a Neumann Kékek, a Kandó Sárgák és a Rejtő Zöldek.\nA számozott pályán a résztvevők eseményablakokon keresztül értesülnek róla, hogy mit rejt egy-egy kártya.A játékot színesebbé teszi, hogy minden egyes új játékmenet egyedi kártyasorral rendelkezik, így a résztvevők a gép szeszélyeire bízva menetelnek a célig, azaz, hogy megszerezzék az általuk képviselt Egyetemi Kar 3 tárgyát.Ha ez egy játékosnak sikerül, a játék véget ér mindenki számára. Ha azonban bármelyik játékos  egyenlege 0 alá csökken, csak ő maga száll ki a versenből, a többiek számára folytatódik a diplomáért folytatott harc.\nTantárgyakban gazdag játékot kívánunk!";
         private const int PuppetStartDiameterValue = 30;
 
         private static int[] go = { 1, 2, 3, 5 };
@@ -231,6 +231,17 @@ namespace Beadando.Model
             get
             {
                 return MegajanlottValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets the text of the const tutorial
+        /// </summary>
+        public static string TutorialProp
+        {
+            get
+            {
+                return Tutorial;
             }
         }
     }

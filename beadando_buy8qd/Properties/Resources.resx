@@ -274,4 +274,8 @@
   <data name="neptun_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\neptun_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="tutorial" xml:space="preserve">
+    <value>A játék alapja a jól ismert Gazdálkodj Okosan játék: a játékosok körökre osztva lépdelnek végig a számokra osztott táblán és közben különféle játékeseményeken vesznek részt. A játékosok száma 1 és 3 között változhat, de a játékmezőn egyszerre csak 1 féle karakter lehet, melyeket az Óbudai Egyetem 3 Kara testesít meg: a Neumann Kékek, a Kandó Sárgák és a Rejtő Zöldek.
+A számozott pályán a résztvevők eseményablakokon keresztül értesülnek róla, hogy mit rejt egy-egy kártya. A játékot színesebbé teszi, hogy minden egyes új játékmenet egyedi kártyasorral rendelkezik, így a résztvevők a gép szeszélyeire bízva menetelnek a célig, azaz, hogy megszerezzék az általuk képviselt Egyetemi Kar 3 tárgyát. Ha ez egy játékosnak sikerül, a játék véget ér mindenki számára. Ha azonban bármelyik játékos  egyenlege 0 alá csökken, csak ő maga száll ki a versenből, a többiek számára folytatódik a diplomáért folytatott harc. Tantárgyakban gazdag játékot kívánunk!</value>
+  </data>
 </root>

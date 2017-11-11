@@ -76,6 +76,39 @@
                 </Style>
             </Button.Style>
         </Button>
+        <Button x:Name="Rules" Content="Játékszabályok" Background="{x:Null}" BorderBrush="{x:Null}" 
+                  FontFamily="Edwardian Script ITC"   Margin="20" Click="Rules_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="FontWeight" Value="Normal" />
+                    <Setter Property="FontSize" Value="50" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#FF08085F"/>
+                            <Setter Property="FontSize" Value="60"/>
+
+
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="#FF810E0E"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
         <Button x:Name="Main" Content="Kilépés a Menübe" Background="{x:Null}" BorderBrush="{x:Null}" 
                   FontFamily="Edwardian Script ITC"   Margin="20" Click="Main_Click">
             <Button.Style>

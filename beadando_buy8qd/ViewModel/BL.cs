@@ -10,10 +10,11 @@ namespace Beadando.ViewModel
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
+    using System.Resources;
     using System.Text;
     using System.Windows;
     using System.Windows.Threading;
-    using System.Xml.Serialization;
     using Beadando.Model;
     using Polenter.Serialization;
 
@@ -837,6 +838,11 @@ namespace Beadando.ViewModel
         }
 
         /// <summary>
+        /// Gets or sets the text of the turorial shown to the player on clicking the Jatekszabalyok button
+        /// </summary>
+        public string TutorialText { get; set; }
+
+        /// <summary>
         /// Gets or sets the collection storing the actions that are invoked when the player steps on a card
         /// </summary>
         public Action[] NeptunActions
@@ -881,6 +887,18 @@ namespace Beadando.ViewModel
             this.GameBoard.Clear();
             this.Players.Clear();
             this.Subjects.Clear();
+        }
+
+        /// <summary>
+        /// Set the text displayed on the tutorial window
+        /// </summary>
+        public void SetTutorialText()
+        {
+            // sets the toturial text if it has not been set yet
+            if (this.TutorialText == null)
+            {
+                this.TutorialText = Constants.TutorialProp;
+            }
         }
 
         /// <summary>

@@ -54,6 +54,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
+
           <Button x:Name="Load" Height="80" Content="Betöltés" Background="{x:Null}" BorderBrush="{x:Null}" 
                   FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Click="Load_Click">
                 <Button.Style>
@@ -86,8 +87,8 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <!--<Button Height="80" Content="Statisztikák" Background="{x:Null}" BorderBrush="{x:Null}" 
-                  FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Button x:Name="Rules" Height="80" Content="Játékszabályok" Background="{x:Null}" BorderBrush="{x:Null}" 
+                  FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Click="Rules_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="Transparent"/>
@@ -117,7 +118,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-            </Button>-->
+            </Button>
             <Button x:Name="Quit" Height="80" Content="Kiíratkozás" Background="{x:Null}" BorderBrush="{x:Null}" 
                   FontFamily="Edwardian Script ITC" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Click="Quit_Click">
                 <Button.Style>

@@ -521,6 +521,16 @@ namespace Beadando.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A játék alapja a jól ismert Gazdálkodj Okosan játék: a játékosok körökre osztva lépdelnek végig a számokra osztott táblán és közben különféle játékeseményeken vesznek részt. A játékosok száma 1 és 3 között változhat, de a játékmezőn egyszerre csak 1 féle karakter lehet, melyeket az Óbudai Egyetem 3 Kara testesít meg: a Neumann Kékek, a Kandó Sárgák és a Rejtő Zöldek.
+        ///A számozott pályán a résztvevők eseményablakokon keresztül értesülnek róla, hogy mit rejt egy-egy kártya. A játékot színesebbé teszi, hogy mi [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string tutorial {
+            get {
+                return ResourceManager.GetString("tutorial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap uv {

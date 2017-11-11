@@ -70,5 +70,13 @@ namespace Beadando.View
             load.ShowDialog();
             e.Handled = true;
         }
+
+        private void Rules_Click(object sender, RoutedEventArgs e)
+        {
+            // setting tutorial text
+            this.bl.SetTutorialText();
+            RulesWindow r = new RulesWindow(this.bl);
+            r.ShowDialog();
+        }
     }
 }
