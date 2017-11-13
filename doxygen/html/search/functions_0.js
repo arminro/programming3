@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['addeventhandler',['AddEventHandler',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#a73471f4a6d1ca4c4fceec9ad8610f0c8',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo eventInfo, object target, System.Delegate handler)'],['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#a73471f4a6d1ca4c4fceec9ad8610f0c8',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo eventInfo, object target, System.Delegate handler)']]],
+  ['addeventhandler',['AddEventHandler',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#a73471f4a6d1ca4c4fceec9ad8610f0c8',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['addmoney',['AddMoney',['../class_beadando_1_1_view_model_1_1_b_l.html#a3ca18617154b3df299fc0cfe11a35fcb',1,'Beadando::ViewModel::BL']]],
   ['addplayer',['AddPlayer',['../class_beadando_1_1_view_model_1_1_b_l.html#ab95bab84983abedd0386194bc44f24f6',1,'Beadando::ViewModel::BL']]],
   ['addsubjecttoplayer',['AddSubjectToPlayer',['../class_beadando_1_1_view_model_1_1_b_l.html#adfd300b5439c44d8e53fbe5fed910b13',1,'Beadando::ViewModel::BL']]],

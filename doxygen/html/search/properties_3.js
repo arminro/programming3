@@ -1,6 +1,7 @@
 var searchData=
 [
   ['canplayerbuyit',['CanPlayerBuyIt',['../class_beadando_1_1_view_model_1_1_b_l.html#a19c1f0df9795030b6878f25a73fca966',1,'Beadando::ViewModel::BL']]],
+  ['canplayercallnextround',['CanPlayerCallNextRound',['../class_beadando_1_1_view_model_1_1_b_l.html#a47c942c82ae2428563f37c338b425e5f',1,'Beadando::ViewModel::BL']]],
   ['cardtypekey',['CardTypeKey',['../class_beadando_1_1_view_model_1_1_card_event_args.html#afa5e9cda9780049b246d06772fae6d06',1,'Beadando::ViewModel::CardEventArgs']]],
   ['cert',['cert',['../class_beadando_1_1_properties_1_1_resources.html#a211c10332e961c1847835f61233aef33',1,'Beadando::Properties::Resources']]],
   ['cert_5fblank',['cert_blank',['../class_beadando_1_1_properties_1_1_resources.html#af1a0265d3d4a00271990de2279343688',1,'Beadando::Properties::Resources']]],

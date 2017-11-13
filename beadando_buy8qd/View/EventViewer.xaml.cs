@@ -13,7 +13,7 @@ namespace Beadando.View
     using Beadando.ViewModel;
 
     /// <summary>
-    /// Interaction logic for EventViewer.xaml
+    /// Provides a window to show events
     /// </summary>
     public partial class EventViewer : Window
     {

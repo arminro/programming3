@@ -20,8 +20,8 @@ namespace Beadando.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="Metrics"/> class.
         /// </summary>
-        /// <param name="playerAreaX">The width of the available player area</param>
-        /// <param name="playerAreaY">The height of the available player area</param>
+        /// <param name="playerAreaX">Indicates the width of th board</param>
+        /// <param name="playerAreaY">Indicates the height of the board</param>
         public Metrics(double playerAreaX, double playerAreaY)
         {
             this.NormalCardHeight = 135;

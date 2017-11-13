@@ -9,7 +9,7 @@ var searchData=
   ['selectedsubject',['SelectedSubject',['../class_beadando_1_1_view_model_1_1_b_l.html#ad908f0ad9c0748681fed9fedaca86874',1,'Beadando::ViewModel::BL']]],
   ['ser',['Ser',['../class_beadando_1_1_view_model_1_1_b_l.html#a9360184315840f130c9e515381aaec49',1,'Beadando::ViewModel::BL']]],
   ['setmetrics',['SetMetrics',['../class_beadando_1_1_view_model_1_1_b_l.html#aeea2d8e18c03b89b5894289e6d4162bc',1,'Beadando::ViewModel::BL']]],
-  ['setpropertyvalue',['SetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, object value, System.Globalization.CultureInfo culture)'],['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo propertyInfo, object target, object value, System.Globalization.CultureInfo culture)']]],
+  ['setpropertyvalue',['SetPropertyValue',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#ade0f04c0f7b18dd5b170e071d5534d38',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['settutorialtext',['SetTutorialText',['../class_beadando_1_1_view_model_1_1_b_l.html#a82174eaa9b73cd5b8ae415d3005ccff7',1,'Beadando::ViewModel::BL']]],
   ['silver',['silver',['../class_beadando_1_1_properties_1_1_resources.html#a78dc42ed2b69177192a07efb0b6023f8',1,'Beadando::Properties::Resources']]],
   ['smartphone',['smartphone',['../class_beadando_1_1_properties_1_1_resources.html#ae4e0b46dc1158af3e0c80ee2a6a5b42f',1,'Beadando::Properties::Resources']]],

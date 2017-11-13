@@ -513,7 +513,7 @@ namespace Beadando
             };
 
             // next player
-            this.next = new RenderedButton(drawingContext, new Rect(this.ActualWidth - 120, this.ActualHeight - 120, 100, 40), "Következő", this.playerColors[this.bl.Player.PuppetKey], Brushes.White, true, 20);
+            this.next = new RenderedButton(drawingContext, new Rect(this.ActualWidth - 120, this.ActualHeight - 120, 100, 40), "Következő", this.playerColors[this.bl.Player.PuppetKey], Brushes.White, this.bl.CanPlayerCallNextRound, 20);
             this.next.Click += (object sender, EventArgs eve) =>
             {
                 this.bl.NextRound();

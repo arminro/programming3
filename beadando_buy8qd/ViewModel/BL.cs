@@ -106,6 +106,7 @@ namespace Beadando.ViewModel
             this.IncrementAtMovement = 1;
             this.OffsetHorizontal = 0;
             this.OffsetVertical = 0;
+            this.CanPlayerCallNextRound = true;
 
             // numberOfElementsInAHorizontalRow = met.NumberOfElementsInAHorizontalRow;
             // numberOfElementsInAVerticalRow = met.NumberOfElementsInAVerticalRow;
@@ -425,6 +426,11 @@ namespace Beadando.ViewModel
         /// Gets or sets the start coordinate X of the game area
         /// </summary>
         public int StartX { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the palyer can call for the next round
+        /// </summary>
+        public bool CanPlayerCallNextRound { get; set; }
 
         /// <summary>
         /// Gets or sets the start coordinate Y of the game area
@@ -1153,6 +1159,7 @@ namespace Beadando.ViewModel
                          positionHolder != startingPosition ? this.gameBoard[positionHolder].NextFreePosition : 0);
                     positionHolder++;
                     incr++;
+                    this.CanPlayerCallNextRound = false;
                 }
                 else
                 {
@@ -1165,6 +1172,8 @@ namespace Beadando.ViewModel
 
                     // we signal that an event has to happen here that a view can handle anyway s/he wants (MVVM <3)
                     this.EventCard?.Invoke(this, new CardEventArgs(this.GameBoard[this.Player.CurrentCard].ImageKey, this.Player));
+                    this.CanPlayerCallNextRound = true; // now the player can call for the next round
+                    this.Refresh(); // refresh the screen which sets the buttons
                 }
             };
         }
