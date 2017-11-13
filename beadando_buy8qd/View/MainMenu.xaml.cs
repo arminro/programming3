@@ -22,7 +22,12 @@ namespace Beadando.View
         public MainMenu()
         {
             this.InitializeComponent();
-            this.bl = new BL();
+            Metrics met = new Metrics(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+
+            this.bl = new BL(met)
+            {
+                Met = met
+            };
             this.bl.CloseOpenWindows += (object sender, EventArgs eve) =>
              {
                  this.Close();

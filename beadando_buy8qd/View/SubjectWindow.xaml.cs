@@ -48,7 +48,7 @@ namespace Beadando.View
             object selected = (e.OriginalSource as ListBox).SelectedItem;
             if (selected != null)
             {
-                this.bl.CanPlayerBuySubject(selected);
+                this.bl.CanPlayerBuySubject(selected, this.free);
             }
         }
     }

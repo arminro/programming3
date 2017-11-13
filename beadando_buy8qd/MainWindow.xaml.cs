@@ -99,6 +99,7 @@ namespace Beadando
         /// <param name="e">info about the pressed key</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
+            // stylecop made me do it
             base.OnKeyDown(e);
             switch (e.Key)
             {
@@ -471,8 +472,6 @@ namespace Beadando
         /// <param name="drawingContext">reference tp the drawing conext</param>
         protected override void OnRender(DrawingContext drawingContext)
         {
-            base.OnRender(drawingContext);
-
             // updating the start card center
             this.bl.GameBoard[0].Rect = this.bl.CalculatePrimaryPosition(new Point(this.bl.Met.StartPosition.X, this.bl.StartY), this.bl.Met.SquareCardMetric, this.bl.Met.SquareCardMetric);
 
@@ -506,11 +505,11 @@ namespace Beadando
             this.roll = new RenderedButton(drawingContext, new Rect(this.ActualWidth - 120, this.ActualHeight - 170, 100, 40), "Gurítok", this.playerColors[this.bl.Player.PuppetKey], Brushes.White, this.bl.RollButtonEnabled, 20);
             this.roll.Click += (object s, EventArgs e) =>
             {
+                this.bl.RollButtonEnabled = false; // we make the button uninteractable
                 this.bl.GenerateRandomNumber();
                 this.bl.GoToPosition(this.bl.RandomGeneratedNumber);
 
                 // this.bl.GoToPosition(1); TESTING
-                this.bl.RollButtonEnabled = false; // we make the button uninteractable
             };
 
             // next player

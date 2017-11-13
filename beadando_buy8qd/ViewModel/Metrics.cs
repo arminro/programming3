@@ -19,9 +19,10 @@ namespace Beadando.ViewModel
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Metrics"/> class.
-        /// ctor setting the basic data
         /// </summary>
-        public Metrics()
+        /// <param name="playerAreaX">The width of the available player area</param>
+        /// <param name="playerAreaY">The height of the available player area</param>
+        public Metrics(double playerAreaX, double playerAreaY)
         {
             this.NormalCardHeight = 135;
             this.NormalCardWidth = 90;
@@ -32,7 +33,7 @@ namespace Beadando.ViewModel
             this.NumberOfElementsInAVerticalRow = 5;
             this.WidthOfBoard = ((this.NumberOfElementsInAHorizontalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
             this.HeightOfBoard = ((this.NumberOfElementsInAVerticalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
-            this.StartPosition = new Point((SystemParameters.PrimaryScreenWidth / 2) + (this.WidthOfBoard / 2) - this.NormalCardWidth, ((SystemParameters.PrimaryScreenHeight / 2) + (this.HeightOfBoard / 2)) - this.NormalCardWidth);
+            this.StartPosition = new Point((playerAreaX / 2) + (this.WidthOfBoard / 2) - this.NormalCardWidth, ((playerAreaY / 2) + (this.HeightOfBoard / 2)) - this.NormalCardWidth);
         }
 
         // int marginX;

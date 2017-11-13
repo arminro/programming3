@@ -88,15 +88,16 @@ namespace Beadando.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="BL"/> class.
         /// </summary>
-        public BL()
+        /// <param name="met">Reference to a metrics instance</param>
+        public BL(Metrics met)
         {
+            this.Met = met;
             this.greens = new string[] { "go", "start", "roll", "einstein" };
 
             // blacks = new string[] { "uv", "randi", };
             this.yellows = new string[] { "event" };
             this.blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
 
-            this.Met = new Metrics();
             this.StartX = (int)this.Met.StartPosition.X;
             this.StartY = (int)this.Met.StartPosition.Y;
 
@@ -111,7 +112,6 @@ namespace Beadando.ViewModel
             this.ResourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             this.ResourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
             this.ResourceNamesHorizontal = new string[] { "go_horizontal", "event_horizontal", "roll_horizontal", "enroll_horizontal", "uv_horizontal", "randi_horizontal", "neptun_horizontal" };
-
             this.Rand = new Random();
             this.GameBoard = new CircularDictionary<BoardField>();
             this.Subjects = new Dictionary<string, ObservableCollection<Subject>>();
@@ -150,6 +150,8 @@ namespace Beadando.ViewModel
                     () =>
                     {
                         this.Player.State = PlayerState.Rollagain;
+                        this.NextRound();
+                        this.Refresh();
                     }
                 },
                 {
@@ -929,16 +931,25 @@ namespace Beadando.ViewModel
         /// Checks if the player has enough money to buy a subject
         /// </summary>
         /// <param name="v">The subject, passed as an objectm since the view has no idea of a class defined in the model</param>
-        public void CanPlayerBuySubject(object v)
+        /// <param name="isIsForFree">Check if the subject is for free</param>
+        public void CanPlayerBuySubject(object v, bool isIsForFree)
         {
-            Subject s = v as Subject;
-            if (this.Player.Money - s.Price > 0)
+            // if the subject is for free, we can buy it regardless of the aount of money we have
+            if (isIsForFree)
             {
                 this.CanPlayerBuyIt = true;
             }
             else
             {
-                this.CanPlayerBuyIt = false;
+                Subject s = v as Subject;
+                if (this.Player.Money - s.Price > 0)
+                {
+                    this.CanPlayerBuyIt = true;
+                }
+                else
+                {
+                    this.CanPlayerBuyIt = false;
+                }
             }
         }
 
@@ -1150,9 +1161,6 @@ namespace Beadando.ViewModel
                     // the --positionHolder means that we have to consider that at the end of the last iteration of the Tick...
                     // ...the positionHOlder will point to the card AFTER the one the player stands on
                     this.Player.CurrentCard = this.GetPlayerCardNumber(this.Player, this.gameBoard[--positionHolder].NextFreePosition);
-
-                    // MessageBox.Show($"Now I stand on card{Player.CurrentCard}");
-                    // MessageBox.Show($"Average run stat: {millis.Average().ToString()}");
                     this.GameBoard[this.Player.CurrentCard].ArriveAtPosition(this.Player);
 
                     // we signal that an event has to happen here that a view can handle anyway s/he wants (MVVM <3)
@@ -1384,7 +1392,6 @@ namespace Beadando.ViewModel
             // to make sure that the game can be won, 1 of the cards are switched to a win card randomly
             // we start form 1 bc the start cannot be switched
             this.GameBoard[this.Rand.Next(1, this.GameBoard.Count)].ImageKey = "enroll";
-            this.GameBoard[1].ImageKey = "event";
         }
 
         /// <summary>
