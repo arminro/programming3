@@ -1136,7 +1136,7 @@ namespace Beadando.ViewModel
             /*We have to keep stepping from the current position, but the number of steps has to start from 0*/
             int positionHolder = this.Player.CurrentCard; // we start off from the current position of the player
             int startingPosition = this.Player.CurrentCard;
-            DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Send);
+            DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Render);
             int incr = 0;
 
             // if the goal position is in the same round (eg. from 9 to 12) we only have to take just as many steps as is there difference
@@ -1197,7 +1197,7 @@ namespace Beadando.ViewModel
 
             Vector v = new Vector(goalPosition.X - this.Player.Currentposition.X, goalPosition.Y - this.Player.Currentposition.Y);
 
-            DispatcherTimer t = new DispatcherTimer(DispatcherPriority.Send)
+            DispatcherTimer t = new DispatcherTimer(DispatcherPriority.Render)
             {
                 Interval = TimeSpan.FromMilliseconds(10)
             };
@@ -1205,8 +1205,8 @@ namespace Beadando.ViewModel
             t.Start();
 
             int c = 0;
-            int divide = 20;
-
+            double divide = 20;
+            v /= divide;
             t.Tick += (o, args) =>
             {
                 if (c >= divide)
@@ -1215,7 +1215,7 @@ namespace Beadando.ViewModel
                 }
                 else
                 {
-                    this.Player.Currentposition = Point.Add(this.Player.Currentposition, v / divide);
+                    this.Player.Currentposition = Point.Add(this.Player.Currentposition, v);
                     this.Refresh(); // we just need a way to convey the invalidate visual from here
                 }
 
