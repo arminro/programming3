@@ -105,6 +105,7 @@
     <Compile Include="View\SubjectWindow.xaml.cs">
       <DependentUpon>SubjectWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\VisibilityConverter.cs" />
     <Compile Include="View\WinWindow.xaml.cs">
       <DependentUpon>WinWindow.xaml</DependentUpon>
     </Compile>
@@ -174,6 +175,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

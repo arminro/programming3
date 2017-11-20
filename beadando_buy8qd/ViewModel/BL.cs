@@ -52,7 +52,7 @@ namespace Beadando.ViewModel
         private int widthOfTheBoard;
         private float puppetDiameter; // the diameter of the player puppet
         private float puppetDiameterChangeConstant; // the constant to which the diameter of the puppet changes
-
+        private bool customModeOn;
         private Dictionary<string, ObservableCollection<Subject>> subjects;
 
         private Random rand;
@@ -97,19 +97,17 @@ namespace Beadando.ViewModel
             // blacks = new string[] { "uv", "randi", };
             this.yellows = new string[] { "event" };
             this.blues = new string[] { "enroll", "megajanlott", "neptun", "lead" };
+            this.SetStartPosition();
 
-            this.StartX = (int)this.Met.StartPosition.X;
-            this.StartY = (int)this.Met.StartPosition.Y;
-
+            // this.StartX = (int)this.Met.StartPosition.X;
+            // this.StartY = (int)this.Met.StartPosition.Y;
             this.MovementSpeed = 10;
             this.PuppetDiameter = 30;
             this.IncrementAtMovement = 1;
             this.OffsetHorizontal = 0;
             this.OffsetVertical = 0;
             this.CanPlayerCallNextRound = true;
-
-            // numberOfElementsInAHorizontalRow = met.NumberOfElementsInAHorizontalRow;
-            // numberOfElementsInAVerticalRow = met.NumberOfElementsInAVerticalRow;
+            this.CustomModeOn = false;
             this.ResourceNamesNormal = new string[] { "go", "event", "roll", "enroll", "uv", "randi", "neptun" };
             this.ResourceNamesSquare = new string[] { "megajanlott", "lead", "einstein" };
             this.ResourceNamesHorizontal = new string[] { "go_horizontal", "event_horizontal", "roll_horizontal", "enroll_horizontal", "uv_horizontal", "randi_horizontal", "neptun_horizontal" };
@@ -189,9 +187,9 @@ namespace Beadando.ViewModel
                 {
                     "megajanlott",
                     () =>
-    {
-        this.InitializeSubjectTransactions(true, true);
-    }
+                    {
+                        this.InitializeSubjectTransactions(true, true);
+                    }
                 }
             };
             this.NeptunActions = new Action[Constants.NeptunMessages.Length];
@@ -578,6 +576,28 @@ namespace Beadando.ViewModel
         /// Gets or setsa random number
         /// </summary>
         public int RandomGeneratedNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player selected custom mode, a mode in which s/he can freely set the metrics of the game area
+        /// </summary>
+        public bool CustomModeOn
+        {
+            get
+            {
+                return this.customModeOn;
+            }
+
+            set
+            {
+                this.customModeOn = value;
+                if (!value)
+                {
+                    this.Met.SetRowNumbersBackToDefault();
+                }
+
+                this.OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the player of the game
@@ -1041,6 +1061,16 @@ namespace Beadando.ViewModel
         }
 
         /// <summary>
+        /// Sets the starting position of the game
+        /// </summary>
+        public void SetStartPosition()
+        {
+            // changing start positions
+            this.StartX = (int)this.Met.StartPosition.X;
+            this.StartY = (int)this.Met.StartPosition.Y;
+        }
+
+        /// <summary>
         /// Seeks for a pre-specified Directory in Documents, creates it, if it does not exist, then saves critical data
         /// </summary>
         public void Save()
@@ -1061,7 +1091,9 @@ namespace Beadando.ViewModel
                 this.Subjects,
                 this.Player,
                 this.RoundCounter,
-                this.GameBoard_TempForSerilaize
+                this.GameBoard_TempForSerilaize,
+                this.CustomModeOn,
+                this.Met
             };
             SharpSerializer serializer = new SharpSerializer();
 
@@ -1450,6 +1482,8 @@ namespace Beadando.ViewModel
                     this.RoundCounter = (int)this.Ser[3];
                     this.GameBoard_TempForSerilaize = new Dictionary<int, BoardField>();
                     this.GameBoard_TempForSerilaize = (Dictionary<int, BoardField>)this.Ser[4];
+                    this.CustomModeOn = (bool)this.Ser[5];
+                    this.Met = (Metrics)this.Ser[6];
 
                     // getting data out of the normal dictionary
                     foreach (KeyValuePair<int, BoardField> item in this.GameBoard_TempForSerilaize)
@@ -1458,6 +1492,8 @@ namespace Beadando.ViewModel
                     }
 
                     this.GameBoard_TempForSerilaize = null;
+                    this.SetStartPosition();
+                    this.SetMetrics();
                     return true;
                 }
                 catch (ApplicationException e)

@@ -14,8 +14,8 @@ var searchData=
   ['circularlist',['CircularList',['../class_beadando_1_1_model_1_1_circular_list.html#a6e14696547b5537f075dab313324990b',1,'Beadando::Model::CircularList']]],
   ['clearpreviousdata',['ClearPreviousData',['../class_beadando_1_1_view_model_1_1_b_l.html#a6be36183e4560567b07bee520e4f9aa4',1,'Beadando::ViewModel::BL']]],
   ['closewindows',['CloseWindows',['../class_beadando_1_1_view_model_1_1_b_l.html#a8c0c760c2684d399326fbb69644f1160',1,'Beadando::ViewModel::BL']]],
-  ['convert',['Convert',['../class_beadando_1_1_view_model_1_1_save_converter.html#aa9d6e180f0d4eb7a99decf0c7693a396',1,'Beadando::ViewModel::SaveConverter']]],
-  ['convertback',['ConvertBack',['../class_beadando_1_1_view_model_1_1_save_converter.html#a3df8c65c31fb12e9c13fb774cfc8909d',1,'Beadando::ViewModel::SaveConverter']]],
+  ['convert',['Convert',['../class_beadando_1_1_view_1_1_visibility_converter.html#a15e149d3254ec6536a9fa2e7446035ed',1,'Beadando.View.VisibilityConverter.Convert()'],['../class_beadando_1_1_view_model_1_1_save_converter.html#aa9d6e180f0d4eb7a99decf0c7693a396',1,'Beadando.ViewModel.SaveConverter.Convert()']]],
+  ['convertback',['ConvertBack',['../class_beadando_1_1_view_1_1_visibility_converter.html#a784cfbb6db5e01cdae6d187b0d331ef6',1,'Beadando.View.VisibilityConverter.ConvertBack()'],['../class_beadando_1_1_view_model_1_1_save_converter.html#a3df8c65c31fb12e9c13fb774cfc8909d',1,'Beadando.ViewModel.SaveConverter.ConvertBack()']]],
   ['createdelegate',['CreateDelegate',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#a8ec4c37e82d9f4e867e9655f4eac3a78',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]],
   ['createinstance',['CreateInstance',['../class_xaml_generated_namespace_1_1_generated_internal_type_helper.html#aefb7a98fceb9c287cef4756942f441d1',1,'XamlGeneratedNamespace::GeneratedInternalTypeHelper']]]
 ];

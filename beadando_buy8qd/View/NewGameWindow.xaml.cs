@@ -35,6 +35,9 @@ namespace Beadando.View
         {
             if (this.bl.ValidateStartNewGame())
             {
+                this.bl.Met.SetBaseValues(SystemParameters.PrimaryScreenWidth, SystemParameters.PrimaryScreenHeight);
+                this.bl.SetStartPosition();
+                this.bl.SetMetrics();
                 this.bl.InitializeGame();
                 this.bl.InitializeStartOfNewGame();
                 this.DialogResult = true;

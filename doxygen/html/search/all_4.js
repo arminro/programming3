@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['defaulthorizontalnumber',['DefaultHorizontalNumber',['../class_beadando_1_1_view_model_1_1_metrics.html#a4f16590c50e54bf7d81bdda41fd3c4f9',1,'Beadando::ViewModel::Metrics']]],
+  ['defaultverticalnumber',['DefaultVerticalNumber',['../class_beadando_1_1_view_model_1_1_metrics.html#a443114800dd0dd010de4a16a25d8702e',1,'Beadando::ViewModel::Metrics']]],
   ['deleteplayer',['DeletePlayer',['../class_beadando_1_1_view_model_1_1_b_l.html#afc22c95ce73d856899fca8df688c0783',1,'Beadando::ViewModel::BL']]],
   ['deletesave',['DeleteSave',['../class_beadando_1_1_view_model_1_1_b_l.html#acaf1e64d4c7333b7a945f03a89d8837f',1,'Beadando::ViewModel::BL']]],
   ['departfromposition',['DepartFromposition',['../class_beadando_1_1_model_1_1_board_field.html#a9a3cd501f85936fa3b5fb55e9fb99659',1,'Beadando::Model::BoardField']]],

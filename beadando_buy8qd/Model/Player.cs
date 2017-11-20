@@ -75,7 +75,7 @@ namespace Beadando.Model
         {
             this.puppetKey = puppetKey;
             this.currentposition = currentposition;
-            this.money = 20000;
+            this.money = 10000;
             this.subjects = new ObservableCollection<Subject>();
 
             this.currentCard = 0;

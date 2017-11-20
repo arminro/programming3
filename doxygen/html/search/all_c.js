@@ -6,7 +6,7 @@ var searchData=
   ['megajanlott',['megajanlott',['../class_beadando_1_1_properties_1_1_resources.html#ae770c61195ea498948ced40f5b2543a7',1,'Beadando::Properties::Resources']]],
   ['megajanlott_5fevent',['megajanlott_event',['../class_beadando_1_1_properties_1_1_resources.html#aac26a5d5f8114226294cf9fe918da97e',1,'Beadando::Properties::Resources']]],
   ['met',['Met',['../class_beadando_1_1_view_model_1_1_b_l.html#a97c751fcb1c34eaac9bacc688ce86a2e',1,'Beadando::ViewModel::BL']]],
-  ['metrics',['Metrics',['../class_beadando_1_1_view_model_1_1_metrics.html',1,'Beadando.ViewModel.Metrics'],['../class_beadando_1_1_view_model_1_1_metrics.html#a3493aedad0efef9a775b1d15a1fb8c6f',1,'Beadando.ViewModel.Metrics.Metrics()']]],
+  ['metrics',['Metrics',['../class_beadando_1_1_view_model_1_1_metrics.html',1,'Beadando.ViewModel.Metrics'],['../class_beadando_1_1_view_model_1_1_metrics.html#a3493aedad0efef9a775b1d15a1fb8c6f',1,'Beadando.ViewModel.Metrics.Metrics(double playerAreaX, double playerAreaY)'],['../class_beadando_1_1_view_model_1_1_metrics.html#ac149b46a2cd58b9b3093bb9e0ce92ce6',1,'Beadando.ViewModel.Metrics.Metrics()']]],
   ['missaround',['MissARound',['../namespace_beadando_1_1_model.html#a3f2cdbef7ef5d00829af5543e697bc9da15af72874e7e4e278eebc7aff218aef5',1,'Beadando::Model']]],
   ['money',['Money',['../class_beadando_1_1_model_1_1_player.html#a4a99dfbf75e8a0a8009fb8dbb3ff2d0c',1,'Beadando::Model::Player']]],
   ['movehorizontally',['MoveHorizontally',['../class_beadando_1_1_view_model_1_1_b_l.html#a61cdd0db7288d9caa575ce72323b7963',1,'Beadando::ViewModel::BL']]],

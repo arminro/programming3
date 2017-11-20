@@ -53,6 +53,7 @@ var menudata={children:[
 {text:"t",url:"functions_func.html#index_t"},
 {text:"v",url:"functions_func.html#index_v"},
 {text:"w",url:"functions_func.html#index_w"}]},
+{text:"Variables",url:"functions_vars.html"},
 {text:"Properties",url:"functions_prop.html",children:[
 {text:"_",url:"functions_prop.html#index__"},
 {text:"a",url:"functions_prop.html#index_a"},

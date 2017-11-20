@@ -26,7 +26,7 @@ namespace Beadando.View
             this.TextColor = textColor;
 
             this.Dimensions = dimensions;
-
+            this.FontSize = 16;
             /*Yes, this is copy/pasted from rendered button*/
             dc.DrawRoundedRectangle(this.Background, new Pen(Brushes.DarkGray, 2), this.Dimensions, 5, 5);
         }
@@ -47,18 +47,23 @@ namespace Beadando.View
         public Brush TextColor { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the font used in drawing the text
+        /// </summary>
+        public int FontSize { get; set; }
+
+        /// <summary>
         /// Draws the the text of the tb, has to be called outside of the class
         /// </summary>
         /// <param name="dc">reference to the drawing context</param>
         /// <param name="text">The text appearing on the tb</param>
-    public void DrawText(DrawingContext dc, string text)
+        public void DrawText(DrawingContext dc, string text)
         {
             FormattedText textblockText = new FormattedText(
                     text,
                     CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight,
                     new Typeface("Impact"),
-                    16,
+                    this.FontSize,
                     this.TextColor);
 
             // we have to consider how long is the string to display as well as its fontsize

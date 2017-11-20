@@ -9,8 +9,18 @@ namespace Beadando.ViewModel
     /// <summary>
     /// This class accompanies the viewmodel to store view-related data
     /// </summary>
-    public class Metrics
+    public class Metrics : Bindable
     {
+        /// <summary>
+        /// Stores the default  number of elements in a horizontal row
+        /// </summary>
+        public const int DefaultHorizontalNumber = 10;
+
+        /// <summary>
+        /// Stpres the default number of elements in a vertical row
+        /// </summary>
+        public const int DefaultVerticalNumber = 5;
+
         private int widthOfBoard;
         private int heightOfBoard;
         private int numberOfElementsInAHorizontalRow;
@@ -29,11 +39,17 @@ namespace Beadando.ViewModel
             this.SquareCardMetric = 135; // this is the sane of NormalCardHeight, but it makes sense to store in a variable to clarify the code
             // marginX = (int)(SystemParameters.PrimaryScreenWidth * 0.08);
             // marginY = (int)(SystemParameters.PrimaryScreenHeight * 0.08);
-            this.NumberOfElementsInAHorizontalRow = 10;
-            this.NumberOfElementsInAVerticalRow = 5;
-            this.WidthOfBoard = ((this.NumberOfElementsInAHorizontalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
-            this.HeightOfBoard = ((this.NumberOfElementsInAVerticalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
-            this.StartPosition = new Point((playerAreaX / 2) + (this.WidthOfBoard / 2) - this.NormalCardWidth, ((playerAreaY / 2) + (this.HeightOfBoard / 2)) - this.NormalCardWidth);
+            this.NumberOfElementsInAHorizontalRow = DefaultHorizontalNumber;
+            this.NumberOfElementsInAVerticalRow = DefaultVerticalNumber;
+            this.SetBaseValues(playerAreaX, playerAreaY);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Metrics"/> class.
+        /// Empty ctor for xml
+        /// </summary>
+        public Metrics()
+        {
         }
 
         // int marginX;
@@ -87,6 +103,7 @@ namespace Beadando.ViewModel
             set
             {
                 this.numberOfElementsInAHorizontalRow = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -103,6 +120,7 @@ namespace Beadando.ViewModel
             set
             {
                 this.numberOfElementsInAVerticalRow = value;
+                this.OnPropertyChanged();
             }
         }
 
@@ -136,5 +154,26 @@ namespace Beadando.ViewModel
         ///  Gets or sets the number equaivalent to the width and height of a squarecard
         /// </summary>
         public int SquareCardMetric { get; set; }
+
+        /// <summary>
+        /// Setting up the basic metrics of the track
+        /// </summary>
+        /// <param name="playerAreaX">The width of the track</param>
+        /// <param name="playerAreaY">The height of the track</param>
+        public void SetBaseValues(double playerAreaX, double playerAreaY)
+        {
+            this.WidthOfBoard = ((this.NumberOfElementsInAHorizontalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
+            this.HeightOfBoard = ((this.NumberOfElementsInAVerticalRow - 2) * this.NormalCardWidth) + (2 * this.SquareCardMetric);
+            this.StartPosition = new Point((playerAreaX / 2) + (this.WidthOfBoard / 2) - this.NormalCardWidth, ((playerAreaY / 2) + (this.HeightOfBoard / 2)) - this.NormalCardWidth);
+        }
+
+        /// <summary>
+        /// Set the row numbers back to default
+        /// </summary>
+        public void SetRowNumbersBackToDefault()
+        {
+            this.NumberOfElementsInAHorizontalRow = DefaultHorizontalNumber;
+            this.NumberOfElementsInAVerticalRow = DefaultVerticalNumber;
+        }
     }
 }

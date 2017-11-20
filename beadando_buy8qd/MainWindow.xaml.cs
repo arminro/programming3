@@ -105,23 +105,15 @@ namespace Beadando
             {
                 case Key.Left:
                     this.bl.MoveHorizontally(this.bl.MovementSpeed);
-                    this.InvalidateVisual();
-                    this.bl.SetMetrics();
                     break;
                 case Key.Right:
                     this.bl.MoveHorizontally(-this.bl.MovementSpeed);
-                    this.InvalidateVisual();
-                    this.bl.SetMetrics();
                     break;
                 case Key.Up:
                     this.bl.MoveVertically(this.bl.MovementSpeed);
-                    this.InvalidateVisual();
-                    this.bl.SetMetrics();
                     break;
                 case Key.Down:
                     this.bl.MoveVertically(-this.bl.MovementSpeed);
-                    this.InvalidateVisual();
-                    this.bl.SetMetrics();
                     break;
                 case Key.None:
                     break;
@@ -464,6 +456,8 @@ namespace Beadando
                 default:
                     break;
             }
+
+            this.InvalidateVisual();
         }
 
         /// <summary>
@@ -484,7 +478,7 @@ namespace Beadando
 
             this.DrawPlayers(drawingContext);
 
-            this.DrawPlayerUI(drawingContext);
+            this.DrawPlayerUI(drawingContext, this.bl.CustomModeOn);
 
             this.DrawButtons(drawingContext);
         }
@@ -544,35 +538,43 @@ namespace Beadando
         //    bl.Zoom(e.Delta/60);
         //    InvalidateVisual();
         // }
-        private void DrawPlayerUI(DrawingContext drawingContext)
+        private void DrawPlayerUI(DrawingContext drawingContext, bool customModeOn)
         {
             // PLAYER UI
-            Size playerUiSize = new Size(550, 450);
-            Point startPoint = new Point((this.ActualWidth / 2) - (playerUiSize.Width / 2) + this.bl.OffsetHorizontal, ((this.ActualHeight / 2) - (playerUiSize.Height / 2)) + this.bl.OffsetVertical);
-            Rect mainPlayerScreen = new Rect(startPoint, playerUiSize);
+            if (!customModeOn)
+            {
+                Size playerUiSize = new Size(550, 450);
+                Point startPoint = new Point((this.ActualWidth / 2) - (playerUiSize.Width / 2) + this.bl.OffsetHorizontal, ((this.ActualHeight / 2) - (playerUiSize.Height / 2)) + this.bl.OffsetVertical);
+                Rect mainPlayerScreen = new Rect(startPoint, playerUiSize);
+                drawingContext.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
 
-            drawingContext.DrawRoundedRectangle((ImageBrush)this.Resources["phone"], null, mainPlayerScreen, 5, 5);
+                Brush brush = this.playerColors[this.bl.Player.PuppetKey];
+                FormattedText playerName = new FormattedText(
+                   this.bl.Player.Name,
+                    CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface("Impact"),
+                    18,
+                    brush);
 
-            Brush brush = this.playerColors[this.bl.Player.PuppetKey];
-            FormattedText playerName = new FormattedText(
-               this.bl.Player.Name,
-                CultureInfo.CurrentUICulture,
-                FlowDirection.LeftToRight,
-                new Typeface("Impact"),
-                18,
-                brush);
+                drawingContext.DrawText(playerName, new Point(startPoint.X + 100, startPoint.Y + 210));
 
-            drawingContext.DrawText(playerName, new Point(startPoint.X + 100, startPoint.Y + 210));
+                FormattedText playerMoney = new FormattedText(
+                   this.bl.Player.Money.ToString(),
+                    CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface("Impact"),
+                    70,
+                    brush);
 
-            FormattedText playerMoney = new FormattedText(
-               this.bl.Player.Money.ToString(),
-                CultureInfo.CurrentUICulture,
-                FlowDirection.LeftToRight,
-                new Typeface("Impact"),
-                70,
-                brush);
-
-            drawingContext.DrawText(playerMoney, new Point(startPoint.X + 200, startPoint.Y + 260));
+                drawingContext.DrawText(playerMoney, new Point(startPoint.X + 200, startPoint.Y + 260));
+            }
+            else
+            {
+                RenderedTextblock simpleUI = new RenderedTextblock(Brushes.White, this.playerColors[this.bl.Player.PuppetKey], drawingContext, new Rect(this.ActualWidth - 140, this.ActualHeight - 360, 120, 80));
+                simpleUI.FontSize = 22;
+                simpleUI.DrawText(drawingContext, this.bl.Player.Name + "\n" + this.bl.Player.Money);
+            }
         }
 
         private void RenderBackground(DrawingContext drawingContext)
