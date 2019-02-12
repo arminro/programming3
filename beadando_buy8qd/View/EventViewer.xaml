@@ -1,0 +1,34 @@
+﻿<Window x:Class="Beadando.View.EventViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Beadando.View"
+        mc:Ignorable="d"
+        Title="EventViewer" Height="400" Width="400" 
+        ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="None"
+        Background="Transparent" PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown" >
+    <Window.Resources>
+        <ImageBrush x:Key="randi" ImageSource="pack://siteoforigin:,,,/Resources/randi_event.png" />
+        <ImageBrush x:Key="go" ImageSource="pack://siteoforigin:,,,/Resources/go_event.png"  />
+        <ImageBrush x:Key="lead" ImageSource="pack://siteoforigin:,,,/Resources/lead_event.png" />
+        <ImageBrush x:Key="neptun" ImageSource="pack://siteoforigin:,,,/Resources/neptun_event.png" />
+        <!--<ImageBrush x:Key="nik" ImageSource="pack://siteoforigin:,,,/Resources/nik_out.jpg" />
+        <ImageBrush x:Key="kando" ImageSource="pack://siteoforigin:,,,/Resources/kvk_out.jpg" />
+        <ImageBrush x:Key="rejto" ImageSource="pack://siteoforigin:,,,/Resources/rkk_out.jpg" />-->
+        <ImageBrush x:Key="uv" ImageSource="pack://siteoforigin:,,,/Resources/uv_event.png" />
+        <ImageBrush x:Key="event" ImageSource="pack://siteoforigin:,,,/Resources/event_event.png" />
+        <ImageBrush x:Key="einstein" ImageSource="pack://siteoforigin:,,,/Resources/einstein_event.png" />
+        <ImageBrush x:Key="roll" ImageSource="pack://siteoforigin:,,,/Resources/roll_event.png" />
+        <ImageBrush x:Key="enroll" ImageSource="pack://siteoforigin:,,,/Resources/enroll_event.png" />
+        <ImageBrush x:Key="oe" ImageSource="pack://siteoforigin:,,,/Resources/oe.jpg"  />
+        <ImageBrush x:Key="megajanlott" ImageSource="pack://siteoforigin:,,,/Resources/megajanlott_event.png"   />
+        <ImageBrush x:Key="event_rejto" ImageSource="pack://siteoforigin:,,,/Resources/rejto_event.jpg"  />
+        <ImageBrush x:Key="event_kando" ImageSource="pack://siteoforigin:,,,/Resources/grasshopper.jpg" />
+        <ImageBrush x:Key="event_nik" ImageSource="pack://siteoforigin:,,,/Resources/kocka.jpg" />
+        <ImageBrush x:Key="tokos" ImageSource="pack://siteoforigin:,,,/Resources/worldwide.jpg" />
+    </Window.Resources>
+    <Canvas >
+        
+    </Canvas>
+</Window>

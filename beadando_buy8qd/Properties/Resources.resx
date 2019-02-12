@@ -118,43 +118,164 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dorm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dorm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cert.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cert_blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cert_blank.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="einstein" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\einstein.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="einstein_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\einstein_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="enroll" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\enroll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="examInspect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\examInspect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="enroll_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\enroll_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="enroll_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\enroll_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="event_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="event_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\event_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="felvesz" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\felvesz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="felvesz__horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\felvesz _horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Gears_Transparent_Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Gears-Transparent-Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="go" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="golden" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\golden.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="go_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\go_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="go_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\go_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="grasshopper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\grasshopper.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kando" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kando.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kimarad" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kimarad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="kocka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kocka.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lead" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lead.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lead_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lead_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="megajanlott" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\megajanlott.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="NoRoll" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NoRoll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="megajanlott_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\megajanlott_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="neptun" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\neptun.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="neptun_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\neptun_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nik" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nik.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="noRoll2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\noRoll2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RollAgain" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RollAgain.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="oe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\oe.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="randi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\randi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="randi_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\randi_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="randi_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\randi_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rejto" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rejto.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rejto_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rejto_event.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ribbon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ribbon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rkk_out" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rkk_out.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="rollAgain2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\rollAgain2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="rollAgain2_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rollAgain2_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rollAgain_vert_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rollAgain_vert_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="roll_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\roll_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="silver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\silver.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="smartphone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\smartphone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="start" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="uv" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\uv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="uv_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\uv_event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="uv_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\uv_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wood" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wood.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="worldwide" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\worldwide.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="_event" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\event.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="nik_babu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\nik_babu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="neptun_horizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\neptun_horizontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tutorial" xml:space="preserve">
+    <value>A játék alapja a jól ismert Gazdálkodj Okosan játék: a játékosok körökre osztva lépdelnek végig a számokra osztott táblán és közben különféle játékeseményeken vesznek részt. A játékosok száma 1 és 3 között változhat, de a játékmezőn egyszerre csak 1 féle karakter lehet, melyeket az Óbudai Egyetem 3 Kara testesít meg: a Neumann Kékek, a Kandó Sárgák és a Rejtő Zöldek.
+A számozott pályán a résztvevők eseményablakokon keresztül értesülnek róla, hogy mit rejt egy-egy kártya. A játékot színesebbé teszi, hogy minden egyes új játékmenet egyedi kártyasorral rendelkezik, így a résztvevők a gép szeszélyeire bízva menetelnek a célig, azaz, hogy megszerezzék az általuk képviselt Egyetemi Kar 3 tárgyát. Ha ez egy játékosnak sikerül, a játék véget ér mindenki számára. Ha azonban bármelyik játékos  egyenlege 0 alá csökken, csak ő maga száll ki a versenből, a többiek számára folytatódik a diplomáért folytatott harc. Tantárgyakban gazdag játékot kívánunk!</value>
   </data>
 </root>

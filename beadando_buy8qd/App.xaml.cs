@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿// <copyright file="App.xaml.cs" company="OE-NIK">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace Beadando
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

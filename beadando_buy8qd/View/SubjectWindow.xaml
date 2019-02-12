@@ -1,0 +1,60 @@
+﻿<Window x:Class="Beadando.View.SubjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Beadando.View"
+        mc:Ignorable="d"
+        Title="SubjectWindow" Height="300" Width="600" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Felvehető Tárgyak" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontFamily="Impact" FontSize="20"/>
+            <ListBox x:Name="Lb_available_subjects" ItemsSource="{Binding SubjectsAvailableToPlayer}" 
+                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch"
+                     Opacity="0.6" SelectedItem="{Binding SelectedSubject, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionChanged="Lb_available_subjects_SelectionChanged"
+                    
+                   >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="10" >
+                            <Label Content="{Binding Name}" FontSize="20" FontFamily="Impact"/>
+                            <Label Content="{Binding Price}" FontSize="15" FontFamily="Impact"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+        </StackPanel>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <Button x:Name="Add" Content="Jöhet" Margin="10" Height="40" Click="Add_Click" FontFamily="Impact" 
+                    IsEnabled="{Binding CanPlayerBuyIt}"/>
+            <Button x:Name="Cancel" Content="Bezárás" Height="30" Margin="10" Click="Cancel_Click" FontFamily="Impact" />
+
+        </StackPanel>
+        <StackPanel Grid.Column="2" VerticalAlignment="Stretch">
+            <TextBlock Text="Teljesített Tárgyak" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontFamily="Impact" FontSize="20"/>
+            <ListBox x:Name="lb_acquired_subjects" Grid.Column="2" ItemsSource="{Binding SubjectsOfPlayer}" 
+                     HorizontalContentAlignment="Stretch"  VerticalAlignment="Stretch"
+                      Opacity="0.6" 
+>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <Label Content="{Binding Name}" FontSize="25" FontFamily="Impact"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </StackPanel>
+        
+        
+    </Grid>
+</Window>
